@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logicalshift.SLD", "Logicalshift.SLD\Logicalshift.SLD.csproj", "{2E4AEF0A-3FA2-4C1E-97AF-0430A2A0257B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicalShift.Reason", "LogicalShift.Reason\LogicalShift.Reason.csproj", "{2E4AEF0A-3FA2-4C1E-97AF-0430A2A0257B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logicalshift.SLD.Tests", "Logicalshift.SLD.Tests\Logicalshift.SLD.Tests.csproj", "{6E403010-E932-4DB0-B173-6F9271B936B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicalShift.Reason.Tests", "LogicalShift.Reason.Tests\LogicalShift.Reason.Tests.csproj", "{6E403010-E932-4DB0-B173-6F9271B936B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CFDB678F-900C-4F88-A656-E8AC9C73E2B6}"
 	ProjectSection(SolutionItems) = preProject
