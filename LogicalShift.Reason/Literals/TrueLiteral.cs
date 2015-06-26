@@ -1,11 +1,11 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logicalshift.SLD.Literals
+namespace Logicalshift.Reason.Literals
 {
     /// <summary>
     /// Literal representing truth

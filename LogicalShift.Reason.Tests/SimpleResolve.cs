@@ -1,9 +1,9 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace Logicalshift.SLD.Tests
+namespace Logicalshift.Reason.Tests
 {
     [TestFixture]
     public class SimpleResolve

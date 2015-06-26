@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Logicalshift.SLD.Api
+namespace Logicalshift.Reason.Api
 {
 	/// <summary>
 	/// Interface implemented by objects that can solve for goals

@@ -1,8 +1,8 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using System;
 using System.Threading;
 
-namespace Logicalshift.SLD.Literals
+namespace Logicalshift.Reason.Literals
 {
     /// <summary>
     /// Represents a basic atomic literal

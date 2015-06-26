@@ -7,15 +7,15 @@
     <ProjectGuid>{6E403010-E932-4DB0-B173-6F9271B936B8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Logicalshift.SLD.Tests</RootNamespace>
-    <AssemblyName>Logicalshift.SLD.Tests</AssemblyName>
+    <RootNamespace>LogicalShift.Reason.Tests</RootNamespace>
+    <AssemblyName>LogicalShift.Reason.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>
     <StartProgram>$(SolutionDir)\packages\nunit.runners.2.6.4\tools\nunit.exe</StartProgram>
-    <StartArguments>Logicalshift.SLD.Tests.dll /run</StartArguments>
+    <StartArguments>Logicalshift.Reason.Tests.dll /run</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,7 +57,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Logicalshift.SLD\Logicalshift.SLD.csproj">
+    <ProjectReference Include="..\LogicalShift.Reason\LogicalShift.Reason.csproj">
       <Project>{2e4aef0a-3fa2-4c1e-97af-0430a2a0257b}</Project>
       <Name>Logicalshift.SLD</Name>
     </ProjectReference>

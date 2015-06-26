@@ -1,9 +1,9 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Logicalshift.SLD.Knowledge
+namespace Logicalshift.Reason.Knowledge
 {
     /// <summary>
     /// Knowledge base that appends a single clause to an existing knowledge base

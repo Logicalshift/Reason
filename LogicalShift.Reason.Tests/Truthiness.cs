@@ -1,10 +1,10 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Logicalshift.SLD.Tests
+namespace Logicalshift.Reason.Tests
 {
     [TestFixture]
     public class Truthiness

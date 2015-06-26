@@ -1,8 +1,8 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using System;
 using System.Collections.Generic;
 
-namespace Logicalshift.SLD.Clauses
+namespace Logicalshift.Reason.Clauses
 {
     /// <summary>
     /// Represents a positive Horn clause

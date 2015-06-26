@@ -1,10 +1,10 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Logicalshift.SLD.Clauses
+namespace Logicalshift.Reason.Clauses
 {
     /// <summary>
     /// Represents a negative Horn clause

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Logicalshift.SLD
+namespace Logicalshift.Reason
 {
     /// <summary>
     /// Styles of solver that can be used

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Logicalshift.SLD.Api
+namespace Logicalshift.Reason.Api
 {
     /// <summary>
     /// Interface implemented by objects representing a literal

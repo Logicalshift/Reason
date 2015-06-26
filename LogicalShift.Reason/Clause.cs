@@ -1,9 +1,9 @@
-﻿using Logicalshift.SLD.Api;
-using Logicalshift.SLD.Clauses;
+﻿using Logicalshift.Reason.Api;
+using Logicalshift.Reason.Clauses;
 using System;
 using System.Linq;
 
-namespace Logicalshift.SLD
+namespace Logicalshift.Reason
 {
     /// <summary>
     /// Methods for creating an altering clauses

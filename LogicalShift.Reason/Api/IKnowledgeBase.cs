@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Logicalshift.SLD.Api
+namespace Logicalshift.Reason.Api
 {
     /// <summary>
     /// Represents a knowledge base

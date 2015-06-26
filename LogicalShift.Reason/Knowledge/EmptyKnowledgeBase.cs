@@ -1,8 +1,8 @@
-﻿using Logicalshift.SLD.Api;
+﻿using Logicalshift.Reason.Api;
 using System;
 using System.Collections.Generic;
 
-namespace Logicalshift.SLD.Knowledge
+namespace Logicalshift.Reason.Knowledge
 {
     /// <summary>
     /// A knowledge base with no information in it
