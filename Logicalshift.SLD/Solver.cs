@@ -2,6 +2,7 @@
 using Logicalshift.SLD.Solvers;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Logicalshift.SLD
 {
@@ -16,6 +17,26 @@ namespace Logicalshift.SLD
         public static ISolver NewSolver(this IKnowledgeBase knowledge)
         {
             return new ForwardChainingSolver(knowledge);
+        }
+
+        /// <summary>
+        /// Uses a solver to query for a specific goal
+        /// </summary>
+        public static Task<IQueryResult> Solve(this ISolver solver, ILiteral goal)
+        {
+            if (goal == null) throw new ArgumentNullException("goal");
+
+            return solver.Solve(new[] { goal });
+        }
+
+        /// <summary>
+        /// Uses a solver to query for a specific goal
+        /// </summary>
+        public static Task<IQueryResult> Solve(this ISolver solver, params ILiteral[] goals)
+        {
+            if (goals == null) throw new ArgumentNullException("goals");
+
+            return solver.Solve((IEnumerable<ILiteral>) goals);
         }
     }
 }

@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 namespace Logicalshift.SLD.Api
 {
 	/// <summary>
-	/// Inteface implemented by objects that can solve for goals
+	/// Interface implemented by objects that can solve for goals
 	/// </summary>
     public interface ISolver
     {
 		/// <summary>
-		/// Attempts to solve for a particular goal
+		/// Attempts to solve for a particular set of goals
 		/// </summary>
-        Task<IQueryResult> Solve(ILiteral goal);
+        Task<IQueryResult> Solve(IEnumerable<ILiteral> goals);
     }
 }

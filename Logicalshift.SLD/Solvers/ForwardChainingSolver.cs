@@ -47,16 +47,18 @@ namespace Logicalshift.SLD.Solvers
             return -1;
         }
 
-        public Task<IQueryResult> Solve(ILiteral goal)
+        public Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
         {
-            var goals = new HashSet<ILiteral>();
+            if (goals == null) throw new ArgumentNullException("goals");
+
+            var remainingGoals = new HashSet<ILiteral>();
             var solved = new HashSet<ILiteral>();
 
             // Initially, all the clauses are unsolved
             var unsolved = new List<IClause>(_knowledge.Clauses);
 
             // Set up the initial set of goals
-            goals.Add(goal);
+            remainingGoals.UnionWith(goals);
 
             // Initially, only 'true' is solved
             solved.Add(Literal.True());
@@ -79,10 +81,10 @@ namespace Logicalshift.SLD.Solvers
                 unsolved.RemoveAt(firstSolvedIndex);
 
                 // Remove from the goals if it matched
-                if (goals.Contains(solvedElement.Implies))
+                if (remainingGoals.Contains(solvedElement.Implies))
                 {
-                    goals.Remove(solvedElement.Implies);
-                    if (!goals.Any())
+                    remainingGoals.Remove(solvedElement.Implies);
+                    if (!remainingGoals.Any())
                     {
                         // If all the goals are solved, we're finished
                         return Task.FromResult<IQueryResult>(new BasicQueryResult(true));
