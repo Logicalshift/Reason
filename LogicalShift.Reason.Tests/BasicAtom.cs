@@ -1,4 +1,5 @@
 ﻿using Logicalshift.Reason.Api;
+using LogicalShift.Reason.Unification;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,25 @@ namespace Logicalshift.Reason.Tests
         {
             var atom = Literal.NewAtom();
             Assert.IsTrue(Equals(atom, atom));
+        }
+
+        [Test]
+        public void AtomUnifiesWithSelf()
+        {
+            var atom = Literal.NewAtom();
+            var initialState = new EmptyUnificationState();
+
+            Assert.AreEqual(1, atom.Unify(atom, initialState).Count());
+        }
+
+        [Test]
+        public void AtomDoesNotUnifyWithDifferentAtom()
+        {
+            var atom = Literal.NewAtom();
+            var otherAtom = Literal.NewAtom();
+            var initialState = new EmptyUnificationState();
+
+            Assert.AreEqual(0, atom.Unify(otherAtom, initialState).Count());
         }
 
         [Test]

@@ -1,5 +1,6 @@
 ﻿using Logicalshift.Reason.Api;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace Logicalshift.Reason.Literals
@@ -52,6 +53,20 @@ namespace Logicalshift.Reason.Literals
         public override string ToString()
         {
             return string.Format("atom_{0}", _identifier);
+        }
+
+        public IEnumerable<IUnificationState> Unify(ILiteral unifyWith, IUnificationState state)
+        {
+            if (!Equals(this, unifyWith))
+            {
+                // No valid unification states
+                yield break;
+            }
+            else
+            {
+                // Existing state remains valid
+                yield return state;
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LogicalShift.Reason.Api
+namespace Logicalshift.Reason.Api
 {
     /// <summary>
     /// Represents a possible unification state

@@ -43,5 +43,19 @@ namespace Logicalshift.Reason.Literals
         {
             return "true";
         }
+
+        public IEnumerable<IUnificationState> Unify(ILiteral unifyWith, IUnificationState state)
+        {
+            if (!Equals(this, unifyWith))
+            {
+                // No valid unification states
+                yield break;
+            }
+            else
+            {
+                // Existing state remains valid
+                yield return state;
+            }
+        }
     }
 }
