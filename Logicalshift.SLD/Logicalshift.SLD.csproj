@@ -55,6 +55,7 @@
     <Compile Include="Literals\TrueLiteral.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solver.cs" />
+    <Compile Include="Solvers\ForwardChainingSolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ISolver.cs" />

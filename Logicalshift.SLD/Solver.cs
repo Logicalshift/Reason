@@ -1,4 +1,5 @@
 ﻿using Logicalshift.SLD.Api;
+using Logicalshift.SLD.Solvers;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace Logicalshift.SLD
         /// </summary>
         public static ISolver NewSolver(this IKnowledgeBase knowledge)
         {
-            throw new NotImplementedException();
+            return new ForwardChainingSolver(knowledge);
         }
     }
 }
