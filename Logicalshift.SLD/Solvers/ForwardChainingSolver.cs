@@ -1,4 +1,5 @@
 ﻿using Logicalshift.SLD.Api;
+using Logicalshift.SLD.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +70,7 @@ namespace Logicalshift.SLD.Solvers
                 if (firstSolvedIndex < 0)
                 {
                     // The goal is not solvable
-                    throw new InvalidOperationException("Goal not solvable");
+                    return Task.FromResult<IQueryResult>(new BasicQueryResult(false));
                 }
 
                 // This element is no longer unsolved
@@ -84,7 +85,7 @@ namespace Logicalshift.SLD.Solvers
                     if (!goals.Any())
                     {
                         // If all the goals are solved, we're finished
-                        throw new InvalidOperationException("Goal solvable");
+                        return Task.FromResult<IQueryResult>(new BasicQueryResult(true));
                     }
                 }
             }
