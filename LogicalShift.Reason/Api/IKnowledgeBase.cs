@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason.Api
+namespace LogicalShift.Reason.Api
 {
     /// <summary>
     /// Represents a knowledge base

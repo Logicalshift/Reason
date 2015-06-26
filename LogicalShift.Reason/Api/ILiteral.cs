@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Logicalshift.Reason.Api
+namespace LogicalShift.Reason.Api
 {
     /// <summary>
     /// Interface implemented by objects representing a literal

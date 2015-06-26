@@ -1,11 +1,11 @@
-﻿using Logicalshift.Reason.Api;
-using Logicalshift.Reason.Results;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason.Solvers
+namespace LogicalShift.Reason.Solvers
 {
     /// <summary>
     /// Implements the forward-chaining solving algorihtm against a knowledge base

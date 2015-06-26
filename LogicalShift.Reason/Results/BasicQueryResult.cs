@@ -1,8 +1,8 @@
-﻿using Logicalshift.Reason.Api;
+﻿using LogicalShift.Reason.Api;
 using System;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason.Results
+namespace LogicalShift.Reason.Results
 {
     /// <summary>
     /// Represents a simple succeeded/failed query result

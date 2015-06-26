@@ -1,8 +1,8 @@
-﻿using Logicalshift.Reason.Api;
-using Logicalshift.Reason.Literals;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Literals;
 using System;
 
-namespace Logicalshift.Reason
+namespace LogicalShift.Reason
 {
     /// <summary>
     /// Methods for creating and manipulating literals

@@ -1,12 +1,12 @@
-﻿using Logicalshift.Reason.Api;
-using Logicalshift.Reason.Literals;
-using Logicalshift.Reason.Results;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Literals;
+using LogicalShift.Reason.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason.Solvers
+namespace LogicalShift.Reason.Solvers
 {
     /// <summary>
     /// Depth-first solver that works backwards from the goal

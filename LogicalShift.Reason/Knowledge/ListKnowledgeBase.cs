@@ -1,10 +1,10 @@
-﻿using Logicalshift.Reason.Api;
+﻿using LogicalShift.Reason.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason.Knowledge
+namespace LogicalShift.Reason.Knowledge
 {
     /// <summary>
     /// Knowledge base that appends a single clause to an existing knowledge base

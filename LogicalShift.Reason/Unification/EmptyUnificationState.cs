@@ -1,4 +1,4 @@
-﻿using Logicalshift.Reason.Api;
+﻿using LogicalShift.Reason.Api;
 using System;
 
 namespace LogicalShift.Reason.Unification

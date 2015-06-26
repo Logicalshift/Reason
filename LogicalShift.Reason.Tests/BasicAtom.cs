@@ -1,11 +1,11 @@
-﻿using Logicalshift.Reason.Api;
+﻿using LogicalShift.Reason.Api;
 using LogicalShift.Reason.Unification;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Logicalshift.Reason.Tests
+namespace LogicalShift.Reason.Tests
 {
     [TestFixture]
     public class BasicAtom

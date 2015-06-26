@@ -1,10 +1,10 @@
-﻿using Logicalshift.Reason.Api;
-using Logicalshift.Reason.Solvers;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Solvers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason
+namespace LogicalShift.Reason
 {
     /// <summary>
     /// Methods for creating and altering solvers

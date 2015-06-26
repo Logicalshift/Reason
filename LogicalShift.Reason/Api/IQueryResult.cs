@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason.Api
+namespace LogicalShift.Reason.Api
 {
     /// <summary>
     /// Represents a single result for a query

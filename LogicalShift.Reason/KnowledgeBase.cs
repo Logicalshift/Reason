@@ -1,8 +1,8 @@
-﻿using Logicalshift.Reason.Api;
-using Logicalshift.Reason.Knowledge;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Knowledge;
 using System;
 
-namespace Logicalshift.Reason
+namespace LogicalShift.Reason
 {
     /// <summary>
     /// Static methods for creating/managing a knowledge base

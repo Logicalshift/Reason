@@ -1,9 +1,9 @@
-﻿using Logicalshift.Reason.Api;
+﻿using LogicalShift.Reason.Api;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Logicalshift.Reason.Literals
+namespace LogicalShift.Reason.Literals
 {
     /// <summary>
     /// Represents a basic atomic literal

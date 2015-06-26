@@ -1,9 +1,9 @@
-﻿using Logicalshift.Reason.Api;
+﻿using LogicalShift.Reason.Api;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Logicalshift.Reason.Knowledge
+namespace LogicalShift.Reason.Knowledge
 {
     /// <summary>
     /// A knowledge base with no information in it
