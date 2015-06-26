@@ -24,5 +24,13 @@ namespace LogicalShift.Reason
         {
             return TrueLiteral.Value;
         }
+
+        /// <summary>
+        /// Creates a new variable literal
+        /// </summary>
+        public static ILiteral NewVariable()
+        {
+            return new Variable();
+        }
     }
 }

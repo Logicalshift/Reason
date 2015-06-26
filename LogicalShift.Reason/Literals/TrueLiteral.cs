@@ -58,7 +58,6 @@ namespace LogicalShift.Reason.Literals
             }
         }
 
-
         public ILiteral Bind(IUnificationState state)
         {
             return this;

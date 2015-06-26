@@ -54,6 +54,7 @@
     <Compile Include="KnowledgeBase.cs" />
     <Compile Include="Literals\BasicAtom.cs" />
     <Compile Include="Literals\TrueLiteral.cs" />
+    <Compile Include="Literals\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Results\BasicQueryResult.cs" />
     <Compile Include="Solver.cs" />

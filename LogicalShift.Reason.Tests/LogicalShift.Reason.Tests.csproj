@@ -53,6 +53,7 @@
     <Compile Include="SimpleResolve.cs" />
     <Compile Include="Truthiness.cs" />
     <Compile Include="UnificationState.cs" />
+    <Compile Include="VariableLiteral.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
