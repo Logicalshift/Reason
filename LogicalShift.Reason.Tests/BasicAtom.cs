@@ -53,5 +53,13 @@ namespace LogicalShift.Reason.Tests
             Assert.IsTrue(dict[atom]);
         }
 
+        [Test]
+        public void AtomBindsToSelf()
+        {
+            var atom = Literal.NewAtom();
+            var state = new EmptyUnificationState();
+
+            Assert.AreEqual(atom, atom.Bind(state));
+        }
     }
 }
