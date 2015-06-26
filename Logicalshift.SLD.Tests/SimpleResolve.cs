@@ -19,8 +19,8 @@ namespace Logicalshift.SLD.Tests
             // Small felines are house cats and small and feline are true
             var houseCatsAreSmallFelines = Clause.If(feline, small).Then(houseCat);
             knowledge = knowledge.Assert(houseCatsAreSmallFelines);
-            knowledge = knowledge.Assert(Clause.If(feline).Then(Literal.True()));
-            knowledge = knowledge.Assert(Clause.If(small).Then(Literal.True()));
+            knowledge = knowledge.Assert(Clause.If(Literal.True()).Then(feline));
+            knowledge = knowledge.Assert(Clause.If(Literal.True()).Then(small));
 
             // Solve for 'houseCat' (which should be true under this simple system)
             var solver = Solver.NewSolver(knowledge);
@@ -28,7 +28,6 @@ namespace Logicalshift.SLD.Tests
             // Should be true
             var result = await solver.Solve(houseCat);
             Assert.IsTrue(result.Success);
-            Assert.AreEqual(Literal.True(), result.Result);
         }
     }
 }

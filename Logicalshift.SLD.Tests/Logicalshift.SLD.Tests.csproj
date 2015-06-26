@@ -48,8 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicAtom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleResolve.cs" />
+    <Compile Include="Truthiness.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

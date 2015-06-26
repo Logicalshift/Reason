@@ -14,11 +14,6 @@ namespace Logicalshift.SLD.Api
         bool Success { get; }
 
         /// <summary>
-        /// The result that was retrieved, or null if there are no more results
-        /// </summary>
-        ILiteral Result { get; }
-
-        /// <summary>
         /// Retrieves the next result
         /// </summary>
         Task<IQueryResult> Next();
