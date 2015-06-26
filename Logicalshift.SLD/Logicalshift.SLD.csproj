@@ -47,6 +47,7 @@
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
     <Compile Include="Clauses\PositiveClause.cs" />
+    <Compile Include="Knowledge\ListKnowledgeBase.cs" />
     <Compile Include="Literal.cs" />
     <Compile Include="Knowledge\EmptyKnowledgeBase.cs" />
     <Compile Include="KnowledgeBase.cs" />

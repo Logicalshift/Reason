@@ -22,7 +22,7 @@ namespace Logicalshift.SLD
         /// </summary>
         public static IKnowledgeBase Assert(this IKnowledgeBase oldKnowledge, IClause assertion)
         {
-            throw new NotImplementedException();
+            return new ListKnowledgeBase(assertion, oldKnowledge);
         }
     }
 }
