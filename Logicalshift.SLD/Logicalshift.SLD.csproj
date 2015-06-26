@@ -43,8 +43,17 @@
     <Compile Include="Api\IClause.cs" />
     <Compile Include="Api\IKnowledgeBase.cs" />
     <Compile Include="Api\ILiteral.cs" />
+    <Compile Include="Api\IQueryResult.cs" />
+    <Compile Include="Clause.cs" />
+    <Compile Include="Literal.cs" />
+    <Compile Include="Knowledge\EmptyKnowledgeBase.cs" />
+    <Compile Include="KnowledgeBase.cs" />
     <Compile Include="Literals\BasicAtom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Solver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Api\ISolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
