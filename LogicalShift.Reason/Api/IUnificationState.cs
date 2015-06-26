@@ -8,9 +8,5 @@ namespace LogicalShift.Reason.Api
     /// </summary>
     public interface IUnificationState
     {
-        /// <summary>
-        /// True if the state is consistent, false if it's inconsistent
-        /// </summary>
-        bool Consistent { get; }
     }
 }
