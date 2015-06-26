@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Logicalshift.SLD.Clauses
 {
@@ -27,6 +28,24 @@ namespace Logicalshift.SLD.Clauses
         public ILiteral Implies
         {
             get { return null; }
+        }
+
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+
+            bool first = true;
+            foreach (var item in If)
+            {
+                if (!first)
+                {
+                    result.Append(", ");
+                }
+                result.AppendFormat("({0})", item);
+                first = false;
+            }
+
+            return result.ToString();
         }
     }
 }

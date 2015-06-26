@@ -16,6 +16,7 @@ namespace Logicalshift.SLD.Clauses
         {
             if (negativeClause == null) throw new ArgumentNullException("negativeClause");
             if (implies == null) throw new ArgumentNullException("implies");
+            if (negativeClause.Implies != null) throw new InvalidOperationException("Negative clauses can't have an 'Implies'");
 
             _negativeClause = negativeClause;
             _implies = implies;
@@ -29,6 +30,11 @@ namespace Logicalshift.SLD.Clauses
         public ILiteral Implies
         {
             get { return _implies; }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} :- {1}", Implies, _negativeClause);
         }
     }
 }

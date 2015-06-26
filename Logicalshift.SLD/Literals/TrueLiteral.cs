@@ -38,5 +38,10 @@ namespace Logicalshift.SLD.Literals
             if (other == null) return false;
             return true;
         }
+
+        public override string ToString()
+        {
+            return "true";
+        }
     }
 }

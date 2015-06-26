@@ -48,5 +48,10 @@ namespace Logicalshift.SLD.Literals
         {
             return _identifier.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return string.Format("atom_{0}", _identifier);
+        }
     }
 }
