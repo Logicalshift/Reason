@@ -22,7 +22,7 @@ namespace Logicalshift.SLD.Tests
             knowledge = knowledge.Assert(Clause.If(feline).Then(Literal.True()));
             knowledge = knowledge.Assert(Clause.If(small).Then(Literal.True()));
 
-            // Solve for 'housecat'
+            // Solve for 'houseCat' (which should be true under this simple system)
             var solver = Solver.NewSolver(knowledge);
 
             // Should be true

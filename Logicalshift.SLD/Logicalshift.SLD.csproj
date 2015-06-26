@@ -45,6 +45,8 @@
     <Compile Include="Api\ILiteral.cs" />
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Clause.cs" />
+    <Compile Include="Clauses\NegativeClause.cs" />
+    <Compile Include="Clauses\PositiveClause.cs" />
     <Compile Include="Literal.cs" />
     <Compile Include="Knowledge\EmptyKnowledgeBase.cs" />
     <Compile Include="KnowledgeBase.cs" />
