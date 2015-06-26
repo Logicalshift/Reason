@@ -47,7 +47,7 @@ namespace Logicalshift.Reason.Solvers
             return -1;
         }
 
-        public Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
+        public async Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
         {
             if (goals == null) throw new ArgumentNullException("goals");
 
@@ -55,7 +55,7 @@ namespace Logicalshift.Reason.Solvers
             var solved = new HashSet<ILiteral>();
 
             // Initially, all the clauses are unsolved
-            var unsolved = new List<IClause>(_knowledge.Clauses);
+            var unsolved = new List<IClause>(await _knowledge.GetClauses());
 
             // Set up the initial set of goals
             remainingGoals.UnionWith(goals);
@@ -72,7 +72,7 @@ namespace Logicalshift.Reason.Solvers
                 if (firstSolvedIndex < 0)
                 {
                     // The goal is not solvable
-                    return Task.FromResult<IQueryResult>(new BasicQueryResult(false));
+                    return new BasicQueryResult(false);
                 }
 
                 // This element is no longer unsolved
@@ -87,7 +87,7 @@ namespace Logicalshift.Reason.Solvers
                     if (!remainingGoals.Any())
                     {
                         // If all the goals are solved, we're finished
-                        return Task.FromResult<IQueryResult>(new BasicQueryResult(true));
+                        return new BasicQueryResult(true);
                     }
                 }
             }

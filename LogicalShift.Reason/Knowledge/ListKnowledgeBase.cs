@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Logicalshift.Reason.Knowledge
 {
@@ -12,6 +13,7 @@ namespace Logicalshift.Reason.Knowledge
     {
         private readonly IClause _clause;
         private readonly ListKnowledgeBase _next;
+        private Dictionary<ILiteral, IClause[]> _clausesForLiteral;
 
         private ListKnowledgeBase(IClause ourClause, ListKnowledgeBase next)
         {
@@ -28,7 +30,7 @@ namespace Logicalshift.Reason.Knowledge
             }
 
             result = null;
-            foreach (var clause in notList.Clauses)
+            foreach (var clause in notList.GetClauses().Result)
             {
                 result = new ListKnowledgeBase(clause, result);
             }
@@ -54,6 +56,34 @@ namespace Logicalshift.Reason.Knowledge
                     yield return current._clause;
                 }
             }
+        }
+
+        private void FillClauseCache()
+        {
+            if (_clausesForLiteral != null) return;
+
+            _clausesForLiteral = Clauses
+                .GroupBy(clause => clause.Implies)
+                .ToDictionary(group => group.Key, group => group.ToArray());
+        }
+
+        public Task<IEnumerable<IClause>> GetClauses()
+        {
+            return Task.FromResult(Clauses);
+        }
+
+        public Task<IEnumerable<IClause>> ClausesForLiteral(ILiteral literal)
+        {
+            FillClauseCache();
+
+            IClause[] result;
+
+            if (!_clausesForLiteral.TryGetValue(literal, out result))
+            {
+                result = new IClause[0];
+            }
+
+            return Task.FromResult<IEnumerable<IClause>>(result);
         }
     }
 }

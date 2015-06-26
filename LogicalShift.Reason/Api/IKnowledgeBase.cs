@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Logicalshift.Reason.Api
 {
@@ -11,6 +12,11 @@ namespace Logicalshift.Reason.Api
         /// <summary>
         /// The set of clauses that make up this knowledge base
         /// </summary>
-        IEnumerable<IClause> Clauses { get; }
+        Task<IEnumerable<IClause>> GetClauses();
+
+        /// <summary>
+        /// Retrieves the clauses that resolve to a particular literal (an empty list if there are none)
+        /// </summary>
+        Task<IEnumerable<IClause>> ClausesForLiteral(ILiteral literal);
     }
 }

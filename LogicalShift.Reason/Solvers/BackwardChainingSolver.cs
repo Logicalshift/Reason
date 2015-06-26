@@ -22,11 +22,6 @@ namespace Logicalshift.Reason.Solvers
         /// </summary>
         private readonly IKnowledgeBase _knowledge;
 
-        /// <summary>
-        /// The clauses that map to each literal
-        /// </summary>
-        private Dictionary<ILiteral, List<IClause>> _clausesForLiteral;
-
         public BackwardChainingSolver(IKnowledgeBase knowledge)
         {
             if (knowledge == null) throw new ArgumentNullException("knowledge");
@@ -34,20 +29,9 @@ namespace Logicalshift.Reason.Solvers
             _knowledge = knowledge;
         }
 
-        private void FillClauseCache()
-        {
-            if (_clausesForLiteral != null) return;
-
-            _clausesForLiteral = _knowledge.Clauses
-                .GroupBy(clause => clause.Implies)
-                .ToDictionary(group => group.Key, group => group.ToList());
-        }
-
         public async Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
         {
             if (goals == null) throw new ArgumentNullException("goals");
-
-            FillClauseCache();
 
             // Try each goal in turn
             foreach (var goal in goals)
@@ -78,7 +62,7 @@ namespace Logicalshift.Reason.Solvers
             }
 
             // Solve for this goal
-            var clauseList = _clausesForLiteral[goal];
+            var clauseList = await _knowledge.ClausesForLiteral(goal);
             foreach (var clause in clauseList)
             {
                 // If we can solve the entire 'if' side of this clause, then the goal is true
