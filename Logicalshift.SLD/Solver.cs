@@ -14,9 +14,19 @@ namespace Logicalshift.SLD
         /// <summary>
         /// Creates a goal solver that works against the specified knowledge base
         /// </summary>
-        public static ISolver NewSolver(this IKnowledgeBase knowledge)
+        public static ISolver NewSolver(this IKnowledgeBase knowledge, SolverStyle style)
         {
-            return new BackwardChainingSolver(knowledge);
+            switch (style)
+            {
+                case SolverStyle.BackwardsChaining:
+                    return new BackwardChainingSolver(knowledge);
+
+                case SolverStyle.ForwardsChaining:
+                    return new ForwardChainingSolver(knowledge);
+
+                default:
+                    throw new InvalidOperationException("Unknown type of solver");
+            }
         }
 
         /// <summary>

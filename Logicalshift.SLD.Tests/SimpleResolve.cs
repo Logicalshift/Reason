@@ -8,7 +8,9 @@ namespace Logicalshift.SLD.Tests
     public class SimpleResolve
     {
         [Test]
-        public async Task ResolveASimpleGoal()
+        [TestCase(SolverStyle.BackwardsChaining)]
+        [TestCase(SolverStyle.ForwardsChaining)]
+        public async Task ResolveASimpleGoal(SolverStyle style)
         {
             // Create some knowledge
             var knowledge = KnowledgeBase.New();
@@ -23,7 +25,7 @@ namespace Logicalshift.SLD.Tests
             knowledge = knowledge.Assert(Clause.If(Literal.True()).Then(small));
 
             // Solve for 'houseCat' (which should be true under this simple system)
-            var solver = Solver.NewSolver(knowledge);
+            var solver = Solver.NewSolver(knowledge, style);
 
             // Should be true
             var result = await solver.Solve(houseCat);
