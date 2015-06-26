@@ -32,5 +32,13 @@ namespace Logicalshift.SLD
 
             return new PositiveClause(negativeHornClause, then);
         }
+
+        /// <summary>
+        /// Returns a clause indicating that a literal is unconditionally true
+        /// </summary>
+        public static IClause Always(ILiteral always)
+        {
+            return If(Literal.True()).Then(always);
+        }
     }
 }

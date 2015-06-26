@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Logicalshift.SLD.Api;
+using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
@@ -21,8 +22,8 @@ namespace Logicalshift.SLD.Tests
             // Small felines are house cats and small and feline are true
             var houseCatsAreSmallFelines = Clause.If(feline, small).Then(houseCat);
             knowledge = knowledge.Assert(houseCatsAreSmallFelines);
-            knowledge = knowledge.Assert(Clause.If(Literal.True()).Then(feline));
-            knowledge = knowledge.Assert(Clause.If(Literal.True()).Then(small));
+            knowledge = knowledge.Assert(Clause.Always(feline));
+            knowledge = knowledge.Assert(Clause.Always(small));
 
             // Solve for 'houseCat' (which should be true under this simple system)
             var solver = Solver.NewSolver(knowledge, style);
