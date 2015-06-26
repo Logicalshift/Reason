@@ -40,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\IClause.cs" />
+    <Compile Include="Api\IKnowledgeBase.cs" />
+    <Compile Include="Api\ILiteral.cs" />
+    <Compile Include="Literals\BasicAtom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
