@@ -44,6 +44,7 @@
     <Compile Include="Api\IKnowledgeBase.cs" />
     <Compile Include="Api\ILiteral.cs" />
     <Compile Include="Api\IQueryResult.cs" />
+    <Compile Include="Api\IUnificationState.cs" />
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
     <Compile Include="Clauses\PositiveClause.cs" />
