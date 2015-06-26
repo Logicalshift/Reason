@@ -22,7 +22,7 @@ namespace Logicalshift.SLD
         /// </summary>
         public static ILiteral True()
         {
-            throw new NotImplementedException();
+            return TrueLiteral.Value;
         }
     }
 }

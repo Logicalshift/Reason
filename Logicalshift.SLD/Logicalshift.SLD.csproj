@@ -51,6 +51,7 @@
     <Compile Include="Knowledge\EmptyKnowledgeBase.cs" />
     <Compile Include="KnowledgeBase.cs" />
     <Compile Include="Literals\BasicAtom.cs" />
+    <Compile Include="Literals\TrueLiteral.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solver.cs" />
   </ItemGroup>
