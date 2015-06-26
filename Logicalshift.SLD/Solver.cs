@@ -16,7 +16,7 @@ namespace Logicalshift.SLD
         /// </summary>
         public static ISolver NewSolver(this IKnowledgeBase knowledge)
         {
-            return new ForwardChainingSolver(knowledge);
+            return new BackwardChainingSolver(knowledge);
         }
 
         /// <summary>
