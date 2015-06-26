@@ -11,5 +11,16 @@ namespace LogicalShift.Reason.Unification
         public EmptyUnificationState()
         {
         }
+
+        public bool TryGetBindingForVariable(ILiteral variable, out ILiteral binding)
+        {
+            binding = null;
+            return false;
+        }
+
+        public IUnificationState StateWithBinding(ILiteral variable, ILiteral value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
