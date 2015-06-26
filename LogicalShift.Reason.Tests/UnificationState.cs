@@ -22,7 +22,7 @@ namespace LogicalShift.Reason.Tests
             ILiteral fetchedBinding;
             Assert.IsFalse(empty.TryGetBindingForVariable(binding, out fetchedBinding));
             Assert.IsTrue(withBinding.TryGetBindingForVariable(binding, out fetchedBinding));
-            Assert.AreEqual(boundTo, binding);
+            Assert.AreEqual(boundTo, fetchedBinding);
         }
     }
 }

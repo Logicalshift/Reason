@@ -61,6 +61,7 @@
     <Compile Include="Solvers\BackwardChainingSolver.cs" />
     <Compile Include="Solvers\ForwardChainingSolver.cs" />
     <Compile Include="Unification\EmptyUnificationState.cs" />
+    <Compile Include="Unification\ListUnificationState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ISolver.cs" />

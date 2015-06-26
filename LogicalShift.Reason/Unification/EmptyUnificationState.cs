@@ -20,7 +20,7 @@ namespace LogicalShift.Reason.Unification
 
         public IUnificationState StateWithBinding(ILiteral variable, ILiteral value)
         {
-            throw new NotImplementedException();
+            return new ListUnificationState(variable, value, null);
         }
     }
 }
