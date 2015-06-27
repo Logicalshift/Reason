@@ -10,11 +10,6 @@ namespace LogicalShift.Reason.Unification
     public class SimpleUnifier : IQueryUnifier, IProgramUnifier
     {
         /// <summary>
-        /// Offset representing 'null'
-        /// </summary>
-        const int _nullOffset = int.MinValue;
-
-        /// <summary>
         /// Set of variables that have been used before
         /// </summary>
         private readonly HashSet<ILiteral> _usedVariables = new HashSet<ILiteral>();
@@ -95,7 +90,7 @@ namespace LogicalShift.Reason.Unification
             // Action depends on what's at that address
             var heapValue = _store.Read(dereferencedAddress);
 
-            if (heapValue.EntryType == HeapEntryType.Reference && heapValue.Offset == _nullOffset)
+            if (heapValue.EntryType == HeapEntryType.Reference && heapValue.Offset == UnificationStore.NullOffset)
             {
                 // Variable is an unbound ref cell: bind it to a new value that we create
                 var offset = _store.HeapLength;
