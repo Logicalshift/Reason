@@ -33,7 +33,7 @@ namespace LogicalShift.Reason
 
             // Retrieve the unified value for the program
             // TODO: eventually we'll need to use a unification key
-            var result = simpleUnifier.UnifiedValue(query);
+            var result = simpleUnifier.UnifiedValue(program);
             
             // If the result was valid, return as the one value from this function
             if (result != null)
