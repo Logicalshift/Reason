@@ -161,7 +161,7 @@ namespace LogicalShift.Reason.Unification
             for (;;)
             {
                 var value = Read(address);
-                if (value.EntryType == HeapEntryType.Reference && value.Offset != address)
+                if (value.EntryType == HeapEntryType.Reference && value.Offset != address && value.Offset != NullOffset)
                 {
                     address = value.Offset;
                 }
