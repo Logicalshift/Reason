@@ -12,7 +12,7 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Offset representing 'null'
         /// </summary>
-        const int _nullOffset = -1;
+        const int _nullOffset = int.MinValue;
 
         /// <summary>
         /// Set of variables that have been used before
