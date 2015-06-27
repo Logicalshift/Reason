@@ -48,6 +48,7 @@
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Api\IQueryUnifier.cs" />
     <Compile Include="Api\IUnificationState.cs" />
+    <Compile Include="Api\IUnifier.cs" />
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
     <Compile Include="Clauses\PositiveClause.cs" />

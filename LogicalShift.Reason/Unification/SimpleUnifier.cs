@@ -7,7 +7,7 @@ namespace LogicalShift.Reason.Unification
     /// <summary>
     /// Basic implementation of a unifier
     /// </summary>
-    public class SimpleUnifier : IQueryUnifier, IProgramUnifier
+    public class SimpleUnifier : IQueryUnifier, IProgramUnifier, IUnifier
     {
         /// <summary>
         /// Set of variables that have been used before
@@ -215,6 +215,58 @@ namespace LogicalShift.Reason.Unification
                     }
                 }
             }
+        }
+
+        public IQueryUnifier QueryUnifier
+        {
+            get { return this; }
+        }
+
+        public IProgramUnifier ProgramUnifier
+        {
+            get { return this; }
+        }
+
+        /// <summary>
+        /// Returns the unified value at the specified address
+        /// </summary>
+        private ILiteral UnifiedValue(int address)
+        {
+            // Dereference the address
+            address = _store.Dereference(address);
+
+            // Read the value
+            var value = _store.Read(address);
+
+            // Must be a structure
+            if (value.EntryType == HeapEntryType.Structure)
+            {
+                return UnifiedValue(address+1);
+            }
+            else if (value.EntryType != HeapEntryType.Term)
+            {
+                return null;
+            }
+
+            // Get the parameters
+            var buildUpon = value.Value;
+            var numParameters = value.Offset;
+
+            // Build the parameters
+            var unifiedParameters = new List<ILiteral>();
+
+            for (int parameterNum = 1; parameterNum <= numParameters; ++parameterNum)
+            {
+                unifiedParameters.Add(UnifiedValue(address + parameterNum));
+            }
+
+            // Build the result
+            return buildUpon.RebuildWithParameters(unifiedParameters);
+        }
+
+        public ILiteral UnifiedValue(ILiteral variable)
+        {
+            return UnifiedValue(_store.AddressForVariable(variable));
         }
     }
 }
