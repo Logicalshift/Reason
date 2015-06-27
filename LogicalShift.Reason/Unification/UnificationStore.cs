@@ -63,7 +63,7 @@ namespace LogicalShift.Reason.Unification
             else
             {
                 // Negative values are variables
-                return ReadVariable(-(address-1));
+                return ReadVariable(-(address+1));
             }
         }
 
@@ -91,7 +91,7 @@ namespace LogicalShift.Reason.Unification
             }
             else if (address != NullOffset)
             {
-                WriteVariable(-(address-1), newValue);
+                WriteVariable(-(address+1), newValue);
             }
         }
 

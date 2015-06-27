@@ -118,8 +118,6 @@ namespace LogicalShift.Reason.Unification
                 // Fail
                 throw new InvalidOperationException();
             }
-
-            throw new NotImplementedException();
         }
 
         public void UnifyVariable(ILiteral variable)
