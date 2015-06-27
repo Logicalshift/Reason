@@ -182,8 +182,8 @@ namespace LogicalShift.Reason.Unification
             while (unifyStack.Count > 0)
             {
                 // Deref the values on the stack
-                var offset1 = _store.Dereference(address1);
-                var offset2 = _store.Dereference(address2);
+                var offset1 = _store.Dereference(unifyStack.Pop());
+                var offset2 = _store.Dereference(unifyStack.Pop());
 
                 if (offset1 != offset2)
                 {
