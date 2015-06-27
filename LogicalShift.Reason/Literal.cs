@@ -32,5 +32,21 @@ namespace LogicalShift.Reason
         {
             return new Variable();
         }
+
+        /// <summary>
+        /// Creates a new term with the specified number of parameters
+        /// </summary>
+        public static UnboundTerm NewTerm(int numParameters)
+        {
+            return new UnboundTerm(numParameters);
+        }
+
+        /// <summary>
+        /// Applies parameters to a term
+        /// </summary>
+        public static BoundTerm With(this UnboundTerm target, params ILiteral[] parameters)
+        {
+            return new BoundTerm(target, parameters);
+        }
     }
 }

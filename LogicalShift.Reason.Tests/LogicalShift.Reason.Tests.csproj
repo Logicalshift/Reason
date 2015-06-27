@@ -51,6 +51,7 @@
     <Compile Include="BasicAtom.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleResolve.cs" />
+    <Compile Include="Terms.cs" />
     <Compile Include="Truthiness.cs" />
     <Compile Include="VariableLiteral.cs" />
   </ItemGroup>
