@@ -62,5 +62,15 @@ namespace LogicalShift.Reason.Literals
         {
             return this;
         }
+
+        public void UnifyQuery(IQueryUnifier unifier)
+        {
+            unifier.PutStructure(this, 0, this);
+        }
+
+        public void UnifyProgram(IProgramUnifier unifier)
+        {
+            unifier.GetStructure(this, 0, this);
+        }
     }
 }

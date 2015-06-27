@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LogicalShift.Reason.Api
+﻿namespace LogicalShift.Reason.Api
 {
     /// <summary>
     /// Low-level operations for a query unifier
     /// </summary>
-    public interface IQueryUnifier
+    public interface IQueryUnifier : IBaseUnifier
     {
         /// <summary>
         /// Writes a structure to the heap and stores a reference to it in a variable

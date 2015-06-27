@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LogicalShift.Reason.Api
+﻿namespace LogicalShift.Reason.Api
 {
     /// <summary>
     /// Low-level operations for a program unifier
     /// </summary>
-    public interface IProgramUnifier
+    public interface IProgramUnifier : IBaseUnifier
     {
         /// <summary>
         /// Retrieves a structure into a variable and sets read or write mode

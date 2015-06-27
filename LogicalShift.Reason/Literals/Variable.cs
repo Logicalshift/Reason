@@ -84,5 +84,29 @@ namespace LogicalShift.Reason.Literals
         {
             return _identifier.GetHashCode();
         }
+
+        public void UnifyQuery(IQueryUnifier unifier)
+        {
+            if (unifier.HasVariable(this))
+            {
+                unifier.SetValue(this);
+            }
+            else
+            {
+                unifier.SetVariable(this);
+            }
+        }
+
+        public void UnifyProgram(IProgramUnifier unifier)
+        {
+            if (unifier.HasVariable(this))
+            {
+                unifier.UnifyVariable(this);
+            }
+            else
+            {
+                unifier.UnifyVariable(this);
+            }
+        }
     }
 }

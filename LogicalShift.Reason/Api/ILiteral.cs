@@ -9,6 +9,16 @@ namespace LogicalShift.Reason.Api
     public interface ILiteral : IEquatable<ILiteral>
     {
         /// <summary>
+        /// Generates a unification program for this literal when treated as a query
+        /// </summary>
+        void UnifyQuery(IQueryUnifier unifier);
+
+        /// <summary>
+        /// Generates a unification program for this literal when treated as a program
+        /// </summary>
+        void UnifyProgram(IProgramUnifier unifier);
+
+        /// <summary>
         /// Returns an enumerable of the possible unification states resulting from unifying this
         /// literal with another.
         /// </summary>

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\IBaseUnifier.cs" />
     <Compile Include="Api\IClause.cs" />
     <Compile Include="Api\IKnowledgeBase.cs" />
     <Compile Include="Api\ILiteral.cs" />
