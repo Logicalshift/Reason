@@ -81,11 +81,8 @@ namespace LogicalShift.Reason.Unification
             // This variable becomes used
             _usedVariables.Add(variable);
 
-            // Get the value of the variable
-            var variableValue = _store.ReadVariable(variable);
-
-            // Dereference it
-            var dereferencedAddress = _store.Dereference(variableValue.Offset);
+            // Get the dereferenced address of the variable
+            var dereferencedAddress = _store.Dereference(_store.AddressForVariable(variable));
 
             // Action depends on what's at that address
             var heapValue = _store.Read(dereferencedAddress);
