@@ -18,9 +18,18 @@ namespace LogicalShift.Reason
             var simpleUnifier = new SimpleUnifier();
 
             // Run the unifier
-            query.UnifyQuery(simpleUnifier);
-            simpleUnifier.PrepareToRunProgram();
-            program.UnifyProgram(simpleUnifier);
+            try
+            {
+                query.UnifyQuery(simpleUnifier);
+                simpleUnifier.PrepareToRunProgram();
+                program.UnifyProgram(simpleUnifier);
+            }
+            catch (InvalidOperationException)
+            {
+                // No results
+                // TODO: really should report failure in a better way
+                yield break;
+            }
 
             // Retrieve the unified value for the program
             // TODO: eventually we'll need to use a unification key
