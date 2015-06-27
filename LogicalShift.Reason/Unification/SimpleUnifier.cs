@@ -35,6 +35,7 @@ namespace LogicalShift.Reason.Unification
         public void PrepareToRunProgram()
         {
             _usedVariables.Clear();
+            _store.ResetVariableAssignments();
             _structurePtr = 0;
         }
 
@@ -87,7 +88,7 @@ namespace LogicalShift.Reason.Unification
             // Action depends on what's at that address
             var heapValue = _store.Read(dereferencedAddress);
 
-            if (heapValue.EntryType == HeapEntryType.Reference && heapValue.Offset == UnificationStore.NullOffset)
+            if (heapValue.EntryType == HeapEntryType.Reference && heapValue.Offset == dereferencedAddress)
             {
                 // Variable is an unbound ref cell: bind it to a new value that we create
                 var offset = _store.HeapLength;

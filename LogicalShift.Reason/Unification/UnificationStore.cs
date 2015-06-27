@@ -25,6 +25,11 @@ namespace LogicalShift.Reason.Unification
         private List<HeapValue> _variables = new List<HeapValue>();
 
         /// <summary>
+        /// The next ID to assign to a variable
+        /// </summary>
+        private int _nextVariableAllocation = 0;
+
+        /// <summary>
         /// Maps variable names to indexes into the variable arrays
         /// </summary>
         private Dictionary<ILiteral, int> _variableAddress = new Dictionary<ILiteral, int>();
@@ -112,6 +117,21 @@ namespace LogicalShift.Reason.Unification
         }
 
         /// <summary>
+        /// Assigns a new variable
+        /// </summary>
+        private int AssignNewVariable()
+        {
+            var result = _nextVariableAllocation;
+            ++_nextVariableAllocation;
+            while (_variables.Count < _nextVariableAllocation)
+            {
+                // New variables just refer to themselves initially
+                _variables.Add(new HeapValue { EntryType = HeapEntryType.Reference, Offset = -(_variables.Count+1) });
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Retrieves the index in the variables array for a particular variable
         /// </summary>
         private int IndexForVariable(ILiteral variable)
@@ -119,8 +139,7 @@ namespace LogicalShift.Reason.Unification
             int result;
             if (!_variableAddress.TryGetValue(variable, out result))
             {
-                result = _variables.Count;
-                _variables.Add(new HeapValue { EntryType = HeapEntryType.Reference, Offset = NullOffset });
+                result = AssignNewVariable();
                 _variableAddress[variable] = result;
             }
 
@@ -154,6 +173,14 @@ namespace LogicalShift.Reason.Unification
         }
 
         /// <summary>
+        /// Start assigning variables to literals from address -1 again
+        /// </summary>
+        public void ResetVariableAssignments()
+        {
+            _nextVariableAllocation = 0;
+        }
+
+        /// <summary>
         /// Dereferences an address (so that it either points to a self-referential value or something that's not a reference)
         /// </summary>
         public int Dereference(int address)
@@ -161,7 +188,7 @@ namespace LogicalShift.Reason.Unification
             for (;;)
             {
                 var value = Read(address);
-                if (value.EntryType == HeapEntryType.Reference && value.Offset != address && value.Offset != NullOffset)
+                if (value.EntryType == HeapEntryType.Reference && value.Offset != address)
                 {
                     address = value.Offset;
                 }
