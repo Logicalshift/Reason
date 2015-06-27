@@ -26,43 +26,6 @@ namespace LogicalShift.Reason.Literals
             _identifier = Interlocked.Increment(ref _nextIdentifier);
         }
 
-        public IEnumerable<IUnificationState> Unify(ILiteral unifyWith, IUnificationState state)
-        {
-            ILiteral currentValue;
-
-            if (Equals(this, unifyWith))
-            {
-                // Variable unifies with itself
-                yield return state;
-            }
-            else if (state.TryGetBindingForVariable(this, out currentValue))
-            {
-                // If there's an existing value, result is the unification of the two
-                foreach (var unifiedValue in currentValue.Unify(unifyWith, state))
-                {
-                    yield return unifiedValue;
-                }
-            }
-            else
-            {
-                // Otherwise, bind the variable to the value it's being unified with
-                yield return state.StateWithBinding(this, unifyWith);
-            }
-        }
-
-        public ILiteral Bind(IUnificationState state)
-        {
-            ILiteral value;
-            if (state.TryGetBindingForVariable(this, out value))
-            {
-                return value;
-            }
-            else
-            {
-                return this;
-            }
-        }
-
         public void UnifyQuery(IQueryUnifier unifier)
         {
             if (unifier.HasVariable(this))

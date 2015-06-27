@@ -18,25 +18,6 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
-        public void AtomUnifiesWithSelf()
-        {
-            var atom = Literal.NewAtom();
-            var initialState = new EmptyUnificationState();
-
-            Assert.AreEqual(1, atom.Unify(atom, initialState).Count());
-        }
-
-        [Test]
-        public void AtomDoesNotUnifyWithDifferentAtom()
-        {
-            var atom = Literal.NewAtom();
-            var otherAtom = Literal.NewAtom();
-            var initialState = new EmptyUnificationState();
-
-            Assert.AreEqual(0, atom.Unify(otherAtom, initialState).Count());
-        }
-
-        [Test]
         public void AtomNotEqualToOtherAtom()
         {
             var atom = Literal.NewAtom();
@@ -51,15 +32,6 @@ namespace LogicalShift.Reason.Tests
             var dict = new Dictionary<ILiteral, bool>();
             dict[atom] = true;
             Assert.IsTrue(dict[atom]);
-        }
-
-        [Test]
-        public void AtomBindsToSelf()
-        {
-            var atom = Literal.NewAtom();
-            var state = new EmptyUnificationState();
-
-            Assert.AreEqual(atom, atom.Bind(state));
         }
     }
 }

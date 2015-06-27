@@ -23,11 +23,6 @@ namespace LogicalShift.Reason.Literals
             return true.GetHashCode();
         }
 
-        public ILiteral Bind(IUnificationState state)
-        {
-            return this;
-        }
-
         public void UnifyQuery(IQueryUnifier unifier)
         {
             unifier.PutStructure(this, 0, this);
@@ -42,20 +37,6 @@ namespace LogicalShift.Reason.Literals
         {
             // We don't have any parameters
             return this;
-        }
-
-        public IEnumerable<IUnificationState> Unify(ILiteral unifyWith, IUnificationState state)
-        {
-            if (!Equals(this, unifyWith))
-            {
-                // No valid unification states
-                yield break;
-            }
-            else
-            {
-                // Existing state remains valid
-                yield return state;
-            }
         }
 
         public override bool Equals(object obj)

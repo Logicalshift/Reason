@@ -47,7 +47,6 @@
     <Compile Include="Api\IProgramUnifier.cs" />
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Api\IQueryUnifier.cs" />
-    <Compile Include="Api\IUnificationState.cs" />
     <Compile Include="Api\IUnifier.cs" />
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
@@ -65,12 +64,11 @@
     <Compile Include="SolverStyle.cs" />
     <Compile Include="Solvers\BackwardChainingSolver.cs" />
     <Compile Include="Solvers\ForwardChainingSolver.cs" />
-    <Compile Include="Unification\EmptyUnificationState.cs" />
     <Compile Include="Unification\HeapEntryType.cs" />
     <Compile Include="Unification\HeapValue.cs" />
-    <Compile Include="Unification\ListUnificationState.cs" />
     <Compile Include="Unification\SimpleUnifier.cs" />
     <Compile Include="Unification\UnificationStore.cs" />
+    <Compile Include="BasicUnification.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ISolver.cs" />

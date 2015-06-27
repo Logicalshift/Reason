@@ -34,12 +34,10 @@ namespace LogicalShift.Reason.Solvers
         {
             if (goals == null) throw new ArgumentNullException("goals");
 
-            var unificationState = new EmptyUnificationState();
-
             // Try each goal in turn
             foreach (var goal in goals)
             {
-                var result = await SolveGoal(goal, unificationState);
+                var result = await SolveGoal(goal);
 
                 if (!result.Success)
                 {
@@ -54,7 +52,7 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// Attempts to solve for a single goal
         /// </summary>
-        private async Task<IQueryResult> SolveGoal(ILiteral goal, IUnificationState initialState)
+        private async Task<IQueryResult> SolveGoal(ILiteral goal)
         {
             if (goal == null) new BasicQueryResult(false);
 
@@ -64,8 +62,6 @@ namespace LogicalShift.Reason.Solvers
                 return new BasicQueryResult(true);
             }
 
-            var currentState = initialState;
-
             // Solve for this goal
             var clauseList = await _knowledge.ClausesForLiteral(goal);
             foreach (var clause in clauseList)
@@ -74,7 +70,7 @@ namespace LogicalShift.Reason.Solvers
                 bool solved = true;
                 foreach (var ifGoal in clause.If)
                 {
-                    var solution = await SolveGoal(ifGoal, currentState);
+                    var solution = await SolveGoal(ifGoal);
                     if (!solution.Success)
                     {
                         solved = false;
