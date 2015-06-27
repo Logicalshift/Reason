@@ -86,5 +86,10 @@ namespace LogicalShift.Reason.Literals
         {
             return _identifier.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return string.Format("var_{0}", _identifier);
+        }
     }
 }
