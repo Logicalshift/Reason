@@ -178,6 +178,7 @@ namespace LogicalShift.Reason.Unification
         public void ResetVariableAssignments()
         {
             _nextVariableAllocation = 0;
+            _variableAddress.Clear();
         }
 
         /// <summary>
