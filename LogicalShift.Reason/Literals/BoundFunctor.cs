@@ -7,36 +7,36 @@ using System.Text;
 namespace LogicalShift.Reason.Literals
 {
     /// <summary>
-    /// Literal representing a term bound to parameters
+    /// Literal representing a functor bound to parameters
     /// </summary>
-    public class BoundTerm : ILiteral, IEquatable<BoundTerm>
+    public class BoundFunctor : ILiteral, IEquatable<BoundFunctor>
     {
         /// <summary>
-        /// The parameters that this term is bound to
+        /// The parameters that this functor is bound to
         /// </summary>
         private readonly ILiteral[] _parameters;
 
         /// <summary>
-        /// The unbound variant of this term
+        /// The unbound variant of this functor
         /// </summary>
-        private readonly UnboundTerm _unbound;
+        private readonly UnboundFunctor _unbound;
 
-        public BoundTerm(params ILiteral[] parameters)
+        public BoundFunctor(params ILiteral[] parameters)
         {
             _parameters = parameters;
-            _unbound = new UnboundTerm(_parameters.Length);
+            _unbound = new UnboundFunctor(_parameters.Length);
         }
 
-        public BoundTerm(ILiteral name, IEnumerable<ILiteral> parameters)
+        public BoundFunctor(ILiteral name, IEnumerable<ILiteral> parameters)
         {
             if (name == null) throw new ArgumentNullException("name");
             if (parameters == null) throw new ArgumentNullException("parameters");
 
             _parameters = parameters.ToArray();
-            _unbound = new UnboundTerm(name, _parameters.Length);
+            _unbound = new UnboundFunctor(name, _parameters.Length);
         }
 
-        public BoundTerm(UnboundTerm unbound, IEnumerable<ILiteral> parameters)
+        public BoundFunctor(UnboundFunctor unbound, IEnumerable<ILiteral> parameters)
         {
             if (unbound == null) throw new ArgumentNullException("unbound");
             if (parameters == null) throw new ArgumentNullException("parameters");
@@ -44,7 +44,7 @@ namespace LogicalShift.Reason.Literals
             _unbound = unbound;
             _parameters = parameters.ToArray();
 
-            if (_parameters.Length != _unbound.NumParameters) throw new ArgumentException("Incorrect number of parameters for term", "parameters");
+            if (_parameters.Length != _unbound.NumParameters) throw new ArgumentException("Incorrect number of parameters for functor", "parameters");
         }
 
         public void UnifyQuery(IQueryUnifier unifier)
@@ -69,7 +69,7 @@ namespace LogicalShift.Reason.Literals
 
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
-            return new BoundTerm(_unbound, parameters);
+            return new BoundFunctor(_unbound, parameters);
         }
 
         public ILiteral UnificationKey
@@ -77,7 +77,7 @@ namespace LogicalShift.Reason.Literals
             get { return _unbound; }
         }
 
-        public bool Equals(BoundTerm other)
+        public bool Equals(BoundFunctor other)
         {
             if (other == null) return false;
 
@@ -96,12 +96,12 @@ namespace LogicalShift.Reason.Literals
 
         public bool Equals(ILiteral other)
         {
-            return Equals(other as BoundTerm);
+            return Equals(other as BoundFunctor);
         }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as BoundTerm);
+            return Equals(obj as BoundFunctor);
         }
 
         public override int GetHashCode()

@@ -34,19 +34,19 @@ namespace LogicalShift.Reason
         }
 
         /// <summary>
-        /// Creates a new term with the specified number of parameters
+        /// Creates a new functor with the specified number of parameters
         /// </summary>
-        public static UnboundTerm NewTerm(int numParameters)
+        public static UnboundFunctor NewFunctor(int numParameters)
         {
-            return new UnboundTerm(numParameters);
+            return new UnboundFunctor(numParameters);
         }
 
         /// <summary>
-        /// Applies parameters to a term
+        /// Applies parameters to a functor
         /// </summary>
-        public static BoundTerm With(this UnboundTerm target, params ILiteral[] parameters)
+        public static BoundFunctor With(this UnboundFunctor target, params ILiteral[] parameters)
         {
-            return new BoundTerm(target, parameters);
+            return new BoundFunctor(target, parameters);
         }
     }
 }

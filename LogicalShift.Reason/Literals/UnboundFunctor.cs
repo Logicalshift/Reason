@@ -5,27 +5,27 @@ using System.Collections.Generic;
 namespace LogicalShift.Reason.Literals
 {
     /// <summary>
-    /// Represents a term with n parameters (a term with 1 parameter might be written T/1, or T(X))
+    /// Represents a functor with n parameters (a functor with 1 parameter might be written T/1, or T(X))
     /// </summary>
-    public class UnboundTerm : ILiteral, IEquatable<UnboundTerm>
+    public class UnboundFunctor : ILiteral, IEquatable<UnboundFunctor>
     {
         /// <summary>
-        /// A literal giving the name for this term
+        /// A literal giving the name for this functor
         /// </summary>
         private readonly ILiteral _name;
 
         /// <summary>
-        /// The number of parameters in this term
+        /// The number of parameters in this functor
         /// </summary>
         private readonly int _numParameters;
 
-        public UnboundTerm(int numParameters)
+        public UnboundFunctor(int numParameters)
         {
             _name = Literal.NewAtom();
             _numParameters = numParameters;
         }
 
-        public UnboundTerm(ILiteral name, int numParameters)
+        public UnboundFunctor(ILiteral name, int numParameters)
         {
             if (name == null) throw new ArgumentNullException("name");
 
@@ -34,12 +34,12 @@ namespace LogicalShift.Reason.Literals
         }
 
         /// <summary>
-        /// THe name of this term
+        /// The name of this functor
         /// </summary>
         public ILiteral Name { get { return _name; } }
 
         /// <summary>
-        /// The number of parameters for this term
+        /// The number of parameters for this functor
         /// </summary>
         public int NumParameters { get { return _numParameters; } }
 
@@ -67,7 +67,7 @@ namespace LogicalShift.Reason.Literals
 
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
-            return new BoundTerm(this, parameters);
+            return new BoundFunctor(this, parameters);
         }
 
         public ILiteral UnificationKey
@@ -78,7 +78,7 @@ namespace LogicalShift.Reason.Literals
             }
         }
 
-        public bool Equals(UnboundTerm other)
+        public bool Equals(UnboundFunctor other)
         {
             if (other == null) return false;
 
@@ -87,12 +87,12 @@ namespace LogicalShift.Reason.Literals
 
         public bool Equals(ILiteral other)
         {
-            return Equals(other as UnboundTerm);
+            return Equals(other as UnboundFunctor);
         }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as UnboundTerm);
+            return Equals(obj as UnboundFunctor);
         }
 
         public override int GetHashCode()

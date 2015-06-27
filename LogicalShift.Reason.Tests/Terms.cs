@@ -11,14 +11,14 @@ namespace LogicalShift.Reason.Tests
         [Test]
         public void TermEqualsSelf()
         {
-            var term = Literal.NewTerm(1);
+            var term = Literal.NewFunctor(1);
             Assert.IsTrue(Equals(term, term));
         }
 
         [Test]
         public void TermWithParametersEqualsSelf()
         {
-            var term = Literal.NewTerm(1);
+            var term = Literal.NewFunctor(1);
             var withParameters = term.With(Literal.NewAtom());
 
             Assert.IsTrue(Equals(withParameters, withParameters));
@@ -27,7 +27,7 @@ namespace LogicalShift.Reason.Tests
         [Test]
         public void TermUnifiesWithSelf()
         {
-            var term = Literal.NewTerm(1);
+            var term = Literal.NewFunctor(1);
             var withParameters = term.With(Literal.NewAtom());
 
             var unified = withParameters.Unify(withParameters).ToList();
@@ -39,7 +39,7 @@ namespace LogicalShift.Reason.Tests
         [Test]
         public void TermUnifiesWithParameter()
         {
-            var tA = Literal.NewTerm(1);
+            var tA = Literal.NewFunctor(1);
             var aX = Literal.NewAtom();
             var vY = Literal.NewVariable();
 
