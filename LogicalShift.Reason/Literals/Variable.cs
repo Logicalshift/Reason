@@ -42,7 +42,7 @@ namespace LogicalShift.Reason.Literals
         {
             if (unifier.HasVariable(this))
             {
-                unifier.UnifyVariable(this);
+                unifier.UnifyValue(this);
             }
             else
             {
