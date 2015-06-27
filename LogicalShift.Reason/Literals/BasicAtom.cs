@@ -42,6 +42,15 @@ namespace LogicalShift.Reason.Literals
             return this;
         }
 
+        public ILiteral UnificationKey
+        {
+            get 
+            {
+                // Simple atoms can be unified only with themselves
+                return this; 
+            }
+        }
+
         public bool Equals(BasicAtom other)
         {
             if (other == null) return false;

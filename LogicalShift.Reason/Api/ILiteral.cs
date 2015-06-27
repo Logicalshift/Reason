@@ -22,5 +22,11 @@ namespace LogicalShift.Reason.Api
         /// Rebuilds this literal with the specified parameters
         /// </summary>
         ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters);
+
+        /// <summary>
+        /// Retrieves a value that is the same for all types of literal that this can be unified with,
+        /// or null if this can be unified with any literal.
+        /// </summary>
+        ILiteral UnificationKey { get; }
     }
 }

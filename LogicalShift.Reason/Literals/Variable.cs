@@ -56,6 +56,15 @@ namespace LogicalShift.Reason.Literals
             return this;
         }
 
+        public ILiteral UnificationKey
+        {
+            get
+            {
+                // Variables can be unified with anything, so they don't have a unification key
+                return null;
+            }
+        }
+
         public bool Equals(Variable other)
         {
             if (other == null) return false;
