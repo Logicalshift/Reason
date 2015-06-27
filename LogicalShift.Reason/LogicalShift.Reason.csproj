@@ -69,6 +69,7 @@
     <Compile Include="Unification\HeapEntryType.cs" />
     <Compile Include="Unification\HeapValue.cs" />
     <Compile Include="Unification\SimpleUnifier.cs" />
+    <Compile Include="Unification\TraceUnifier.cs" />
     <Compile Include="Unification\UnificationStore.cs" />
     <Compile Include="BasicUnification.cs" />
   </ItemGroup>
