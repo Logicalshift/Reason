@@ -36,6 +36,11 @@ namespace LogicalShift.Reason.Literals
             unifier.GetStructure(this, 0, this);
         }
 
+        public void BindVariables(IBaseUnifier unifier)
+        {
+            unifier.BindVariable(this);
+        }
+
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
             // We don't have any parameters

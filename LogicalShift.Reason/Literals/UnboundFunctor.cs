@@ -65,6 +65,11 @@ namespace LogicalShift.Reason.Literals
             }
         }
 
+        public void BindVariables(IBaseUnifier unifier)
+        {
+            unifier.BindVariable(this);
+        }
+
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
             return new BoundFunctor(this, parameters);

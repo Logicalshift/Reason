@@ -45,6 +45,11 @@ namespace LogicalShift.Reason.Unification
             return _usedVariables.Contains(name);
         }
 
+        public void BindVariable(ILiteral name)
+        {
+            _store.AddressForVariable(name);
+        }
+
         public void PutStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             // Mark this variable as used
@@ -271,5 +276,6 @@ namespace LogicalShift.Reason.Unification
         {
             return UnifiedValue(_store.AddressForVariable(variable));
         }
+
     }
 }

@@ -50,7 +50,14 @@ namespace LogicalShift.Reason.Literals
         public void UnifyQuery(IQueryUnifier unifier)
         {
             unifier.PutStructure(_unbound, _unbound.NumParameters, _unbound);
-            
+
+            // Bind the variables so that we produce them in a consistent order
+            // (Ie, parameter 1 will be in variable 1, parameter 2 in variable 2, etc)
+            foreach (var param in _parameters)
+            {
+                param.BindVariables(unifier);
+            }
+
             foreach (var param in _parameters)
             {
                 param.UnifyQuery(unifier);
@@ -61,10 +68,22 @@ namespace LogicalShift.Reason.Literals
         {
             unifier.GetStructure(_unbound, _unbound.NumParameters, _unbound);
 
+            // Bind the variables so that we produce them in a consistent order
+            // (Ie, parameter 1 will be in variable 1, parameter 2 in variable 2, etc)
+            foreach (var param in _parameters)
+            {
+                param.BindVariables(unifier);
+            }
+
             foreach (var param in _parameters)
             {
                 param.UnifyProgram(unifier);
             }
+        }
+
+        public void BindVariables(IBaseUnifier unifier)
+        {
+            unifier.BindVariable(_unbound);
         }
 
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)

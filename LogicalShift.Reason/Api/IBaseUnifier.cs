@@ -6,8 +6,13 @@
     public interface IBaseUnifier
     {
         /// <summary>
-        /// Returns true if the variable identified
+        /// Returns true if the variable identified has been used by SetVariable or UnifyVariable before
         /// </summary>
         bool HasVariable(ILiteral name);
+
+        /// <summary>
+        /// Binds a variable to a literal name
+        /// </summary>
+        void BindVariable(ILiteral name);
     }
 }
