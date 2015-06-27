@@ -22,5 +22,22 @@ namespace LogicalShift.Reason.Tests
             dict[Literal.True()] = true;
             Assert.IsTrue(dict[Literal.True()]);
         }
+
+        [Test]
+        public void TrueUnifiesWithSelf()
+        {
+            var truthiness = Literal.True();
+
+            Assert.AreEqual(1, truthiness.Unify(truthiness).Count());
+        }
+
+        [Test]
+        public void TrueDoesNotUnifyWithDifferentAtom()
+        {
+            var truthiness = Literal.True();
+            var otherAtom = Literal.NewAtom();
+
+            Assert.AreEqual(0, truthiness.Unify(otherAtom).Count());
+        }
     }
 }
