@@ -19,6 +19,11 @@ namespace LogicalShift.Reason.Api
         void UnifyProgram(IProgramUnifier unifier);
 
         /// <summary>
+        /// Rebuilds this literal with the specified parameters
+        /// </summary>
+        ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters);
+
+        /// <summary>
         /// Returns an enumerable of the possible unification states resulting from unifying this
         /// literal with another.
         /// </summary>

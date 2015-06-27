@@ -26,35 +26,6 @@ namespace LogicalShift.Reason.Literals
             _identifier = Interlocked.Increment(ref _nextIdentifier);
         }
 
-        public bool Equals(BasicAtom other)
-        {
-            if (other == null) return false;
-            if (ReferenceEquals(this, other)) return true;
-
-            if (other._identifier == _identifier) return true;
-            return false;
-        }
-
-        public bool Equals(ILiteral other)
-        {
-            return Equals(other as BasicAtom);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as BasicAtom);
-        }
-
-        public override int GetHashCode()
-        {
-            return _identifier.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return string.Format("atom_{0}", _identifier);
-        }
-
         public IEnumerable<IUnificationState> Unify(ILiteral unifyWith, IUnificationState state)
         {
             if (!Equals(this, unifyWith))
@@ -82,6 +53,40 @@ namespace LogicalShift.Reason.Literals
         public void UnifyProgram(IProgramUnifier unifier)
         {
             unifier.GetStructure(this, 0, this);
+        }
+        public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
+        {
+            // We don't have any parameters
+            return this;
+        }
+
+        public bool Equals(BasicAtom other)
+        {
+            if (other == null) return false;
+            if (ReferenceEquals(this, other)) return true;
+
+            if (other._identifier == _identifier) return true;
+            return false;
+        }
+
+        public bool Equals(ILiteral other)
+        {
+            return Equals(other as BasicAtom);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as BasicAtom);
+        }
+
+        public override int GetHashCode()
+        {
+            return _identifier.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("atom_{0}", _identifier);
         }
     }
 }

@@ -63,28 +63,6 @@ namespace LogicalShift.Reason.Literals
             }
         }
 
-        public bool Equals(Variable other)
-        {
-            if (other == null) return false;
-
-            return other._identifier == _identifier;
-        }
-
-        public bool Equals(ILiteral other)
-        {
-            return Equals(other as Variable);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Variable);
-        }
-
-        public override int GetHashCode()
-        {
-            return _identifier.GetHashCode();
-        }
-
         public void UnifyQuery(IQueryUnifier unifier)
         {
             if (unifier.HasVariable(this))
@@ -107,6 +85,34 @@ namespace LogicalShift.Reason.Literals
             {
                 unifier.UnifyVariable(this);
             }
+        }
+
+        public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
+        {
+            // We don't have any parameters
+            return this;
+        }
+
+        public bool Equals(Variable other)
+        {
+            if (other == null) return false;
+
+            return other._identifier == _identifier;
+        }
+
+        public bool Equals(ILiteral other)
+        {
+            return Equals(other as Variable);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Variable);
+        }
+
+        public override int GetHashCode()
+        {
+            return _identifier.GetHashCode();
         }
     }
 }

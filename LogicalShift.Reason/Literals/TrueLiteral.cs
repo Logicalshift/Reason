@@ -23,6 +23,41 @@ namespace LogicalShift.Reason.Literals
             return true.GetHashCode();
         }
 
+        public ILiteral Bind(IUnificationState state)
+        {
+            return this;
+        }
+
+        public void UnifyQuery(IQueryUnifier unifier)
+        {
+            unifier.PutStructure(this, 0, this);
+        }
+
+        public void UnifyProgram(IProgramUnifier unifier)
+        {
+            unifier.GetStructure(this, 0, this);
+        }
+
+        public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
+        {
+            // We don't have any parameters
+            return this;
+        }
+
+        public IEnumerable<IUnificationState> Unify(ILiteral unifyWith, IUnificationState state)
+        {
+            if (!Equals(this, unifyWith))
+            {
+                // No valid unification states
+                yield break;
+            }
+            else
+            {
+                // Existing state remains valid
+                yield return state;
+            }
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as TrueLiteral);
@@ -42,35 +77,6 @@ namespace LogicalShift.Reason.Literals
         public override string ToString()
         {
             return "true";
-        }
-
-        public IEnumerable<IUnificationState> Unify(ILiteral unifyWith, IUnificationState state)
-        {
-            if (!Equals(this, unifyWith))
-            {
-                // No valid unification states
-                yield break;
-            }
-            else
-            {
-                // Existing state remains valid
-                yield return state;
-            }
-        }
-
-        public ILiteral Bind(IUnificationState state)
-        {
-            return this;
-        }
-
-        public void UnifyQuery(IQueryUnifier unifier)
-        {
-            unifier.PutStructure(this, 0, this);
-        }
-
-        public void UnifyProgram(IProgramUnifier unifier)
-        {
-            unifier.GetStructure(this, 0, this);
         }
     }
 }
