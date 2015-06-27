@@ -20,14 +20,9 @@ namespace LogicalShift.Reason.Unification
         private readonly HashSet<ILiteral> _usedVariables = new HashSet<ILiteral>();
 
         /// <summary>
-        /// Values for variables used by this unifier
+        /// Stores variables and heap values
         /// </summary>
-        private readonly Dictionary<ILiteral, HeapValue> _variableValues = new Dictionary<ILiteral, HeapValue>();
-        
-        /// <summary>
-        /// Heap used for this unifier
-        /// </summary>
-        private readonly List<HeapValue> _heap = new List<HeapValue>();
+        private readonly UnificationStore _store = new UnificationStore();
 
         /// <summary>
         /// True if running a program in write mode, false otherwise
@@ -59,12 +54,12 @@ namespace LogicalShift.Reason.Unification
             _usedVariables.Add(variable);
 
             // Push to the heap
-            var offset = _heap.Count;
-            _heap.Add(new HeapValue() { EntryType = HeapEntryType.Structure, Offset = offset + 1 });
-            _heap.Add(new HeapValue() { EntryType = HeapEntryType.Term, Offset = termLength, Value = termName });
+            var offset = _store.HeapLength;
+            _store.PushHeap(new HeapValue() { EntryType = HeapEntryType.Structure, Offset = offset + 1 });
+            _store.PushHeap(new HeapValue() { EntryType = HeapEntryType.Term, Offset = termLength, Value = termName });
 
             // Store in the variable
-            _variableValues[variable] = _heap[offset];
+            _store.WriteVariable(variable, _store.Read(offset));
         }
 
         public void SetVariable(ILiteral variable)
@@ -73,17 +68,17 @@ namespace LogicalShift.Reason.Unification
             _usedVariables.Add(variable);
 
             // Push to the heap
-            var offset = _heap.Count;
-            _heap.Add(new HeapValue() { EntryType = HeapEntryType.Reference, Offset = offset });
+            var offset = _store.HeapLength;
+            _store.PushHeap(new HeapValue() { EntryType = HeapEntryType.Reference, Offset = offset });
 
             // Store in the variable
-            _variableValues[variable] = _heap[offset];
+            _store.WriteVariable(variable, _store.Read(offset));
         }
 
         public void SetValue(ILiteral variable)
         {
             // Push the variable value to the heap
-            _heap.Add(_variableValues[variable]);
+            _store.PushHeap(_store.ReadVariable(variable));
         }
 
         public void GetStructure(ILiteral termName, int termLength, ILiteral variable)
@@ -92,26 +87,26 @@ namespace LogicalShift.Reason.Unification
             _usedVariables.Add(variable);
 
             // Get the value of the variable
-            var variableValue = _variableValues[variable];
+            var variableValue = _store.ReadVariable(variable);
 
             // Dereference it
-            var dereferencedAddress = DerefHeap(variableValue.Offset);
+            var dereferencedAddress = _store.Dereference(variableValue.Offset);
 
             // Action depends on what's at that address
-            var heapValue = _heap[dereferencedAddress];
+            var heapValue = _store.Read(dereferencedAddress);
 
             if (heapValue.EntryType == HeapEntryType.Reference && heapValue.Offset == _nullOffset)
             {
                 // Variable is an unbound ref cell: bind it to a new value that we create
-                var offset = _heap.Count;
-                _heap.Add(new HeapValue { EntryType = HeapEntryType.Structure, Offset = offset + 1 });
-                _heap.Add(new HeapValue { EntryType = HeapEntryType.Term, Value = termName, Offset = termLength });
-                BindHeap(dereferencedAddress, offset);
+                var offset = _store.HeapLength;
+                _store.PushHeap(new HeapValue { EntryType = HeapEntryType.Structure, Offset = offset + 1 });
+                _store.PushHeap(new HeapValue { EntryType = HeapEntryType.Term, Value = termName, Offset = termLength });
+                Bind(dereferencedAddress, offset);
                 _writeMode = true;
             }
             else if (heapValue.EntryType == HeapEntryType.Structure)
             {
-                if (Equals(_heap[heapValue.Offset].Value, termName))
+                if (Equals(_store.Read(heapValue.Offset).Value, termName))
                 {
                     // Set the structure pointer, and use read mode
                     _structurePtr = heapValue.Offset + 1;
@@ -140,14 +135,14 @@ namespace LogicalShift.Reason.Unification
             if (!_writeMode)
             {
                 // Just read the value of the variable
-                _variableValues[variable] = _heap[_structurePtr];
+                _store.WriteVariable(variable, _store.Read(_structurePtr));
             }
             else
             {
                 // Write the value of the variable
-                var offset = _heap.Count;
-                _heap.Add(new HeapValue { EntryType = HeapEntryType.Reference, Offset = offset });
-                _variableValues[variable] = _heap[offset];
+                var offset = _store.HeapLength;
+                _store.PushHeap(new HeapValue { EntryType = HeapEntryType.Reference, Offset = offset });
+                _store.WriteVariable(variable, _store.Read(offset));
             }
 
             ++_structurePtr;
@@ -157,47 +152,28 @@ namespace LogicalShift.Reason.Unification
         {
             if (!_writeMode)
             {
-                UnifyHeap(_variableValues[variable], _structurePtr);
+                Unify(_store.AddressForVariable(variable), _structurePtr);
             }
             else
             {
-                _heap.Add(_variableValues[variable]);
+                _store.PushHeap(_store.ReadVariable(variable));
             }
 
             ++_structurePtr;
         }
 
         /// <summary>
-        /// Dereferences an address on the heap
-        /// </summary>
-        private int DerefHeap(int heapOffset)
-        {
-            for (;;)
-            {
-                var value = _heap[heapOffset];
-                if (value.EntryType == HeapEntryType.Reference && value.Offset != heapOffset)
-                {
-                    heapOffset = value.Offset;
-                }
-                else
-                {
-                    return heapOffset;
-                }
-            }
-        }
-
-        /// <summary>
         /// Binds a value to the heap
         /// </summary>
-        private void BindHeap(int address, int offset)
+        private void Bind(int address, int offset)
         {
-            _heap[address] = new HeapValue { EntryType = HeapEntryType.Reference, Offset = offset };
+            _store.Write(address, new HeapValue { EntryType = HeapEntryType.Reference, Offset = offset });
         }
 
         /// <summary>
         /// Unifies a value on the heap
         /// </summary>
-        private void UnifyHeap(int address1, int address2)
+        private void Unify(int address1, int address2)
         {
             var unifyStack = new Stack<int>();
 
@@ -209,23 +185,23 @@ namespace LogicalShift.Reason.Unification
             while (unifyStack.Count > 0)
             {
                 // Deref the values on the stack
-                var offset1 = DerefHeap(address1);
-                var offset2 = DerefHeap(address2);
+                var offset1 = _store.Dereference(address1);
+                var offset2 = _store.Dereference(address2);
 
                 if (offset1 != offset2)
                 {
-                    var value1 = _heap[offset1];
-                    var value2 = _heap[offset2];
+                    var value1 = _store.Read(offset1);
+                    var value2 = _store.Read(offset2);
 
                     if (value1.EntryType == HeapEntryType.Reference || value2.EntryType == HeapEntryType.Reference)
                     {
                         // Bind references
-                        BindHeap(offset1, offset2);
+                        Bind(offset1, offset2);
                     }
                     else
                     {
-                        var structure1 = _heap[value1.Offset];
-                        var structure2 = _heap[value2.Offset];
+                        var structure1 = _store.Read(value1.Offset);
+                        var structure2 = _store.Read(value2.Offset);
 
                         if (Equals(structure1.Value, structure2.Value) && structure1.Offset == structure2.Offset)
                         {

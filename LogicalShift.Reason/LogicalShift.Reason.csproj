@@ -69,6 +69,7 @@
     <Compile Include="Unification\HeapValue.cs" />
     <Compile Include="Unification\ListUnificationState.cs" />
     <Compile Include="Unification\SimpleUnifier.cs" />
+    <Compile Include="Unification\UnificationStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ISolver.cs" />
