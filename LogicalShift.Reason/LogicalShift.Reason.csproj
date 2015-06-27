@@ -65,7 +65,10 @@
     <Compile Include="Solvers\BackwardChainingSolver.cs" />
     <Compile Include="Solvers\ForwardChainingSolver.cs" />
     <Compile Include="Unification\EmptyUnificationState.cs" />
+    <Compile Include="Unification\HeapEntryType.cs" />
+    <Compile Include="Unification\HeapValue.cs" />
     <Compile Include="Unification\ListUnificationState.cs" />
+    <Compile Include="Unification\SimpleUnifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ISolver.cs" />
