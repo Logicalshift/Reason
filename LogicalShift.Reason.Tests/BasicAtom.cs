@@ -18,6 +18,23 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
+        public void AtomUnifiesWithSelf()
+        {
+            var atom = Literal.NewAtom();
+
+            Assert.AreEqual(1, atom.Unify(atom).Count());
+        }
+
+        [Test]
+        public void AtomDoesNotUnifyWithDifferentAtom()
+        {
+            var atom = Literal.NewAtom();
+            var otherAtom = Literal.NewAtom();
+
+            Assert.AreEqual(0, atom.Unify(otherAtom).Count());
+        }
+
+        [Test]
         public void AtomNotEqualToOtherAtom()
         {
             var atom = Literal.NewAtom();
