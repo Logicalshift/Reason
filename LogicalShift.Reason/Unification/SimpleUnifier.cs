@@ -1,6 +1,7 @@
 ﻿using LogicalShift.Reason.Api;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LogicalShift.Reason.Unification
 {
@@ -254,6 +255,12 @@ namespace LogicalShift.Reason.Unification
             for (int parameterNum = 1; parameterNum <= numParameters; ++parameterNum)
             {
                 unifiedParameters.Add(UnifiedValue(address + parameterNum));
+            }
+
+            // Result is null if any of the parameters can't be unified
+            if (unifiedParameters.Any(param => param == null))
+            {
+                return null;
             }
 
             // Build the result

@@ -128,6 +128,7 @@ namespace LogicalShift.Reason.Literals
                 if (!first) result.Append(", ");
 
                 result.Append(param.ToString());
+                first = false;
             }
             result.Append(")");
 
