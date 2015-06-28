@@ -29,6 +29,11 @@ namespace LogicalShift.Reason.Api
         ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters);
 
         /// <summary>
+        /// Returns the literals that this literal depends on (eg, the parameters)
+        /// </summary>
+        IEnumerable<ILiteral> Dependencies { get; }
+
+        /// <summary>
         /// Retrieves a value that is the same for all types of literal that this can be unified with,
         /// or null if this can be unified with any literal.
         /// </summary>

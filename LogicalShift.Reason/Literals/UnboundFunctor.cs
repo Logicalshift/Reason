@@ -75,6 +75,17 @@ namespace LogicalShift.Reason.Literals
             return new BoundFunctor(this, parameters);
         }
 
+        public IEnumerable<ILiteral> Dependencies
+        {
+            get
+            {
+                for (int param =0; param < _numParameters; ++param)
+                {
+                    yield return new Variable();
+                }
+            }
+        }
+
         public ILiteral UnificationKey
         {
             get 

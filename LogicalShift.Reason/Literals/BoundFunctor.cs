@@ -91,6 +91,14 @@ namespace LogicalShift.Reason.Literals
             return new BoundFunctor(_unbound, parameters);
         }
 
+        public IEnumerable<ILiteral> Dependencies
+        {
+            get
+            {
+                return _parameters;
+            }
+        }
+
         public ILiteral UnificationKey
         {
             get { return _unbound; }

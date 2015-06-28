@@ -61,6 +61,14 @@ namespace LogicalShift.Reason.Literals
             return this;
         }
 
+        public IEnumerable<ILiteral> Dependencies
+        {
+            get
+            {
+                yield break;
+            }
+        }
+
         public ILiteral UnificationKey
         {
             get
