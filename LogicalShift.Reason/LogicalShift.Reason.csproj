@@ -53,6 +53,7 @@
     <Compile Include="Assignment\AssignmentEliminator.cs" />
     <Compile Include="Assignment\AssignmentOrderer.cs" />
     <Compile Include="Assignment\TermAssignment.cs" />
+    <Compile Include="Binding.cs" />
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
     <Compile Include="Clauses\PositiveClause.cs" />

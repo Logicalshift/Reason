@@ -78,13 +78,15 @@ namespace LogicalShift.Reason.Assignment
 
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
-            return this;
+            var vals = parameters.ToArray();
+            return new TermAssignment(vals[0], vals[1]);
         }
 
         public IEnumerable<ILiteral> Dependencies
         {
             get 
             {
+                yield return _target;
                 yield return _assignTo;
             }
         }
