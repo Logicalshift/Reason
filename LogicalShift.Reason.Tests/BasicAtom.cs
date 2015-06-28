@@ -50,5 +50,15 @@ namespace LogicalShift.Reason.Tests
             dict[atom] = true;
             Assert.IsTrue(dict[atom]);
         }
+
+        [Test]
+        public void AtomIsNotFreeVariable()
+        {
+            var atom = Literal.NewAtom();
+            var unifier = new SimpleUnifier();
+
+            var freeVars = unifier.QueryUnifier.Compile(atom).ToList();
+            Assert.AreEqual(0, freeVars.Count);
+        }
     }
 }

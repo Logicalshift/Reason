@@ -28,6 +28,18 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
+        public void FindFreeVariableInFunctor()
+        {
+            var variable = Literal.NewVariable();
+            var functor = Literal.NewFunctor(1).With(variable);
+            var unifier = new SimpleUnifier();
+
+            var freeVars = unifier.QueryUnifier.Compile(functor).ToList();
+            Assert.AreEqual(1, freeVars.Count);
+            Assert.AreEqual(variable, freeVars[0]);
+        }
+
+        [Test]
         public void FunctorUnifiesWithSelf()
         {
             var functor = Literal.NewFunctor(1);
@@ -166,6 +178,16 @@ namespace LogicalShift.Reason.Tests
             var result = query.Unify(program).ToList();
 
             Assert.AreEqual(1, result.Count);
+        }
+
+        [Test]
+        public void FindFreeVariableInMoreComplicatedFunctor()
+        {
+            var functor = GetQueryAndProgram1().Item1;
+            var unifier = new SimpleUnifier();
+
+            var freeVars = unifier.QueryUnifier.Compile(functor).ToList();
+            Assert.AreEqual(2, freeVars.Count);
         }
     }
 }

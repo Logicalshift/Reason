@@ -41,26 +41,15 @@ namespace LogicalShift.Reason.Tests
             Assert.AreEqual(atom, states[0]);
         }
 
-        /*
         [Test]
-        public void BindVariableToVariable()
+        public void VariableIsFreeVariable()
         {
-            var variable1 = Literal.NewVariable();
-            var variable2 = Literal.NewVariable();
-            var atom = Literal.NewAtom();
+            var variable = Literal.NewVariable();
+            var unifier = new SimpleUnifier();
 
-            var states = variable2.Unify(variable1, new EmptyUnificationState()).ToList();
-            states = variable1.Unify(atom, states[0]).ToList();
-
-            ILiteral variableBoundTo;
-            Assert.AreEqual(1, states.Count);
-
-            Assert.IsTrue(states[0].TryGetBindingForVariable(variable1, out variableBoundTo));
-            Assert.AreEqual(atom, variableBoundTo);
-
-            Assert.IsTrue(states[0].TryGetBindingForVariable(variable2, out variableBoundTo));
-            Assert.AreEqual(atom, variableBoundTo);
+            var freeVars = unifier.QueryUnifier.Compile(variable).ToList();
+            Assert.AreEqual(1, freeVars.Count);
+            Assert.AreEqual(variable, freeVars[0]);
         }
-         */
     }
 }
