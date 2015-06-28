@@ -94,14 +94,17 @@ namespace LogicalShift.Reason.Literals
             // Get the list of variables that the parameters are assigned to
             var parameterTargets = flattenedParameters.Select(list => list.First().Variable);
 
-            // TODO: merge any parameter assignments that assign to the same value
+            // Merge any parameter assignments that assign to the same value
+            var eliminator = new AssignmentEliminator(flattenedParameters.SelectMany(item => item));
+            eliminator.Eliminate();
+            parameterTargets = parameterTargets.Select(eliminator.MapVariable);
 
             // Generate the assignment for this term
             var target = new Variable();
             yield return new TermAssignment(target, new BoundFunctor(_unbound, parameterTargets));
 
             // Generate the list of parameter assignments
-            foreach (var param in flattenedParameters.SelectMany(item => item))
+            foreach (var param in eliminator.Assigments)
             {
                 yield return param;
             }
