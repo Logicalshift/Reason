@@ -23,10 +23,10 @@ namespace LogicalShift.Reason.Tests
             var variable = Literal.NewVariable();
             var atom = Literal.NewAtom();
 
-            var states = variable.Unify(atom).ToList();
+            var states = variable.Unify(atom);
 
-            Assert.AreEqual(1, states.Count);
-            Assert.AreEqual(atom, states[0]);
+            Assert.IsNotNull(states);
+            Assert.AreEqual(atom, states.Result);
         }
 
         [Test]
@@ -35,10 +35,10 @@ namespace LogicalShift.Reason.Tests
             var variable = Literal.NewVariable();
             var atom = Literal.NewAtom();
 
-            var states = atom.Unify(variable).ToList();
+            var states = atom.Unify(variable);
 
-            Assert.AreEqual(1, states.Count);
-            Assert.AreEqual(atom, states[0]);
+            Assert.IsNotNull(states);
+            Assert.AreEqual(atom, states.Result);
         }
 
         [Test]

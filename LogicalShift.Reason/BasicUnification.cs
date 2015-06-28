@@ -2,6 +2,7 @@
 using LogicalShift.Reason.Unification;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LogicalShift.Reason
 {
@@ -13,22 +14,25 @@ namespace LogicalShift.Reason
         /// <summary>
         /// Returns the possible ways that a query term can unify with a program term
         /// </summary>
-        public static IEnumerable<ILiteral> Unify(this ILiteral query, ILiteral program)
+        public static IBindings Unify(this ILiteral query, ILiteral program)
         {
             var simpleUnifier = new SimpleUnifier();
+            var freeVariables = new HashSet<ILiteral>();
 
             // Run the unifier
             try
             {
-                simpleUnifier.QueryUnifier.Compile(query);
+                var queryFreeVars = simpleUnifier.QueryUnifier.Compile(query);
                 simpleUnifier.PrepareToRunProgram();
                 simpleUnifier.ProgramUnifier.Compile(program);
+
+                freeVariables.UnionWith(queryFreeVars);
             }
             catch (InvalidOperationException)
             {
                 // No results
                 // TODO: really should report failure in a better way
-                yield break;
+                return null;
             }
 
             // Retrieve the unified value for the program
@@ -37,7 +41,14 @@ namespace LogicalShift.Reason
             // If the result was valid, return as the one value from this function
             if (result != null)
             {
-                yield return result;
+                var variableBindings = freeVariables.ToDictionary(variable => variable,
+                    variable => simpleUnifier.UnifiedValue(variable));
+
+                return new BasicBinding(result, variableBindings);
+            }
+            else
+            {
+                return null;
             }
         }
     }

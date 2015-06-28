@@ -28,7 +28,7 @@ namespace LogicalShift.Reason.Tests
         {
             var truthiness = Literal.True();
 
-            Assert.AreEqual(1, truthiness.Unify(truthiness).Count());
+            Assert.IsNotNull(truthiness.Unify(truthiness));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace LogicalShift.Reason.Tests
             var truthiness = Literal.True();
             var otherAtom = Literal.NewAtom();
 
-            Assert.AreEqual(0, truthiness.Unify(otherAtom).Count());
+            Assert.IsNull(truthiness.Unify(otherAtom));
         }
     }
 }

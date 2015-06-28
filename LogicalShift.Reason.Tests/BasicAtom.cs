@@ -22,7 +22,7 @@ namespace LogicalShift.Reason.Tests
         {
             var atom = Literal.NewAtom();
 
-            Assert.AreEqual(1, atom.Unify(atom).Count());
+            Assert.IsNotNull(atom.Unify(atom));
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace LogicalShift.Reason.Tests
             var atom = Literal.NewAtom();
             var otherAtom = Literal.NewAtom();
 
-            Assert.AreEqual(0, atom.Unify(otherAtom).Count());
+            Assert.IsNull(atom.Unify(otherAtom));
         }
 
         [Test]

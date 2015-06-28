@@ -45,10 +45,10 @@ namespace LogicalShift.Reason.Tests
             var functor = Literal.NewFunctor(1);
             var withParameters = functor.With(Literal.NewAtom());
 
-            var unified = withParameters.Unify(withParameters).ToList();
+            var unified = withParameters.Unify(withParameters);
 
-            Assert.AreEqual(1, unified.Count);
-            Assert.IsTrue(withParameters.Equals(unified[0]));
+            Assert.IsNotNull(unified);
+            Assert.IsTrue(withParameters.Equals(unified.Result));
         }
 
         [Test]
@@ -61,10 +61,11 @@ namespace LogicalShift.Reason.Tests
             var aOfX = tA.With(aX);     // a(x)
             var aOfY = tA.With(vY);     // a(Y)
 
-            var unified = aOfY.Unify(aOfX).ToList();
+            var unified = aOfY.Unify(aOfX);
 
-            Assert.AreEqual(1, unified.Count);
-            Assert.IsTrue(aOfX.Equals(unified[0]));
+            Assert.IsNotNull(unified);
+            Assert.IsTrue(aOfX.Equals(unified.Result));
+            Assert.AreEqual(aX, unified.GetValueForVariable(vY));
         }
 
         [Test]
@@ -175,9 +176,9 @@ namespace LogicalShift.Reason.Tests
             var query = queryProgram.Item1;
             var program = queryProgram.Item2;
 
-            var result = query.Unify(program).ToList();
+            var result = query.Unify(program);
 
-            Assert.AreEqual(1, result.Count);
+            Assert.IsNotNull(result);
         }
 
         [Test]
