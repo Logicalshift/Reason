@@ -24,9 +24,10 @@ namespace LogicalShift.Reason
             {
                 var queryFreeVars = simpleUnifier.QueryUnifier.Compile(query, bindings);
                 simpleUnifier.PrepareToRunProgram();
-                simpleUnifier.ProgramUnifier.Compile(program, bindings);
+                var programFreeVars = simpleUnifier.ProgramUnifier.Compile(program, bindings);
 
                 freeVariables.UnionWith(queryFreeVars);
+                freeVariables.UnionWith(programFreeVars);
             }
             catch (InvalidOperationException)
             {
