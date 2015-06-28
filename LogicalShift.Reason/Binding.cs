@@ -32,6 +32,10 @@ namespace LogicalShift.Reason
                         var flattened = boundTo.Flatten().ToArray();
 
                         // Assign the target value of the bound value to the original value location
+                        // Ie, here we have Xn = V and the first value of flattened describes the value of V 
+                        // in the form Xm = a(...)
+                        // Substitute Xn = a(...) in the assignment list
+                        // Value of V after resolution can be updated by reading Xn after resolution
                         var first = (IAssignmentLiteral) flattened[0].RebuildWithParameters(new[] { assignment.Variable, flattened[0].Value });
                         result.Add(first);
 
