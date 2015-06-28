@@ -67,6 +67,11 @@ namespace LogicalShift.Reason.Assignment
             get { return this; }
         }
 
+        public IEnumerable<IAssignmentLiteral> Flatten()
+        {
+            yield return this;
+        }
+
         public bool Equals(ILiteral other)
         {
             return Equals(other as VariableAssignment);

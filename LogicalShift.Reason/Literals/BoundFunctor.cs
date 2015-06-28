@@ -85,6 +85,11 @@ namespace LogicalShift.Reason.Literals
             get { return _unbound; }
         }
 
+        public IEnumerable<IAssignmentLiteral> Flatten()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Equals(BoundFunctor other)
         {
             if (other == null) return false;

@@ -1,6 +1,8 @@
 ﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Assignment;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LogicalShift.Reason.Literals
 {
@@ -86,6 +88,21 @@ namespace LogicalShift.Reason.Literals
             get 
             { 
                 return this; 
+            }
+        }
+
+        public IEnumerable<IAssignmentLiteral> Flatten()
+        {
+            var parameters = Enumerable.Range(0, _numParameters).Select(num => new Variable());
+            var assign = new BoundFunctor(this, parameters);
+
+            // Assign the parameters
+            yield return new TermAssignment(new Variable(), assign);
+            
+            // Each parameter is a free variable
+            foreach (var param in parameters)
+            {
+                yield return new VariableAssignment(param, new Variable());
             }
         }
 

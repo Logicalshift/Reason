@@ -1,4 +1,5 @@
 ﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Assignment;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -54,6 +55,11 @@ namespace LogicalShift.Reason.Literals
                 // Simple atoms can be unified only with themselves
                 return this; 
             }
+        }
+
+        public IEnumerable<IAssignmentLiteral> Flatten()
+        {
+            yield return new TermAssignment(new Variable(), this);
         }
 
         public bool Equals(BasicAtom other)

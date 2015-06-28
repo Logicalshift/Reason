@@ -1,4 +1,5 @@
 ﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Assignment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -71,6 +72,11 @@ namespace LogicalShift.Reason.Literals
                 // Variables can be unified with anything, so they don't have a unification key
                 return null;
             }
+        }
+
+        public IEnumerable<IAssignmentLiteral> Flatten()
+        {
+            yield return new VariableAssignment(new Variable(), this);
         }
 
         public bool Equals(Variable other)

@@ -19,6 +19,12 @@ namespace LogicalShift.Reason.Api
         void UnifyProgram(IProgramUnifier unifier);
 
         /// <summary>
+        /// Flattens this literal into a series of assignments (starting with the assignment that
+        /// resolves this literal)
+        /// </summary>
+        IEnumerable<IAssignmentLiteral> Flatten();
+
+        /// <summary>
         /// Rebuilds this literal with the specified parameters
         /// </summary>
         ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters);
