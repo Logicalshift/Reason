@@ -1,4 +1,5 @@
-﻿using LogicalShift.Reason.Literals;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Literals;
 using LogicalShift.Reason.Unification;
 using NUnit.Framework;
 using System;
@@ -99,8 +100,7 @@ namespace LogicalShift.Reason.Tests
             Assert.IsNotNull(result);
         }
 
-        [Test]
-        public void MoreUnification()
+        private Tuple<ILiteral, ILiteral> GetQueryAndProgram1()
         {
             var p = Literal.NewFunctor(3);
             var h = Literal.NewFunctor(2);
@@ -116,6 +116,33 @@ namespace LogicalShift.Reason.Tests
 
             // p(f(X), h(Y, f(a)), Y)
             var program = p.With(f.With(X), h.With(Y, f.With(a)), Y);
+
+            return new Tuple<ILiteral, ILiteral>(query, program);
+        }
+
+        [Test]
+        public void FlattenedQueryEliminatesDuplicates()
+        {
+            var queryProgram = GetQueryAndProgram1();
+
+            var flattenedQuery = queryProgram.Item1.Flatten().ToList();
+
+            // Should be something like:
+            //   X1 = p(X2, X3, X4)
+            //   X2 = Z
+            //   X3 = h(X2, X5)
+            //   X4 = f(X5)
+            //   X5 = W
+            // W and Z are duplicates so they are only introduced once
+            Assert.AreEqual(5, flattenedQuery.Count);
+        }
+
+        [Test]
+        public void MoreUnification()
+        {
+            var queryProgram = GetQueryAndProgram1();
+            var query = queryProgram.Item1;
+            var program = queryProgram.Item2;
 
             var result = query.Unify(program).ToList();
 
