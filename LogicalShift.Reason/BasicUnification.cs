@@ -14,7 +14,7 @@ namespace LogicalShift.Reason
         /// <summary>
         /// Returns the possible ways that a query term can unify with a program term
         /// </summary>
-        public static IBindings Unify(this ILiteral query, ILiteral program)
+        public static IBindings Unify(this ILiteral query, ILiteral program, IBindings bindings = null)
         {
             var simpleUnifier = new SimpleUnifier();
             var freeVariables = new HashSet<ILiteral>();
@@ -22,9 +22,9 @@ namespace LogicalShift.Reason
             // Run the unifier
             try
             {
-                var queryFreeVars = simpleUnifier.QueryUnifier.Compile(query);
+                var queryFreeVars = simpleUnifier.QueryUnifier.Compile(query, bindings);
                 simpleUnifier.PrepareToRunProgram();
-                simpleUnifier.ProgramUnifier.Compile(program);
+                simpleUnifier.ProgramUnifier.Compile(program, bindings);
 
                 freeVariables.UnionWith(queryFreeVars);
             }
