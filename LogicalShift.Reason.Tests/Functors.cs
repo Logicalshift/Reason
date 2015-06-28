@@ -52,7 +52,7 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
-        public void FunctorUnifiesWithParameter()
+        public void FunctorUnifiesWithParameter1()
         {
             var tA = Literal.NewFunctor(1);
             var aX = Literal.NewAtom();
@@ -62,6 +62,23 @@ namespace LogicalShift.Reason.Tests
             var aOfY = tA.With(vY);     // a(Y)
 
             var unified = aOfY.Unify(aOfX);
+
+            Assert.IsNotNull(unified);
+            Assert.IsTrue(aOfX.Equals(unified.Result));
+            Assert.AreEqual(aX, unified.GetValueForVariable(vY));
+        }
+
+        [Test]
+        public void FunctorUnifiesWithParameter2()
+        {
+            var tA = Literal.NewFunctor(1);
+            var aX = Literal.NewAtom();
+            var vY = Literal.NewVariable();
+
+            var aOfX = tA.With(aX);     // a(x)
+            var aOfY = tA.With(vY);     // a(Y)
+
+            var unified = aOfX.Unify(aOfY);
 
             Assert.IsNotNull(unified);
             Assert.IsTrue(aOfX.Equals(unified.Result));
