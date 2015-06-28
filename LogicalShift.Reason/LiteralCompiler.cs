@@ -45,7 +45,7 @@ namespace LogicalShift.Reason
         /// <returns>
         /// The list of variables in the literal
         /// </returns>
-        public static IEnumerable<ILiteral> Compile(this IQueryUnifier unifier, ILiteral literal)
+        public static IEnumerable<ILiteral> Compile(this IQueryUnifier unifier, ILiteral literal, IBindings bindings = null)
         {
             if (unifier == null) throw new ArgumentNullException("unifier");
             if (literal == null) throw new ArgumentNullException("literal");
@@ -55,6 +55,12 @@ namespace LogicalShift.Reason
 
             // Bind the variables in order
             var freeVariables = unifier.Bind(assignments);
+
+            // Rebind the assignments if necessary
+            if (bindings != null)
+            {
+                assignments = assignments.BindVariables(bindings).ToList();
+            }
 
             // Compile the result
             unifier.Compile(assignments);
@@ -68,7 +74,7 @@ namespace LogicalShift.Reason
         /// <returns>
         /// The list of variables in this literal
         /// </returns>
-        public static IEnumerable<ILiteral> Compile(this IProgramUnifier unifier, ILiteral literal)
+        public static IEnumerable<ILiteral> Compile(this IProgramUnifier unifier, ILiteral literal, IBindings bindings = null)
         {
             if (unifier == null) throw new ArgumentNullException("unifier");
             if (literal == null) throw new ArgumentNullException("literal");
@@ -78,6 +84,12 @@ namespace LogicalShift.Reason
 
             // Bind the variables in order
             var freeVariables = unifier.Bind(assignments);
+
+            // Rebind the assignments if necessary
+            if (bindings != null)
+            {
+                assignments = assignments.BindVariables(bindings).ToList();
+            }
 
             // Compile the result
             unifier.Compile(assignments);
