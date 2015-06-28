@@ -138,6 +138,31 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
+        public void FlattenedQueryIsInTopDownOrder()
+        {
+            var p = Literal.NewFunctor(3);
+            var h = Literal.NewFunctor(2);
+            var f = Literal.NewFunctor(1);
+            var a = Literal.NewAtom();
+            var Y = Literal.NewVariable();
+            var X = Literal.NewVariable();
+
+            // p(f(X), h(Y, f(a)), Y)
+            var query = p.With(f.With(X), h.With(Y, f.With(a)), Y);
+
+            var flattened = query.Flatten().ToList();
+
+            Assert.AreEqual(7, flattened.Count);
+            Assert.AreEqual(p, flattened[0].Value.UnificationKey);
+            Assert.AreEqual(f, flattened[1].Value.UnificationKey);
+            Assert.AreEqual(h, flattened[2].Value.UnificationKey);
+            Assert.AreEqual(Y, flattened[3].Value.UnificationKey);
+            Assert.AreEqual(X, flattened[4].Value.UnificationKey);
+            Assert.AreEqual(f, flattened[5].Value.UnificationKey);
+            Assert.AreEqual(a, flattened[6].Value.UnificationKey);
+        }
+
+        [Test]
         public void MoreUnification()
         {
             var queryProgram = GetQueryAndProgram1();
