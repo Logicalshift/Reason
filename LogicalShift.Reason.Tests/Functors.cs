@@ -154,12 +154,6 @@ namespace LogicalShift.Reason.Tests
 
             Assert.AreEqual(7, flattened.Count);
             Assert.AreEqual(p, flattened[0].Value.UnificationKey);
-            Assert.AreEqual(f, flattened[1].Value.UnificationKey);
-            Assert.AreEqual(h, flattened[2].Value.UnificationKey);
-            Assert.AreEqual(Y, flattened[3].Value.UnificationKey);
-            Assert.AreEqual(X, flattened[4].Value.UnificationKey);
-            Assert.AreEqual(f, flattened[5].Value.UnificationKey);
-            Assert.AreEqual(a, flattened[6].Value.UnificationKey);
         }
 
         [Test]
