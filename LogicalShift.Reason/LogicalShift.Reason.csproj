@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\IAssignmentLiteral.cs" />
     <Compile Include="Api\IBaseUnifier.cs" />
     <Compile Include="Api\IClause.cs" />
     <Compile Include="Api\IKnowledgeBase.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Api\IQueryUnifier.cs" />
     <Compile Include="Api\IUnifier.cs" />
+    <Compile Include="Assignment\TermAssignment.cs" />
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
     <Compile Include="Clauses\PositiveClause.cs" />
@@ -72,6 +74,7 @@
     <Compile Include="Unification\TraceUnifier.cs" />
     <Compile Include="Unification\UnificationStore.cs" />
     <Compile Include="BasicUnification.cs" />
+    <Compile Include="Assignment\VariableAssignment.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ISolver.cs" />
