@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Api\IAssignmentLiteral.cs" />
     <Compile Include="Api\IBaseUnifier.cs" />
+    <Compile Include="Api\IBindings.cs" />
     <Compile Include="Api\IClause.cs" />
     <Compile Include="Api\IKnowledgeBase.cs" />
     <Compile Include="Api\ILiteral.cs" />
