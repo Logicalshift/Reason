@@ -1,4 +1,5 @@
 ﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Assignment;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +88,23 @@ namespace LogicalShift.Reason.Literals
 
         public IEnumerable<IAssignmentLiteral> Flatten()
         {
-            throw new NotImplementedException();
+            // Start by flattening all of the parameters
+            var flattenedParameters = _parameters.Select(param => param.Flatten().ToArray()).ToArray();
+
+            // Get the list of variables that the parameters are assigned to
+            var parameterTargets = flattenedParameters.Select(list => list.First().Variable);
+
+            // TODO: merge any parameter assignments that assign to the same value
+
+            // Generate the assignment for this term
+            var target = new Variable();
+            yield return new TermAssignment(target, new BoundFunctor(_unbound, parameterTargets));
+
+            // Generate the list of parameter assignments
+            foreach (var param in flattenedParameters.SelectMany(item => item))
+            {
+                yield return param;
+            }
         }
 
         public bool Equals(BoundFunctor other)
