@@ -31,7 +31,7 @@ namespace LogicalShift.Reason.Unification
         public void SetValue(ILiteral variable)
         {
             Console.WriteLine("Q: set_value {0}", variable);
-            _unifier.QueryUnifier.SetVariable(variable);
+            _unifier.QueryUnifier.SetValue(variable);
         }
 
         public bool HasVariable(ILiteral name)

@@ -58,7 +58,7 @@ namespace LogicalShift.Reason.Tests
         [Test]
         public void ManualUnification()
         {
-            var unifier = new SimpleUnifier();
+            var unifier = new TraceUnifier(new SimpleUnifier());
             var X = new[] { new Variable(), new Variable(), new Variable(), new Variable(), new Variable(), new Variable(), new Variable(), new Variable() };
             var h2 = new UnboundFunctor(2);
             var f1 = new UnboundFunctor(1);
