@@ -18,7 +18,7 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Returns the names assigned to particular variables
         /// </summary>
-        private readonly Dictionary<ILiteral, ILiteral> _variableForName = new Dictionary<ILiteral, ILiteral>();
+        private readonly Dictionary<ILiteral, int> _addressForName = new Dictionary<ILiteral, int>();
 
         /// <summary>
         /// Stores variables and heap values
@@ -52,8 +52,8 @@ namespace LogicalShift.Reason.Unification
 
         public void BindVariable(ILiteral variable, ILiteral name)
         {
-            _store.AddressForVariable(variable);
-            _variableForName[name] = variable;
+            var address = _store.AddressForVariable(variable);
+            _addressForName[name] = address;
         }
 
         public void PutStructure(ILiteral termName, int termLength, ILiteral variable)
@@ -280,7 +280,7 @@ namespace LogicalShift.Reason.Unification
 
         public ILiteral UnifiedValue(ILiteral name)
         {
-            return UnifiedValue(_store.AddressForVariable(_variableForName[name]));
+            return UnifiedValue(_addressForName[name]);
         }
 
     }
