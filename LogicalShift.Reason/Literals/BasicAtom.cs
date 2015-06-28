@@ -27,16 +27,6 @@ namespace LogicalShift.Reason.Literals
             _identifier = Interlocked.Increment(ref _nextIdentifier);
         }
 
-        public void UnifyQuery(IQueryUnifier unifier)
-        {
-            unifier.PutStructure(this, 0, this);
-        }
-
-        public void UnifyProgram(IProgramUnifier unifier)
-        {
-            unifier.GetStructure(this, 0, this);
-        }
-
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
             // We don't have any parameters

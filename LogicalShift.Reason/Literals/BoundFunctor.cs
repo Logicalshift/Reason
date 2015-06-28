@@ -48,26 +48,6 @@ namespace LogicalShift.Reason.Literals
             if (_parameters.Length != _unbound.NumParameters) throw new ArgumentException("Incorrect number of parameters for functor", "parameters");
         }
 
-        public void UnifyQuery(IQueryUnifier unifier)
-        {
-            unifier.PutStructure(_unbound, _unbound.NumParameters, _unbound);
-
-            foreach (var param in _parameters)
-            {
-                param.UnifyQuery(unifier);
-            }
-        }
-
-        public void UnifyProgram(IProgramUnifier unifier)
-        {
-            unifier.GetStructure(_unbound, _unbound.NumParameters, _unbound);
-
-            foreach (var param in _parameters)
-            {
-                param.UnifyProgram(unifier);
-            }
-        }
-
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
             return new BoundFunctor(_unbound, parameters);

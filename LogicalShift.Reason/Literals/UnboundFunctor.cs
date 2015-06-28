@@ -45,28 +45,6 @@ namespace LogicalShift.Reason.Literals
         /// </summary>
         public int NumParameters { get { return _numParameters; } }
 
-        public void UnifyQuery(IQueryUnifier unifier)
-        {
-            unifier.PutStructure(this, _numParameters, this);
-
-            // Parameters are unbound, so just use a bunch of free variables
-            for (int param = 0; param < _numParameters; ++param)
-            {
-                new Variable().UnifyQuery(unifier);
-            }
-        }
-
-        public void UnifyProgram(IProgramUnifier unifier)
-        {
-            unifier.GetStructure(this, _numParameters, this);
-
-            // Parameters are unbound, so just use a bunch of free variables
-            for (int param = 0; param < _numParameters; ++param)
-            {
-                new Variable().UnifyProgram(unifier);
-            }
-        }
-
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
             return new BoundFunctor(this, parameters);

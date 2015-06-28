@@ -76,16 +76,6 @@ namespace LogicalShift.Reason.Assignment
             }
         }
 
-        public void UnifyQuery(IQueryUnifier unifier)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnifyProgram(IProgramUnifier unifier)
-        {
-            throw new NotImplementedException();
-        }
-
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)
         {
             return this;
