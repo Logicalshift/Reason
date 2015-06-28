@@ -50,6 +50,7 @@
     <Compile Include="Api\IQueryUnifier.cs" />
     <Compile Include="Api\IUnifier.cs" />
     <Compile Include="Assignment\AssignmentEliminator.cs" />
+    <Compile Include="Assignment\AssignmentOrderer.cs" />
     <Compile Include="Assignment\TermAssignment.cs" />
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
