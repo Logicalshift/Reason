@@ -8,11 +8,11 @@
         /// <summary>
         /// Returns true if the variable identified has been used by SetVariable or UnifyVariable before
         /// </summary>
-        bool HasVariable(ILiteral name);
+        bool HasVariable(ILiteral variable);
 
         /// <summary>
         /// Binds a variable to a literal name
         /// </summary>
-        void BindVariable(ILiteral name);
+        void BindVariable(ILiteral variable, ILiteral name);
     }
 }

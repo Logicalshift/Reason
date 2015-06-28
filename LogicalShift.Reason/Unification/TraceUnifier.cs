@@ -40,11 +40,11 @@ namespace LogicalShift.Reason.Unification
             return _unifier.QueryUnifier.HasVariable(name) || _unifier.ProgramUnifier.HasVariable(name);
         }
 
-        public void BindVariable(ILiteral name)
+        public void BindVariable(ILiteral variable, ILiteral name)
         {
             // TODO: we really should choose the implementation based on the type of unifier that's being called
-            _unifier.QueryUnifier.BindVariable(name);
-            _unifier.ProgramUnifier.BindVariable(name);
+            _unifier.QueryUnifier.BindVariable(variable, name);
+            _unifier.ProgramUnifier.BindVariable(variable, name);
         }
 
         public void GetStructure(ILiteral termName, int termLength, ILiteral variable)

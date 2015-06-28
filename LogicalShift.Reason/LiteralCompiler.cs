@@ -18,7 +18,7 @@ namespace LogicalShift.Reason
         {
             foreach (var assign in assignments)
             {
-                unifier.BindVariable(assign.Variable);
+                unifier.BindVariable(assign.Variable, assign.Value.UnificationKey ?? assign.Value);
             }
         }
 
