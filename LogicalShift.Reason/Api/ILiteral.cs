@@ -19,11 +19,6 @@ namespace LogicalShift.Reason.Api
         void UnifyProgram(IProgramUnifier unifier);
 
         /// <summary>
-        /// Binds the variables that this literal will use as output
-        /// </summary>
-        void BindVariables(IBaseUnifier unifier);
-
-        /// <summary>
         /// Rebuilds this literal with the specified parameters
         /// </summary>
         ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters);
