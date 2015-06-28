@@ -16,16 +16,13 @@ namespace LogicalShift.Reason
         public static IEnumerable<ILiteral> Unify(this ILiteral query, ILiteral program)
         {
             var simpleUnifier = new SimpleUnifier();
-            var traceUnifier = new TraceUnifier(simpleUnifier);
 
             // Run the unifier
             try
             {
-                Console.WriteLine(query);
-                traceUnifier.QueryUnifier.Compile(query);
+                simpleUnifier.QueryUnifier.Compile(query);
                 simpleUnifier.PrepareToRunProgram();
-                Console.WriteLine(program);
-                traceUnifier.ProgramUnifier.Compile(program);
+                simpleUnifier.ProgramUnifier.Compile(program);
             }
             catch (InvalidOperationException)
             {
@@ -35,8 +32,7 @@ namespace LogicalShift.Reason
             }
 
             // Retrieve the unified value for the program
-            // TODO: eventually we'll need to use a unification key
-            var result = simpleUnifier.UnifiedValue(program.UnificationKey ?? program);
+            var result = simpleUnifier.UnifiedValue(query.UnificationKey ?? query);
             
             // If the result was valid, return as the one value from this function
             if (result != null)
