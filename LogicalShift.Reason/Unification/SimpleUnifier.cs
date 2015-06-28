@@ -249,7 +249,7 @@ namespace LogicalShift.Reason.Unification
             // Must be a structure
             if (value.EntryType == HeapEntryType.Structure)
             {
-                return UnifiedValue(address+1);
+                return UnifiedValue(value.Offset);
             }
             else if (value.EntryType != HeapEntryType.Term)
             {
