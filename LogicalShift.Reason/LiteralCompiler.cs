@@ -53,8 +53,13 @@ namespace LogicalShift.Reason
             // Flatten the literal
             var assignments = literal.Flatten().ToList();
 
+            // Bind the variables in order
+            var freeVariables = unifier.Bind(assignments);
+
             // Compile the result
-            return unifier.Compile(assignments);
+            unifier.Compile(assignments);
+
+            return freeVariables;
         }
 
         /// <summary>
@@ -71,8 +76,13 @@ namespace LogicalShift.Reason
             // Flatten the literal
             var assignments = literal.Flatten().ToList();
 
+            // Bind the variables in order
+            var freeVariables = unifier.Bind(assignments);
+
             // Compile the result
-            return unifier.Compile(assignments);
+            unifier.Compile(assignments);
+
+            return freeVariables;
         }
 
         /// <summary>
@@ -81,21 +91,16 @@ namespace LogicalShift.Reason
         /// <returns>
         /// The list of variables in the literal
         /// </returns>
-        public static IEnumerable<ILiteral> Compile(this IQueryUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
+        public static void Compile(this IQueryUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
         {
             if (unifier == null) throw new ArgumentNullException("unifier");
             if (assignments == null) throw new ArgumentNullException("assignments");
-
-            // Bind the variables in order
-            var freeVariables = unifier.Bind(assignments);
 
             // Compile subterms to terms
             foreach (var assign in assignments.OrderTermsAfterSubterms())
             {
                 assign.CompileQuery(unifier);
             }
-
-            return freeVariables;
         }
 
         /// <summary>
@@ -104,21 +109,16 @@ namespace LogicalShift.Reason
         /// <returns>
         /// The list of variables in the literal
         /// </returns>
-        public static IEnumerable<ILiteral> Compile(this IProgramUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
+        public static void Compile(this IProgramUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
         {
             if (unifier == null) throw new ArgumentNullException("unifier");
             if (assignments == null) throw new ArgumentNullException("assignments");
-
-            // Bind the variables in order
-            var freeVariables = unifier.Bind(assignments);
 
             // Compile subterms to terms
             foreach (var assign in assignments.OrderSubtermsAfterTerms())
             {
                 assign.CompileProgram(unifier);
             }
-
-            return freeVariables;
         }
     }
 }
