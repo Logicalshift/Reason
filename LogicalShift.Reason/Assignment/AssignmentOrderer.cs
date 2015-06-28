@@ -12,7 +12,7 @@ namespace LogicalShift.Reason.Assignment
     {
         /// <summary>
         /// Returns a list of assignments ordered so that subterms come before terms (this is the order that they
-        /// should be built in order to compile a query)
+        /// should be built in order to compile a query - ie, bottom-up order)
         /// </summary>
         public static IEnumerable<IAssignmentLiteral> OrderTermsAfterSubterms(this IEnumerable<IAssignmentLiteral> list)
         {
@@ -49,6 +49,14 @@ namespace LogicalShift.Reason.Assignment
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns a list of assignments ordered so that terms come before subterms
+        /// </summary>
+        public static IEnumerable<IAssignmentLiteral> OrderSubtermsAfterTerms(this IEnumerable<IAssignmentLiteral> list)
+        {
+            return OrderTermsAfterSubterms(list).Reverse();
         }
     }
 }
