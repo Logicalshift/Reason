@@ -69,6 +69,28 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
+        public void FunctorUnifiesWithBindings()
+        {
+            var tA = Literal.NewFunctor(1);
+            var vX = Literal.NewVariable();
+            var vY = Literal.NewVariable();
+            var aX = Literal.NewAtom();
+
+            var aOfX = tA.With(vX);     // a(x)
+            var aOfY = tA.With(vY);     // a(Y)
+
+            var bindings = new BasicBinding(aX, new[] {
+                new { var = vX, val = aX}
+            }.ToDictionary(item => item.var, item => item.val));
+
+            var unified = aOfY.Unify(aOfX, bindings);
+
+            Assert.IsNotNull(unified);
+            Assert.AreEqual(aX, unified.GetValueForVariable(vX));
+            Assert.AreEqual(aX, unified.GetValueForVariable(vY));
+        }
+
+        [Test]
         public void ManualUnification()
         {
             var unifier = new TraceUnifier(new SimpleUnifier());
