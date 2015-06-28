@@ -16,13 +16,16 @@ namespace LogicalShift.Reason
         public static IEnumerable<ILiteral> Unify(this ILiteral query, ILiteral program)
         {
             var simpleUnifier = new SimpleUnifier();
+            var traceUnifier = new TraceUnifier(simpleUnifier);
 
             // Run the unifier
             try
             {
-                query.UnifyQuery(simpleUnifier);
+                Console.WriteLine(query);
+                traceUnifier.QueryUnifier.Compile(query);
                 simpleUnifier.PrepareToRunProgram();
-                program.UnifyProgram(simpleUnifier);
+                Console.WriteLine(program);
+                traceUnifier.ProgramUnifier.Compile(program);
             }
             catch (InvalidOperationException)
             {
