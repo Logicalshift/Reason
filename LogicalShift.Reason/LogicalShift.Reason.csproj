@@ -59,6 +59,7 @@
     <Compile Include="Literal.cs" />
     <Compile Include="Knowledge\EmptyKnowledgeBase.cs" />
     <Compile Include="KnowledgeBase.cs" />
+    <Compile Include="LiteralCompiler.cs" />
     <Compile Include="Literals\BasicAtom.cs" />
     <Compile Include="Literals\BoundFunctor.cs" />
     <Compile Include="Literals\TrueLiteral.cs" />
