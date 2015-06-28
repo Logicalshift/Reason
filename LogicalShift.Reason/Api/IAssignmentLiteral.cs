@@ -1,4 +1,5 @@
-﻿namespace LogicalShift.Reason.Api
+﻿using System;
+namespace LogicalShift.Reason.Api
 {
     /// <summary>
     /// Literal representing an expression of the form VAR = EXPR
@@ -34,5 +35,10 @@
         /// Compiles this assignment as a program
         /// </summary>
         void CompileProgram(IProgramUnifier program);
+
+        /// <summary>
+        /// Remaps the variables within this assignment
+        /// </summary>
+        IAssignmentLiteral Remap(Func<ILiteral, ILiteral> valueForLiteral);
     }
 }

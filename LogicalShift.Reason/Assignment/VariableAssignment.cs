@@ -72,6 +72,11 @@ namespace LogicalShift.Reason.Assignment
             yield return this;
         }
 
+        public IAssignmentLiteral Remap(Func<ILiteral, ILiteral> valueForLiteral)
+        {
+            return new VariableAssignment(valueForLiteral(_target), valueForLiteral(_variable));
+        }
+
         public bool Equals(ILiteral other)
         {
             return Equals(other as VariableAssignment);

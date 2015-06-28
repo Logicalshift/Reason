@@ -109,6 +109,15 @@ namespace LogicalShift.Reason.Assignment
             yield return this;
         }
 
+        public IAssignmentLiteral Remap(Func<ILiteral, ILiteral> valueForLiteral)
+        {
+            // Remap the dependencies
+            var dependencies = _assignTo.Dependencies.Select(valueForLiteral);
+
+            // Turn into a new assignment
+            return new TermAssignment(valueForLiteral(_target), _assignTo.RebuildWithParameters(dependencies));
+        }
+
         public bool Equals(ILiteral other)
         {
             return Equals(other as TermAssignment);
