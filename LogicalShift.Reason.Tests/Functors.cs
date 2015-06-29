@@ -86,6 +86,37 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
+        public void FunctorUnifiesWithParameter3()
+        {
+            var tA = Literal.NewFunctor(1);
+            var vX = Literal.NewVariable();
+            var vY = Literal.NewVariable();
+
+            var aOfX = tA.With(vX);     // a(x)
+            var aOfY = tA.With(vY);     // a(Y)
+
+            var unified = aOfX.Unify(aOfY);
+
+            Assert.IsNotNull(unified);
+        }
+
+        [Test]
+        public void FunctorUnifiesWithParameter4()
+        {
+            var tA = Literal.NewFunctor(2);
+            var tB = Literal.NewFunctor(1);
+            var vX = Literal.NewVariable();
+            var vY = Literal.NewVariable();
+
+            var aOfX = tA.With(tB.With(vX), vX);    // a(x)
+            var aOfY = tA.With(vX, vY);             // a(Y)
+
+            var unified = aOfX.Unify(aOfY);
+
+            Assert.IsNotNull(unified);
+        }
+
+        [Test]
         public void FunctorUnifiesWithBindings()
         {
             var tA = Literal.NewFunctor(1);

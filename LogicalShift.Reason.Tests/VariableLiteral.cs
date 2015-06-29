@@ -30,6 +30,17 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
+        public void VariableUnifiesWithSelf()
+        {
+            var variable1 = Literal.NewVariable();
+            var variable2 = Literal.NewVariable();
+
+            var states = variable1.Unify(variable2);
+
+            Assert.IsNotNull(states);
+        }
+
+        [Test]
         public void AtomUnificationCreatesBinding()
         {
             var variable = Literal.NewVariable();

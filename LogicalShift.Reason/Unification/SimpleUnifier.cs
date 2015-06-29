@@ -1,4 +1,5 @@
 ﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Literals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -238,7 +239,7 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Returns the unified value at the specified address
         /// </summary>
-        private ILiteral UnifiedValue(int address)
+        private ILiteral UnifiedValue(int address, ILiteral identifier)
         {
             // Dereference the address
             address = _store.Dereference(address);
@@ -251,6 +252,11 @@ namespace LogicalShift.Reason.Unification
             {
                 address = value.Offset;
                 value = _store.Read(address);
+            }
+
+            if (value.EntryType == HeapEntryType.Reference)
+            {
+                return new ReferenceVariable(identifier, value.Offset);
             }
             
             if (value.EntryType != HeapEntryType.Term)
@@ -267,7 +273,7 @@ namespace LogicalShift.Reason.Unification
 
             for (int parameterNum = 1; parameterNum <= numParameters; ++parameterNum)
             {
-                unifiedParameters.Add(UnifiedValue(address + parameterNum));
+                unifiedParameters.Add(UnifiedValue(address + parameterNum, identifier));
             }
 
             // Result is null if any of the parameters can't be unified
@@ -282,7 +288,7 @@ namespace LogicalShift.Reason.Unification
 
         public ILiteral UnifiedValue(ILiteral name)
         {
-            return UnifiedValue(_addressForName[name]);
+            return UnifiedValue(_addressForName[name], new BasicAtom());
         }
 
     }
