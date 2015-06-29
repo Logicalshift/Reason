@@ -52,13 +52,13 @@ namespace LogicalShift.Reason.Tests
             var houseCatsAreSmallFelines = Clause.If(feline.With(X), small.With(X)).Then(houseCat.With(X));
             var felinesMeow = Clause.If(meows.With(Y)).Then(feline.With(Y));
             var tomIsSmall = Clause.Always(small.With(tom));
-            var tomIsFeline = Clause.Always(feline.With(tom));
             var tomMeows = Clause.Always(meows.With(tom));
 
             knowledge = knowledge
                 .Assert(houseCatsAreSmallFelines)
                 .Assert(tomIsSmall)
-                .Assert(tomIsFeline);
+                .Assert(felinesMeow)
+                .Assert(tomMeows);
 
             var solver = Solver.NewSolver(knowledge, style);
             var result = await solver.Solve(houseCat.With(tom));
