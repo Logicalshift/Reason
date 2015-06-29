@@ -72,7 +72,7 @@ namespace LogicalShift.Reason.Solvers
                 if (firstSolvedIndex < 0)
                 {
                     // The goal is not solvable
-                    return new BasicQueryResult(false);
+                    return new BasicQueryResult(false, null);
                 }
 
                 // This element is no longer unsolved
@@ -87,7 +87,7 @@ namespace LogicalShift.Reason.Solvers
                     if (!remainingGoals.Any())
                     {
                         // If all the goals are solved, we're finished
-                        return new BasicQueryResult(true);
+                        return new BasicQueryResult(true, null);
                     }
                 }
             }

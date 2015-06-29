@@ -37,55 +37,81 @@ namespace LogicalShift.Reason.Solvers
             // Try each goal in turn
             foreach (var goal in goals)
             {
-                var result = await SolveGoal(goal);
+                var result = await SolveGoal(goal, null);
 
                 if (!result.Success)
                 {
-                    return new BasicQueryResult(false);
+                    return new BasicQueryResult(false, null);
                 }
             }
 
             // Result is successful if all the goals could be resolved
-            return new BasicQueryResult(true);
+            return new BasicQueryResult(true, null);
+        }
+
+        /// <summary>
+        /// Finds the solutions for a goal when applied against a particular clause (returns null if there are
+        /// no solutions)
+        /// </summary>
+        private async Task<IQueryResult> SolveClause(ILiteral goal, IClause clause, IBindings inputBindings)
+        {
+            // Create the initial set of bindings from the clause
+            var bindings = goal.Unify(clause.Implies, inputBindings);
+
+            // Can't solve this clause if we can't unify
+            if (bindings == null)
+            {
+                return null;
+            }
+
+            // Bind to the predicates
+            foreach (var predicate in clause.If)
+            {
+                // Solve the new goal
+                var solved = await SolveGoal(predicate, bindings);
+                if (solved == null || !solved.Success)
+                {
+                    return null;
+                }
+
+                // Update the bindings to match the solution
+                bindings = solved.Bindings;
+
+                // TODO: if there are more results in the IQueryResult object, add extra solutions that continue with them
+            }
+
+            // Success
+            return new BasicQueryResult(true, bindings);
         }
 
         /// <summary>
         /// Attempts to solve for a single goal
         /// </summary>
-        private async Task<IQueryResult> SolveGoal(ILiteral goal)
+        private async Task<IQueryResult> SolveGoal(ILiteral goal, IBindings inputBindings)
         {
-            if (goal == null) new BasicQueryResult(false);
+            if (goal == null) new BasicQueryResult(false, null);
 
             // True is always true
             if (Equals(goal, TrueLiteral.Value))
             {
-                return new BasicQueryResult(true);
+                return new BasicQueryResult(true, new EmptyBinding(goal));
             }
 
             // Solve for this goal
             var clauseList = await _knowledge.CandidatesForLiteral(goal);
             foreach (var clause in clauseList)
             {
-                // If we can solve the entire 'if' side of this clause, then the goal is true
-                bool solved = true;
-                foreach (var ifGoal in clause.If)
-                {
-                    var solution = await SolveGoal(ifGoal);
-                    if (!solution.Success)
-                    {
-                        solved = false;
-                        break;
-                    }
-                }
+                var solved = await SolveClause(goal, clause, inputBindings);
 
-                if (solved)
+                if (solved != null && solved.Success)
                 {
-                    return new BasicQueryResult(true);
+                    return solved;
+                    // TODO: continue with other clauses?
                 }
             }
 
             // None of the goals worked out
-            return new BasicQueryResult(false);
+            return new BasicQueryResult(false, null);
         }
     }
 }
