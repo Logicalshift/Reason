@@ -82,7 +82,6 @@ namespace LogicalShift.Reason.Tests
 
             Assert.IsNotNull(unified);
             Assert.IsTrue(aOfX.Equals(unified.Result));
-            Assert.AreEqual(aX, unified.GetValueForVariable(vY));
         }
 
         [Test]
@@ -134,7 +133,6 @@ namespace LogicalShift.Reason.Tests
             var unified = aOfY.Unify(aOfX, bindings);
 
             Assert.IsNotNull(unified);
-            Assert.AreEqual(aX, unified.GetValueForVariable(vX));
             Assert.AreEqual(aX, unified.GetValueForVariable(vY));
         }
 
