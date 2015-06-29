@@ -13,7 +13,7 @@ namespace LogicalShift.Reason.Knowledge
     {
         private readonly IClause _clause;
         private readonly ListKnowledgeBase _next;
-        private Dictionary<ILiteral, IClause[]> _clausesForLiteral;
+        private Dictionary<ILiteral, IClause[]> _unificationCandidates;
 
         private ListKnowledgeBase(IClause ourClause, ListKnowledgeBase next)
         {
@@ -60,10 +60,11 @@ namespace LogicalShift.Reason.Knowledge
 
         private void FillClauseCache()
         {
-            if (_clausesForLiteral != null) return;
+            if (_unificationCandidates != null) return;
 
-            _clausesForLiteral = Clauses
-                .GroupBy(clause => clause.Implies)
+            _unificationCandidates = Clauses
+                .Where(clause => clause.Implies.UnificationKey != null)
+                .GroupBy(clause => clause.Implies.UnificationKey)
                 .ToDictionary(group => group.Key, group => group.ToArray());
         }
 
@@ -74,11 +75,21 @@ namespace LogicalShift.Reason.Knowledge
 
         public Task<IEnumerable<IClause>> CandidatesForLiteral(ILiteral literal)
         {
+            if (literal == null) throw new ArgumentNullException("literal");
+
+            // Index by unification key
             FillClauseCache();
 
+            // Result is all clauses if there is no unification key
+            if (literal.UnificationKey == null)
+            {
+                return Task.FromResult(Clauses);
+            }
+
+            // Result is the clauses for this value's unification key
             IClause[] result;
 
-            if (!_clausesForLiteral.TryGetValue(literal, out result))
+            if (!_unificationCandidates.TryGetValue(literal.UnificationKey, out result))
             {
                 result = new IClause[0];
             }
