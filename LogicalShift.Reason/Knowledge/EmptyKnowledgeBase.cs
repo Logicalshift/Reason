@@ -15,7 +15,7 @@ namespace LogicalShift.Reason.Knowledge
             get { yield break; }
         }
 
-        public Task<IEnumerable<IClause>> ClausesForLiteral(ILiteral literal)
+        public Task<IEnumerable<IClause>> CandidatesForLiteral(ILiteral literal)
         {
             return Task.FromResult<IEnumerable<IClause>>(new IClause[0]);
         }

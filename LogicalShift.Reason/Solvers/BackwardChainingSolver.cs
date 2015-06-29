@@ -63,7 +63,7 @@ namespace LogicalShift.Reason.Solvers
             }
 
             // Solve for this goal
-            var clauseList = await _knowledge.ClausesForLiteral(goal);
+            var clauseList = await _knowledge.CandidatesForLiteral(goal);
             foreach (var clause in clauseList)
             {
                 // If we can solve the entire 'if' side of this clause, then the goal is true

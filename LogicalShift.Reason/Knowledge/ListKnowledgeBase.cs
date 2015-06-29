@@ -72,7 +72,7 @@ namespace LogicalShift.Reason.Knowledge
             return Task.FromResult(Clauses);
         }
 
-        public Task<IEnumerable<IClause>> ClausesForLiteral(ILiteral literal)
+        public Task<IEnumerable<IClause>> CandidatesForLiteral(ILiteral literal)
         {
             FillClauseCache();
 

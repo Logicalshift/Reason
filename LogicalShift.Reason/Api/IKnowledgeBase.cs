@@ -15,8 +15,8 @@ namespace LogicalShift.Reason.Api
         Task<IEnumerable<IClause>> GetClauses();
 
         /// <summary>
-        /// Retrieves the clauses that resolve to a particular literal (an empty list if there are none)
+        /// Retrieves the clauses that may unify with a particular literal
         /// </summary>
-        Task<IEnumerable<IClause>> ClausesForLiteral(ILiteral literal);
+        Task<IEnumerable<IClause>> CandidatesForLiteral(ILiteral literal);
     }
 }
