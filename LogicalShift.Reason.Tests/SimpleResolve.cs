@@ -32,5 +32,41 @@ namespace LogicalShift.Reason.Tests
             var result = await solver.Solve(houseCat);
             Assert.IsTrue(result.Success);
         }
+
+        [Test]
+        [TestCase(SolverStyle.BackwardsChaining)]
+        /* [TestCase(SolverStyle.ForwardsChaining)] */ // TODO
+        public async Task ResolveAMoreComplicatedGoal(SolverStyle style)
+        {
+            var knowledge = KnowledgeBase.New();
+
+            var houseCat = Literal.NewFunctor(1);
+            var feline = Literal.NewFunctor(1);
+            var small = Literal.NewFunctor(1);
+            var meows = Literal.NewFunctor(1);
+            var tom = Literal.NewAtom();
+            var X = Literal.NewVariable();
+            var Y = Literal.NewVariable();
+
+            // houseCat(X) :- small(X), feline(X)
+            var houseCatsAreSmallFelines = Clause.If(feline.With(X), small.With(X)).Then(houseCat.With(X));
+            var felinesMeow = Clause.If(meows.With(Y)).Then(feline.With(Y));
+            var tomIsSmall = Clause.Always(small.With(tom));
+            var tomIsFeline = Clause.Always(feline.With(tom));
+            var tomMeows = Clause.Always(meows.With(tom));
+
+            knowledge = knowledge
+                .Assert(houseCatsAreSmallFelines)
+                .Assert(tomIsSmall)
+                .Assert(tomIsFeline);
+
+            var solver = Solver.NewSolver(knowledge, style);
+            var result = await solver.Solve(houseCat.With(tom));
+            Assert.IsTrue(result.Success);
+
+            var allCats = await solver.Solve(houseCat.With(X));
+            Assert.IsTrue(result.Success);
+            /* Assert.AreEqual(tom, allCats.Bindings.GetValueForVariable(X)); */ // TODO
+        }
     }
 }

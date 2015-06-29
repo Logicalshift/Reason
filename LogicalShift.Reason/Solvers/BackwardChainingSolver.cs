@@ -94,7 +94,7 @@ namespace LogicalShift.Reason.Solvers
             // True is always true
             if (Equals(goal, TrueLiteral.Value))
             {
-                return new BasicQueryResult(true, new EmptyBinding(goal));
+                return new BasicQueryResult(true, inputBindings ?? new EmptyBinding(goal));
             }
 
             // Solve for this goal
