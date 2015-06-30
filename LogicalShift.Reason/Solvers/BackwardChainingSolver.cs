@@ -1,6 +1,5 @@
 ﻿using LogicalShift.Reason.Api;
 using LogicalShift.Reason.Literals;
-using LogicalShift.Reason.Results;
 using LogicalShift.Reason.Unification;
 using System;
 using System.Collections.Generic;
@@ -47,6 +46,45 @@ namespace LogicalShift.Reason.Solvers
 
             // Result is successful if all the goals could be resolved
             return new BasicQueryResult(true, null);
+        }
+
+        /// <summary>
+        /// Function that returns the next result of a query, or the result of a function if the end of the chain is reached
+        /// </summary>
+        private async Task<IQueryResult> NextResult(IQueryResult lastResult, Func<Task<IQueryResult>> followingResult)
+        {
+            var nextResult = await lastResult.Next();
+            if (nextResult != null && nextResult.Success)
+            {
+                // Chain to the rest of lastResult first
+                return new ChainedResult(nextResult, () => NextResult(nextResult, followingResult));
+            }
+            else
+            {
+                // Otherwise, return whatever we got in the following result
+                return await followingResult();
+            }
+        }
+
+        /// <summary>
+        /// Tries a particular method to solve a query, then another, returning all results if both solve the query.
+        /// The results returned by firstThis will be used before the results in thenThat.
+        /// </summary>
+        private async Task<IQueryResult> TrySolve(Func<Task<IQueryResult>> firstThis, Func<Task<IQueryResult>> thenThat)
+        {
+            var firstResult = await firstThis();
+
+            if (firstResult != null && firstResult.Success)
+            {
+                // Return a result including all of the first result, then the contents of the second result
+                return new ChainedResult(firstResult, () => NextResult(firstResult, thenThat));
+            }
+            else
+            {
+                // Try the second result if the first is unsuccessful
+                var nextResult = await thenThat();
+                return nextResult;
+            }
         }
 
         /// <summary>

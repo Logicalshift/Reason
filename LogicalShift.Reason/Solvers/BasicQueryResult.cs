@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace LogicalShift.Reason.Results
+namespace LogicalShift.Reason.Solvers
 {
     /// <summary>
     /// Represents a simple succeeded/failed query result

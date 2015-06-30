@@ -69,10 +69,11 @@
     <Compile Include="Literals\UnboundFunctor.cs" />
     <Compile Include="Literals\Variable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Results\BasicQueryResult.cs" />
+    <Compile Include="Solvers\BasicQueryResult.cs" />
     <Compile Include="Solver.cs" />
     <Compile Include="SolverStyle.cs" />
     <Compile Include="Solvers\BackwardChainingSolver.cs" />
+    <Compile Include="Solvers\ChainedResult.cs" />
     <Compile Include="Solvers\ForwardChainingSolver.cs" />
     <Compile Include="Unification\BasicBinding.cs" />
     <Compile Include="Unification\EmptyBinding.cs" />
