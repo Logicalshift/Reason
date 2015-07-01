@@ -33,19 +33,23 @@ namespace LogicalShift.Reason.Solvers
         {
             if (goals == null) throw new ArgumentNullException("goals");
 
+            IBindings resultBindings = null;
+
             // Try each goal in turn
             foreach (var goal in goals)
             {
-                var result = await SolveGoal(goal, null);
+                var result = await SolveGoal(goal, resultBindings);
 
                 if (!result.Success)
                 {
                     return new BasicQueryResult(false, null);
                 }
+
+                resultBindings = result.Bindings;
             }
 
             // Result is successful if all the goals could be resolved
-            return new BasicQueryResult(true, null);
+            return new BasicQueryResult(true, resultBindings);
         }
 
         /// <summary>

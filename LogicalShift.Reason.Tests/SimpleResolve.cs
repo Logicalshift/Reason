@@ -66,7 +66,7 @@ namespace LogicalShift.Reason.Tests
 
             var allCats = await solver.Solve(houseCat.With(X));
             Assert.IsTrue(result.Success);
-            /* Assert.AreEqual(tom, allCats.Bindings.GetValueForVariable(X)); */ // TODO
+            Assert.AreEqual(tom, allCats.Bindings.GetValueForVariable(X));
         }
     }
 }
