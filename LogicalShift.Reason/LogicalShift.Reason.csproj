@@ -46,6 +46,7 @@
     <Compile Include="Api\IClause.cs" />
     <Compile Include="Api\IKnowledgeBase.cs" />
     <Compile Include="Api\ILiteral.cs" />
+    <Compile Include="Api\IMutableLiteral.cs" />
     <Compile Include="Api\IProgramUnifier.cs" />
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Api\IQueryUnifier.cs" />
