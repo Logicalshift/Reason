@@ -46,7 +46,7 @@
     <Compile Include="Api\IClause.cs" />
     <Compile Include="Api\IKnowledgeBase.cs" />
     <Compile Include="Api\ILiteral.cs" />
-    <Compile Include="Api\IMutableLiteral.cs" />
+    <Compile Include="Api\IReferenceLiteral.cs" />
     <Compile Include="Api\IProgramUnifier.cs" />
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Api\IQueryUnifier.cs" />
@@ -76,10 +76,12 @@
     <Compile Include="Solvers\BackwardChainingSolver.cs" />
     <Compile Include="Solvers\ChainedResult.cs" />
     <Compile Include="Solvers\ForwardChainingSolver.cs" />
+    <Compile Include="Unification\ArgumentReference.cs" />
     <Compile Include="Unification\BasicBinding.cs" />
     <Compile Include="Unification\EmptyBinding.cs" />
     <Compile Include="Unification\HeapEntryType.cs" />
     <Compile Include="Unification\HeapValue.cs" />
+    <Compile Include="Unification\SimpleReference.cs" />
     <Compile Include="Unification\SimpleUnifier.cs" />
     <Compile Include="Unification\TraceUnifier.cs" />
     <Compile Include="Unification\UnificationStore.cs" />

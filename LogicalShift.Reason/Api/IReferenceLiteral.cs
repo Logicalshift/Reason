@@ -26,10 +26,5 @@
         /// Sets the value of Term and Reference to the same values as the supplied reference literal
         /// </summary>
         void SetTo(IReferenceLiteral value);
-
-        /// <summary>
-        /// Freezes this reference into a normal literal
-        /// </summary>
-        ILiteral Freeze { get; }
     }
 }
