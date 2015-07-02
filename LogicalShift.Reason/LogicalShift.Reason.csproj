@@ -79,13 +79,10 @@
     <Compile Include="Unification\ArgumentReference.cs" />
     <Compile Include="Unification\BasicBinding.cs" />
     <Compile Include="Unification\EmptyBinding.cs" />
-    <Compile Include="Unification\HeapEntryType.cs" />
-    <Compile Include="Unification\HeapValue.cs" />
     <Compile Include="Unification\ReferenceLiterals.cs" />
     <Compile Include="Unification\SimpleReference.cs" />
     <Compile Include="Unification\SimpleUnifier.cs" />
     <Compile Include="Unification\TraceUnifier.cs" />
-    <Compile Include="Unification\UnificationStore.cs" />
     <Compile Include="BasicUnification.cs" />
     <Compile Include="Assignment\VariableAssignment.cs" />
   </ItemGroup>
