@@ -55,7 +55,7 @@ namespace LogicalShift.Reason.Unification
                 var arguments = new List<ILiteral>();
 
                 // Freeze the arguments
-                for (var structurePtr = literal.Reference; structurePtr != null; structurePtr = structurePtr.NextArgument)
+                for (var structurePtr = deref.Reference; structurePtr != null; structurePtr = structurePtr.NextArgument)
                 {
                     arguments.Add(structurePtr.Freeze());
                 }
