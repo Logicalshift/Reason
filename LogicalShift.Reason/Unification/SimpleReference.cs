@@ -25,8 +25,6 @@ namespace LogicalShift.Reason.Unification
 
         public SimpleReference(ILiteral term, IReferenceLiteral referenceToFirstArgument)
         {
-            if (referenceToFirstArgument == null) referenceToFirstArgument = this;
-
             Term = term;
             Reference = referenceToFirstArgument;
         }

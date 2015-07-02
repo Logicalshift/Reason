@@ -236,8 +236,7 @@ namespace LogicalShift.Reason.Unification
                             var structurePos1 = value1.Reference;
                             var structurePos2 = value2.Reference;
 
-                            // Don't push the very last argument in the list (as we generate an extra one)
-                            while (structurePos1.NextArgument != null)
+                            while (structurePos1 != null)
                             {
                                 unifyStack.Push(structurePos1);
                                 unifyStack.Push(structurePos2);
