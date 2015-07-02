@@ -75,7 +75,7 @@ namespace LogicalShift.Reason.Unification
 
             for (int argNum = 0; argNum < termLength; ++argNum)
             {
-                var newArgument = new ArgumentReference(firstArgument);
+                var newArgument = new ArgumentReference(null, firstArgument);
                 firstArgument = newArgument;
             }
 
@@ -140,7 +140,7 @@ namespace LogicalShift.Reason.Unification
 
                 for (int argNum = 0; argNum < termLength; ++argNum)
                 {
-                    var newArgument = new ArgumentReference(firstArgument);
+                    var newArgument = new ArgumentReference(null, firstArgument);
                     firstArgument = newArgument;
                 }
 
