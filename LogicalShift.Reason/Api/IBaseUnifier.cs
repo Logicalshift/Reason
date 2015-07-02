@@ -11,8 +11,8 @@
         bool HasVariable(ILiteral variable);
 
         /// <summary>
-        /// Binds a variable to a literal name
+        /// Binds a variable index to a name
         /// </summary>
-        void BindVariable(ILiteral variable, ILiteral name);
+        void BindVariable(int index, ILiteral variable);
     }
 }

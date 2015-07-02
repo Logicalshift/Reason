@@ -22,6 +22,11 @@ namespace LogicalShift.Reason.Unification
         private readonly Dictionary<ILiteral, IReferenceLiteral> _addressForName = new Dictionary<ILiteral, IReferenceLiteral>();
 
         /// <summary>
+        /// Variables in order
+        /// </summary>
+        private readonly List<IReferenceLiteral> _variables = new List<IReferenceLiteral>();
+
+        /// <summary>
         /// True if running a program in write mode, false otherwise
         /// </summary>
         bool _writeMode = false;
@@ -50,15 +55,14 @@ namespace LogicalShift.Reason.Unification
             return _usedVariables.Contains(name);
         }
 
-        public void BindVariable(ILiteral variable, ILiteral name)
+        public void BindVariable(int index, ILiteral variableName)
         {
-            IReferenceLiteral newValue;
-            if (!_addressForName.TryGetValue(variable, out newValue))
+            while (_variables.Count <= index)
             {
-                newValue = new SimpleReference();
+                _variables.Add(new SimpleReference());
             }
 
-            _addressForName[name] = _addressForName[variable] = newValue;
+            _addressForName[variableName] = _variables[index];
         }
 
         public void PutStructure(ILiteral termName, int termLength, ILiteral variable)

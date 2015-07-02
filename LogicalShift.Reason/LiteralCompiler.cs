@@ -20,6 +20,7 @@ namespace LogicalShift.Reason
         public static IEnumerable<ILiteral> Bind(this IBaseUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
         {
             var freeVariables = new List<ILiteral>();
+            var index = 0;
 
             foreach (var assign in assignments)
             {
@@ -27,13 +28,17 @@ namespace LogicalShift.Reason
                 {
                     // Values without a unification key are free variables (they can have any value)
                     freeVariables.Add(assign.Value);
-                    unifier.BindVariable(assign.Variable, assign.Value);
+                    unifier.BindVariable(index, assign.Value);
+                    unifier.BindVariable(index, assign.Variable);
                 }
                 else
                 {
                     // Values with a unification key are not free
-                    unifier.BindVariable(assign.Variable, assign.Value.UnificationKey);
+                    unifier.BindVariable(index, assign.Value.UnificationKey);
+                    unifier.BindVariable(index, assign.Variable);
                 }
+
+                ++index;
             }
 
             return freeVariables;

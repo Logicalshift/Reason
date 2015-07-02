@@ -146,13 +146,13 @@ namespace LogicalShift.Reason.Tests
             var p3 = new UnboundFunctor(3);
             var a0 = new UnboundFunctor(0);
 
-            unifier.BindVariable(X[1], X[1]);
-            unifier.BindVariable(X[2], X[2]);
-            unifier.BindVariable(X[3], X[3]);
-            unifier.BindVariable(X[4], X[4]);
-            unifier.BindVariable(X[5], X[5]);
-            unifier.BindVariable(X[6], X[6]);
-            unifier.BindVariable(X[7], X[7]);
+            unifier.BindVariable(0, X[1]);
+            unifier.BindVariable(1, X[2]);
+            unifier.BindVariable(2, X[3]);
+            unifier.BindVariable(3, X[4]);
+            unifier.BindVariable(4, X[5]);
+            unifier.BindVariable(5, X[6]);
+            unifier.BindVariable(6, X[7]);
 
             unifier.PutStructure(h2, 2, X[3]);
             unifier.SetVariable(X[2]);
