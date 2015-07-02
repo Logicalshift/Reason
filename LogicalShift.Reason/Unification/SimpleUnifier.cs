@@ -136,9 +136,17 @@ namespace LogicalShift.Reason.Unification
             if (heapValue.IsVariable())
             {
                 // Variable is an unbound ref cell: bind it to a new value that we create
-                var firstArgument = new ArgumentReference(null);
+                ArgumentReference firstArgument = null;
+
+                for (int argNum = 0; argNum < termLength; ++argNum)
+                {
+                    var newArgument = new ArgumentReference(firstArgument);
+                    firstArgument = newArgument;
+                }
+
                 var newStructure = new SimpleReference(termName, firstArgument);
                 _lastArgument = firstArgument;
+                _structurePtr = firstArgument;
 
                 Bind(heapValue, newStructure);
                 _writeMode = true;
