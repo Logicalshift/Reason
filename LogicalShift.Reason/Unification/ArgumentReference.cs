@@ -39,7 +39,7 @@ namespace LogicalShift.Reason.Unification
 
         public ArgumentReference NextArgument
         {
-            get; set;
+            get; private set;
         }
 
         IReferenceLiteral IReferenceLiteral.NextArgument

@@ -67,7 +67,14 @@ namespace LogicalShift.Reason.Unification
             _usedVariables.Add(variable);
 
             // Create the structure
-            var firstArgument = new ArgumentReference(null);
+            ArgumentReference firstArgument = null;
+
+            for (int argNum = 0; argNum < termLength; ++argNum)
+            {
+                var newArgument = new ArgumentReference(firstArgument);
+                firstArgument = newArgument;
+            }
+
             var structure = new SimpleReference(termName, firstArgument);
 
             _lastArgument = firstArgument;
@@ -89,12 +96,7 @@ namespace LogicalShift.Reason.Unification
             {
                 // The last argument is the reference
                 newReference = _lastArgument;
-
-                // Create a new last argument
-                // (This ends up creating one more argument than is strictly necessary)
-                var nextArgument = new ArgumentReference(null);
-                _lastArgument.NextArgument = nextArgument;
-                _lastArgument = nextArgument;
+                _lastArgument = _lastArgument.NextArgument;
             }
             else
             {
@@ -114,11 +116,7 @@ namespace LogicalShift.Reason.Unification
             if (_lastArgument != null)
             {
                 _lastArgument.SetTo(variableValue);
-
-                // Create a new last argument
-                var nextArgument = new ArgumentReference(null);
-                _lastArgument.NextArgument = nextArgument;
-                _lastArgument = nextArgument;
+                _lastArgument = _lastArgument.NextArgument;
             }
         }
 
@@ -176,10 +174,7 @@ namespace LogicalShift.Reason.Unification
             {
                 // Write the value of the variable
                 _addressForName[variable].SetTo(_lastArgument);
-
-                var nextArgument = new ArgumentReference(null);
-                _lastArgument.NextArgument = nextArgument;
-                _lastArgument = nextArgument;
+                _lastArgument = _lastArgument.NextArgument;
             }
 
             _structurePtr = _structurePtr.NextArgument;
@@ -194,10 +189,7 @@ namespace LogicalShift.Reason.Unification
             else
             {
                 _lastArgument.SetTo(_addressForName[variable]);
-
-                var nextArgument = new ArgumentReference(null);
-                _lastArgument.NextArgument = nextArgument;
-                _lastArgument = nextArgument;
+                _lastArgument = _lastArgument.NextArgument;
             }
 
             _structurePtr = _structurePtr.NextArgument;
