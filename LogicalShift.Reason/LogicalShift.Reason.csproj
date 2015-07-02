@@ -81,6 +81,7 @@
     <Compile Include="Unification\EmptyBinding.cs" />
     <Compile Include="Unification\HeapEntryType.cs" />
     <Compile Include="Unification\HeapValue.cs" />
+    <Compile Include="Unification\ReferenceLiterals.cs" />
     <Compile Include="Unification\SimpleReference.cs" />
     <Compile Include="Unification\SimpleUnifier.cs" />
     <Compile Include="Unification\TraceUnifier.cs" />

@@ -18,7 +18,7 @@ namespace LogicalShift.Reason.Unification
             NextArgument = null;
         }
 
-        public ArgumentReference(IReferenceLiteral value, IReferenceLiteral nextArgument)
+        public ArgumentReference(IReferenceLiteral value, ArgumentReference nextArgument)
         {
             if (value == null) value = this;
 
@@ -37,9 +37,14 @@ namespace LogicalShift.Reason.Unification
             get; private set;
         }
 
-        public IReferenceLiteral NextArgument
+        public ArgumentReference NextArgument
         {
-            get; private set;
+            get; set;
+        }
+
+        IReferenceLiteral IReferenceLiteral.NextArgument
+        {
+            get { return NextArgument; }
         }
 
         public void SetTo(IReferenceLiteral value)

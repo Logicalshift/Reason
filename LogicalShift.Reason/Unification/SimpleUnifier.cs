@@ -19,12 +19,7 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Returns the names assigned to particular variables
         /// </summary>
-        private readonly Dictionary<ILiteral, int> _addressForName = new Dictionary<ILiteral, int>();
-
-        /// <summary>
-        /// Stores variables and heap values
-        /// </summary>
-        private readonly UnificationStore _store = new UnificationStore();
+        private readonly Dictionary<ILiteral, IReferenceLiteral> _addressForName = new Dictionary<ILiteral, IReferenceLiteral>();
 
         /// <summary>
         /// True if running a program in write mode, false otherwise
@@ -34,7 +29,12 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Pointer to the next value within the current structure
         /// </summary>
-        private int _structurePtr = 0;
+        private IReferenceLiteral _structurePtr = null;
+
+        /// <summary>
+        /// Pointer to the last built argument
+        /// </summary>
+        private ArgumentReference _lastArgument = null;
 
         /// <summary>
         /// Prepares to run a new program unifier using this object
@@ -42,8 +42,7 @@ namespace LogicalShift.Reason.Unification
         public void PrepareToRunProgram()
         {
             _usedVariables.Clear();
-            _store.ResetVariableAssignments();
-            _structurePtr = 0;
+            _structurePtr = null;
         }
 
         public bool HasVariable(ILiteral name)
@@ -53,8 +52,13 @@ namespace LogicalShift.Reason.Unification
 
         public void BindVariable(ILiteral variable, ILiteral name)
         {
-            var address = _store.AddressForVariable(variable);
-            _addressForName[name] = address;
+            IReferenceLiteral newValue;
+            if (!_addressForName.TryGetValue(variable, out newValue))
+            {
+                newValue = new SimpleReference();
+            }
+
+            _addressForName[name] = _addressForName[variable] = newValue;
         }
 
         public void PutStructure(ILiteral termName, int termLength, ILiteral variable)
@@ -62,13 +66,14 @@ namespace LogicalShift.Reason.Unification
             // Mark this variable as used
             _usedVariables.Add(variable);
 
-            // Push to the heap
-            var offset = _store.HeapLength;
-            _store.PushHeap(new HeapValue() { EntryType = HeapEntryType.Structure, Offset = offset + 1 });
-            _store.PushHeap(new HeapValue() { EntryType = HeapEntryType.Term, Offset = termLength, Value = termName });
+            // Create the structure
+            var firstArgument = new ArgumentReference(null);
+            var structure = new SimpleReference(termName, firstArgument);
+
+            _lastArgument = firstArgument;
 
             // Store in the variable
-            _store.WriteVariable(variable, _store.Read(offset));
+            _addressForName[variable].SetTo(structure);
         }
 
         public void SetVariable(ILiteral variable)
@@ -76,18 +81,45 @@ namespace LogicalShift.Reason.Unification
             // Mark the variable as used
             _usedVariables.Add(variable);
 
-            // Push to the heap
-            var offset = _store.HeapLength;
-            _store.PushHeap(new HeapValue() { EntryType = HeapEntryType.Reference, Offset = offset });
+            // Create a new reference
+            IReferenceLiteral newReference;
+
+            // Add to the current structure
+            if (_lastArgument != null)
+            {
+                // The last argument is the reference
+                newReference = _lastArgument;
+
+                // Create a new last argument
+                // (This ends up creating one more argument than is strictly necessary)
+                var nextArgument = new ArgumentReference(null);
+                _lastArgument.NextArgument = nextArgument;
+                _lastArgument = nextArgument;
+            }
+            else
+            {
+                newReference = new SimpleReference();
+            }
 
             // Store in the variable
-            _store.WriteVariable(variable, _store.Read(offset));
+            _addressForName[variable].SetTo(newReference);
         }
 
         public void SetValue(ILiteral variable)
         {
-            // Push the variable value to the heap
-            _store.PushHeap(_store.ReadVariable(variable));
+            // Read the variable
+            var variableValue = _addressForName[variable];
+            
+            // Store to the current structure
+            if (_lastArgument != null)
+            {
+                _lastArgument.SetTo(variableValue);
+
+                // Create a new last argument
+                var nextArgument = new ArgumentReference(null);
+                _lastArgument.NextArgument = nextArgument;
+                _lastArgument = nextArgument;
+            }
         }
 
         public void GetStructure(ILiteral termName, int termLength, ILiteral variable)
@@ -96,26 +128,25 @@ namespace LogicalShift.Reason.Unification
             _usedVariables.Add(variable);
 
             // Get the dereferenced address of the variable
-            var dereferencedAddress = _store.Dereference(_store.AddressForVariable(variable));
+            var heapValue = _addressForName[variable].Dereference();
 
             // Action depends on what's at that address
-            var heapValue = _store.Read(dereferencedAddress);
-
-            if (heapValue.EntryType == HeapEntryType.Reference && heapValue.Offset == dereferencedAddress)
+            if (heapValue.IsVariable())
             {
                 // Variable is an unbound ref cell: bind it to a new value that we create
-                var offset = _store.HeapLength;
-                _store.PushHeap(new HeapValue { EntryType = HeapEntryType.Structure, Offset = offset + 1 });
-                _store.PushHeap(new HeapValue { EntryType = HeapEntryType.Term, Value = termName, Offset = termLength });
-                Bind(dereferencedAddress, offset);
+                var firstArgument = new ArgumentReference(null);
+                var newStructure = new SimpleReference(termName, firstArgument);
+                _lastArgument = firstArgument;
+
+                Bind(heapValue, newStructure);
                 _writeMode = true;
             }
-            else if (heapValue.EntryType == HeapEntryType.Structure)
+            else if (!heapValue.IsReference())
             {
-                if (Equals(_store.Read(heapValue.Offset).Value, termName))
+                if (Equals(heapValue.Term, termName))
                 {
                     // Set the structure pointer, and use read mode
-                    _structurePtr = heapValue.Offset + 1;
+                    _structurePtr = heapValue.Reference;
                     _writeMode = false;
                 }
                 else
@@ -139,47 +170,53 @@ namespace LogicalShift.Reason.Unification
             if (!_writeMode)
             {
                 // Just read the value of the variable
-                _store.WriteVariable(variable, _store.Read(_structurePtr));
+                _addressForName[variable].SetTo(_structurePtr);
             }
             else
             {
                 // Write the value of the variable
-                var offset = _store.HeapLength;
-                _store.PushHeap(new HeapValue { EntryType = HeapEntryType.Reference, Offset = offset });
-                _store.WriteVariable(variable, _store.Read(offset));
+                _addressForName[variable].SetTo(_lastArgument);
+
+                var nextArgument = new ArgumentReference(null);
+                _lastArgument.NextArgument = nextArgument;
+                _lastArgument = nextArgument;
             }
 
-            ++_structurePtr;
+            _structurePtr = _structurePtr.NextArgument;
         }
 
         public void UnifyValue(ILiteral variable)
         {
             if (!_writeMode)
             {
-                Unify(_store.AddressForVariable(variable), _structurePtr);
+                Unify(_addressForName[variable], _structurePtr);
             }
             else
             {
-                _store.PushHeap(_store.ReadVariable(variable));
+                _lastArgument.SetTo(_addressForName[variable]);
+
+                var nextArgument = new ArgumentReference(null);
+                _lastArgument.NextArgument = nextArgument;
+                _lastArgument = nextArgument;
             }
 
-            ++_structurePtr;
+            _structurePtr = _structurePtr.NextArgument;
         }
 
         /// <summary>
         /// Binds a value to the heap
         /// </summary>
-        private void Bind(int address, int offset)
+        private void Bind(IReferenceLiteral target, IReferenceLiteral value)
         {
-            _store.Write(address, new HeapValue { EntryType = HeapEntryType.Reference, Offset = offset });
+            target.SetTo(value);
         }
 
         /// <summary>
         /// Unifies a value on the heap
         /// </summary>
-        private void Unify(int address1, int address2)
+        private void Unify(IReferenceLiteral address1, IReferenceLiteral address2)
         {
-            var unifyStack = new Stack<int>();
+            var unifyStack = new Stack<IReferenceLiteral>();
 
             // Push the addresses that we're going to unify
             unifyStack.Push(address1);
@@ -189,31 +226,32 @@ namespace LogicalShift.Reason.Unification
             while (unifyStack.Count > 0)
             {
                 // Deref the values on the stack
-                var offset1 = _store.Dereference(unifyStack.Pop());
-                var offset2 = _store.Dereference(unifyStack.Pop());
+                var value1 = unifyStack.Pop().Dereference();
+                var value2 = unifyStack.Pop().Dereference();
 
-                if (offset1 != offset2)
+                if (!ReferenceEquals(value1, value2))
                 {
-                    var value1 = _store.Read(offset1);
-                    var value2 = _store.Read(offset2);
-
-                    if (value1.EntryType == HeapEntryType.Reference || value2.EntryType == HeapEntryType.Reference)
+                    if (value1.IsReference() || value2.IsReference())
                     {
                         // Bind references
-                        Bind(offset1, offset2);
+                        Bind(value1, value2);
                     }
                     else
                     {
-                        var structure1 = _store.Read(value1.Offset);
-                        var structure2 = _store.Read(value2.Offset);
-
-                        if (Equals(structure1.Value, structure2.Value) && structure1.Offset == structure2.Offset)
+                        if (Equals(value1.Term, value2.Term))
                         {
                             // Process the rest of the structure
-                            for (var structurePos = 1; structurePos <= structure1.Offset; ++structurePos)
+                            var structurePos1 = value1.Reference;
+                            var structurePos2 = value2.Reference;
+
+                            // Don't push the very last argument in the list (as we generate an extra one)
+                            while (structurePos1.NextArgument != null)
                             {
-                                unifyStack.Push(value1.Offset + structurePos);
-                                unifyStack.Push(value2.Offset + structurePos);
+                                unifyStack.Push(structurePos1);
+                                unifyStack.Push(structurePos2);
+
+                                structurePos1 = structurePos1.NextArgument;
+                                structurePos2 = structurePos2.NextArgument;
                             }
                         }
                         else
@@ -236,60 +274,9 @@ namespace LogicalShift.Reason.Unification
             get { return this; }
         }
 
-        /// <summary>
-        /// Returns the unified value at the specified address
-        /// </summary>
-        private ILiteral UnifiedValue(int address, ILiteral identifier)
-        {
-            // Dereference the address
-            address = _store.Dereference(address);
-
-            // Read the value
-            var value = _store.Read(address);
-
-            // Must be a structure
-            if (value.EntryType == HeapEntryType.Structure)
-            {
-                address = value.Offset;
-                value = _store.Read(address);
-            }
-
-            if (value.EntryType == HeapEntryType.Reference)
-            {
-                return new ReferenceVariable(identifier, value.Offset);
-            }
-            
-            if (value.EntryType != HeapEntryType.Term)
-            {
-                return null;
-            }
-
-            // Get the parameters
-            var buildUpon = value.Value;
-            var numParameters = value.Offset;
-
-            // Build the parameters
-            var unifiedParameters = new List<ILiteral>();
-
-            for (int parameterNum = 1; parameterNum <= numParameters; ++parameterNum)
-            {
-                unifiedParameters.Add(UnifiedValue(address + parameterNum, identifier));
-            }
-
-            // Result is null if any of the parameters can't be unified
-            if (unifiedParameters.Any(param => param == null))
-            {
-                return null;
-            }
-
-            // Build the result
-            return buildUpon.RebuildWithParameters(unifiedParameters);
-        }
-
         public ILiteral UnifiedValue(ILiteral name)
         {
-            return UnifiedValue(_addressForName[name], new BasicAtom());
+            return _addressForName[name].Freeze();
         }
-
     }
 }
