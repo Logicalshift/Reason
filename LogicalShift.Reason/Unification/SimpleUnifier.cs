@@ -124,6 +124,27 @@ namespace LogicalShift.Reason.Unification
             }
         }
 
+        public void PutVariable(ILiteral variable1, ILiteral variable2)
+        {
+            var newValue = new SimpleReference();
+
+            // Store in the variables
+            _addressForName[variable1].SetTo(newValue);
+            _addressForName[variable2].SetTo(newValue);
+
+            // Store to the current structure
+            if (_lastArgument != null)
+            {
+                _lastArgument.SetTo(newValue);
+                _lastArgument = _lastArgument.NextArgument;
+            }
+        }
+
+        public void PutValue(ILiteral variable1, ILiteral variable2)
+        {
+            _addressForName[variable2].SetTo(_addressForName[variable1]);
+        }
+
         public void GetStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             // This variable becomes used
@@ -205,6 +226,16 @@ namespace LogicalShift.Reason.Unification
             }
 
             _structurePtr = _structurePtr.NextArgument;
+        }
+
+        public void GetVariable(ILiteral variable1, ILiteral variable2)
+        {
+            _addressForName[variable1].SetTo(_addressForName[variable2]);
+        }
+
+        public void GetValue(ILiteral variable1, ILiteral variable2)
+        {
+            Unify(_addressForName[variable1], _addressForName[variable2]);
         }
 
         /// <summary>

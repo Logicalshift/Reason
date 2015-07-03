@@ -34,6 +34,18 @@ namespace LogicalShift.Reason.Unification
             _unifier.QueryUnifier.SetValue(variable);
         }
 
+        public void PutVariable(ILiteral variable1, ILiteral variable2)
+        {
+            Console.WriteLine("Q: put_variable {0}, {1}", variable1, variable2);
+            _unifier.QueryUnifier.PutVariable(variable1, variable2);
+        }
+
+        public void PutValue(ILiteral variable1, ILiteral variable2)
+        {
+            Console.WriteLine("Q: put_value {0}, {1}", variable1, variable2);
+            _unifier.QueryUnifier.PutValue(variable1, variable2);
+        }
+
         public bool HasVariable(ILiteral name)
         {
             // TODO: we really should choose the implementation based on the type of unifier that's being called
@@ -63,6 +75,18 @@ namespace LogicalShift.Reason.Unification
         {
             Console.WriteLine("P: unify_value {0}", variable);
             _unifier.ProgramUnifier.UnifyValue(variable);
+        }
+
+        public void GetVariable(ILiteral variable1, ILiteral variable2)
+        {
+            Console.WriteLine("P: get_variable {0}, {1}", variable1, variable2);
+            _unifier.ProgramUnifier.GetVariable(variable1, variable2);
+        }
+
+        public void GetValue(ILiteral variable1, ILiteral variable2)
+        {
+            Console.WriteLine("P: get_value {0}, {1}", variable1, variable2);
+            _unifier.ProgramUnifier.GetValue(variable1, variable2);
         }
 
         public IQueryUnifier QueryUnifier

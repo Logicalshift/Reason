@@ -19,5 +19,15 @@
         /// Writes the value of a variable to the heap
         /// </summary>
         void SetValue(ILiteral variable);
+
+        /// <summary>
+        /// Writes a variable literal to the heap and to two other variables
+        /// </summary>
+        void PutVariable(ILiteral variable1, ILiteral variable2);
+
+        /// <summary>
+        /// Sets the value of variable2 to the value of variable1
+        /// </summary>
+        void PutValue(ILiteral variable1, ILiteral variable2);
     }
 }

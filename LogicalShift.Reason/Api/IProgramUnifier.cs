@@ -19,5 +19,15 @@
         /// Unifies a variable that has been previously read
         /// </summary>
         void UnifyValue(ILiteral variable);
+
+        /// <summary>
+        /// Assigns variable2 to variable1
+        /// </summary>
+        void GetVariable(ILiteral variable1, ILiteral variable2);
+
+        /// <summary>
+        /// Unifies variable1 and variable2
+        /// </summary>
+        void GetValue(ILiteral variable1, ILiteral variable2);
     }
 }
