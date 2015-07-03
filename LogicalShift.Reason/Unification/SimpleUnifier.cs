@@ -281,5 +281,15 @@ namespace LogicalShift.Reason.Unification
         {
             return _addressForName[name].Freeze();
         }
+
+        public IReferenceLiteral GetVariable(int index)
+        {
+            while (_variables.Count < index)
+            {
+                _variables.Add(new SimpleReference());
+            }
+
+            return _variables[index];
+        }
     }
 }

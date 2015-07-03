@@ -79,5 +79,11 @@ namespace LogicalShift.Reason.Unification
         {
             return _unifier.UnifiedValue(variable);
         }
+
+        public IReferenceLiteral GetVariable(int index)
+        {
+            // TODO: need to separate out the program unifier from the query unifier
+            return _unifier.QueryUnifier.GetVariable(index);
+        }
     }
 }
