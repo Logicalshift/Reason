@@ -155,5 +155,10 @@ namespace LogicalShift.Reason.Solvers
             // None of the goals worked out
             return new BasicQueryResult(false, null);
         }
+
+        public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

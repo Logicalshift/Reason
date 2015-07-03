@@ -91,5 +91,10 @@ namespace LogicalShift.Reason.Solvers
                 }
             }
         }
+
+        public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
