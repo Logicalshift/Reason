@@ -16,8 +16,8 @@
         void BindVariable(int index, ILiteral variable);
 
         /// <summary>
-        /// Retrieves the variable at the specified index
+        /// Retrieves the variable associated with the specified name
         /// </summary>
-        IReferenceLiteral GetVariable(int index);
+        IReferenceLiteral GetVariable(ILiteral variable);
     }
 }

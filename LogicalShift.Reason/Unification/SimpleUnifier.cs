@@ -282,14 +282,9 @@ namespace LogicalShift.Reason.Unification
             return _addressForName[name].Freeze();
         }
 
-        public IReferenceLiteral GetVariable(int index)
+        public IReferenceLiteral GetVariable(ILiteral name)
         {
-            while (_variables.Count < index)
-            {
-                _variables.Add(new SimpleReference());
-            }
-
-            return _variables[index];
+            return _addressForName[name];
         }
     }
 }
