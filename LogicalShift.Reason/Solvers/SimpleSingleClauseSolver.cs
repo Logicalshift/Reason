@@ -24,6 +24,11 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         private readonly ISolver _subclauseSolver;
 
+        /// <summary>
+        /// The assignments for each predicate in the clause (starting with the 'Implies' predicate)
+        /// </summary>
+        private readonly List<List<IAssignmentLiteral>> _clauseAssignments;
+
         public SimpleSingleClauseSolver(IClause clause, ISolver subclauseSolver)
         {
             if (clause == null) throw new ArgumentNullException("clause");
@@ -31,6 +36,11 @@ namespace LogicalShift.Reason.Solvers
 
             _clause = clause;
             _subclauseSolver = subclauseSolver;
+
+            // Compile each part of the clause to its subclauses
+            _clauseAssignments = new[] { clause.Implies }.Concat(clause.If)
+                .Select(predicate => GetAssignmentsFromPredicate(predicate).Assignments.ToList())
+                .ToList();
         }
 
         /// <summary>
@@ -58,7 +68,38 @@ namespace LogicalShift.Reason.Solvers
 
         public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)
         {
-            throw new NotImplementedException();
+            // Assume that predicate is correct
+
+            // Load the arguments into a simple unifier
+            var unifier = new SimpleUnifier();
+            unifier.LoadArguments(arguments);
+
+            // Unify using the predicate
+            try
+            {
+                unifier.ProgramUnifier.Compile(_clauseAssignments[0]);
+            }
+            catch (InvalidOperationException)
+            {
+                // Fail if we can't unify
+                return () => false;
+            }
+
+            // Call using the clauses
+            foreach (var clause in _clauseAssignments.Skip(1))
+            {
+                throw new NotImplementedException();
+            }
+
+            // Success
+            // Return just a single value for now
+            // TODO: return other results
+            var count = 0;
+            return () =>
+                {
+                    ++count;
+                    return count == 1;
+                };
         }
     }
 }
