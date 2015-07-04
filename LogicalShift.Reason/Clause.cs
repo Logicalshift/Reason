@@ -38,7 +38,7 @@ namespace LogicalShift.Reason
         /// </summary>
         public static IClause Always(ILiteral always)
         {
-            return If(Literal.True()).Then(always);
+            return If().Then(always);
         }
     }
 }
