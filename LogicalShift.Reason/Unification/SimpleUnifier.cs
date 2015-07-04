@@ -74,6 +74,14 @@ namespace LogicalShift.Reason.Unification
             }
         }
 
+        /// <summary>
+        /// Reads the first count variables
+        /// </summary>
+        public IReferenceLiteral[] GetArgumentVariables(int count)
+        {
+            return _variables.Take(count).ToArray();
+        }
+
         public bool HasVariable(ILiteral name)
         {
             return _usedVariables.Contains(name);

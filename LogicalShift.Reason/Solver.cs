@@ -1,5 +1,6 @@
 ﻿using LogicalShift.Reason.Api;
 using LogicalShift.Reason.Solvers;
+using LogicalShift.Reason.Unification;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -47,6 +48,34 @@ namespace LogicalShift.Reason
             if (goals == null) throw new ArgumentNullException("goals");
 
             return solver.Solve((IEnumerable<ILiteral>) goals);
+        }
+
+        /// <summary>
+        /// Queries a solver for a goal
+        /// </summary>
+        public static Func<bool> Query(this ISolver solver, ILiteral goal)
+        {
+            // Result is false for something without a key
+            if (goal.UnificationKey == null)
+            {
+                return () => false;
+            }
+
+            // Compile the query
+            var unifier = new SimpleUnifier();
+            var assignments = new PredicateAssignmentList();
+
+            // Assume we have a basic predicate
+            foreach (var arg in goal.Dependencies)
+            {
+                assignments.AddArgument(arg);
+            }
+
+            // Run through the unifier
+            unifier.QueryUnifier.Compile(assignments.Assignments);
+
+            // Call via the solver
+            return solver.Call(goal.UnificationKey, unifier.GetArgumentVariables(assignments.CountArguments()));
         }
     }
 }
