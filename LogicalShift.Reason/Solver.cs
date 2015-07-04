@@ -72,6 +72,7 @@ namespace LogicalShift.Reason
             }
 
             // Run through the unifier
+            unifier.QueryUnifier.Bind(assignments.Assignments);
             unifier.QueryUnifier.Compile(assignments.Assignments);
 
             // Call via the solver

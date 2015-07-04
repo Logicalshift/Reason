@@ -77,6 +77,7 @@ namespace LogicalShift.Reason.Solvers
             // Unify using the predicate
             try
             {
+                unifier.ProgramUnifier.Bind(_clauseAssignments[0]);
                 unifier.ProgramUnifier.Compile(_clauseAssignments[0]);
             }
             catch (InvalidOperationException)

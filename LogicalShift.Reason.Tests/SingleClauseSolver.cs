@@ -13,10 +13,12 @@ namespace LogicalShift.Reason.Tests
         public void SolveAsSelf()
         {
             var a = Literal.NewAtom();
-            var clause = Clause.Always(a);
+            var b = Literal.NewAtom();
+            var fab = Literal.NewFunctor(2).With(a, b);
+            var clause = Clause.Always(fab);
             var solver = new SimpleSingleClauseSolver(clause, new NothingSolver());
 
-            Assert.IsTrue(solver.Query(a)());
+            Assert.IsTrue(solver.Query(fab)());
         }
     }
 }
