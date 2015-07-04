@@ -24,10 +24,17 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         private readonly ISolver _subclauseSolver;
 
+        private class AssignmentData
+        {
+            public ILiteral PredicateName { get; set; }
+            public int NumArguments { get; set; }
+            public IAssignmentLiteral[] Assignments { get; set; }
+        }
+
         /// <summary>
         /// The assignments for each predicate in the clause (starting with the 'Implies' predicate)
         /// </summary>
-        private readonly List<List<IAssignmentLiteral>> _clauseAssignments;
+        private readonly List<AssignmentData> _clauseAssignments;
 
         public SimpleSingleClauseSolver(IClause clause, ISolver subclauseSolver)
         {
@@ -39,7 +46,16 @@ namespace LogicalShift.Reason.Solvers
 
             // Compile each part of the clause to its subclauses
             _clauseAssignments = new[] { clause.Implies }.Concat(clause.If)
-                .Select(predicate => GetAssignmentsFromPredicate(predicate).Assignments.ToList())
+                .Select(predicate => 
+                {
+                    var assignments = GetAssignmentsFromPredicate(predicate);
+                    return new AssignmentData
+                    {
+                        PredicateName = predicate.UnificationKey,
+                        NumArguments = assignments.CountArguments(),
+                        Assignments = assignments.Assignments.ToArray()
+                    };
+                })
                 .ToList();
         }
 
@@ -77,8 +93,8 @@ namespace LogicalShift.Reason.Solvers
             // Unify using the predicate
             try
             {
-                unifier.ProgramUnifier.Bind(_clauseAssignments[0]);
-                unifier.ProgramUnifier.Compile(_clauseAssignments[0]);
+                unifier.ProgramUnifier.Bind(_clauseAssignments[0].Assignments);
+                unifier.ProgramUnifier.Compile(_clauseAssignments[0].Assignments);
             }
             catch (InvalidOperationException)
             {
@@ -89,7 +105,27 @@ namespace LogicalShift.Reason.Solvers
             // Call using the clauses
             foreach (var clause in _clauseAssignments.Skip(1))
             {
-                throw new NotImplementedException();
+                try
+                {
+                    // Put the arguments for this clause
+                    unifier.QueryUnifier.Bind(clause.Assignments);
+                    unifier.QueryUnifier.Compile(clause.Assignments);
+                }
+                catch (InvalidOperationException)
+                {
+                    // Failed to unify
+                    return () => false;
+                }
+
+                // Call the clause
+                var result = _subclauseSolver.Call(clause.PredicateName, unifier.GetArgumentVariables(clause.NumArguments))();
+
+                // Stop if the clause doesn't resolve correctly
+                if (!result)
+                {
+                    // Failed to resolve this clause
+                    return () => false;
+                }
             }
 
             // Success
