@@ -158,6 +158,9 @@ namespace LogicalShift.Reason.Unification
 
         public void PutVariable(ILiteral variable1, ILiteral variable2)
         {
+            _usedVariables.Add(variable1);
+            _usedVariables.Add(variable2);
+
             var newValue = new SimpleReference();
 
             // Store in the variables
@@ -262,6 +265,9 @@ namespace LogicalShift.Reason.Unification
 
         public void GetVariable(ILiteral variable1, ILiteral variable2)
         {
+            _usedVariables.Add(variable1);
+            _usedVariables.Add(variable2);
+
             _addressForName[variable1].SetTo(_addressForName[variable2]);
         }
 
