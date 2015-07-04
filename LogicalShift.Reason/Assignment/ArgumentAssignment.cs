@@ -83,7 +83,7 @@ namespace LogicalShift.Reason.Assignment
 
         public IAssignmentLiteral Remap(Func<ILiteral, ILiteral> valueForLiteral)
         {
-            return new VariableAssignment(valueForLiteral(_argument), valueForLiteral(_variable));
+            return new ArgumentAssignment(valueForLiteral(_argument), valueForLiteral(_variable));
         }
 
         public bool Equals(ILiteral other)
