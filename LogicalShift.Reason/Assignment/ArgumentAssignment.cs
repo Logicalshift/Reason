@@ -34,7 +34,7 @@ namespace LogicalShift.Reason.Assignment
 
         public void CompileQuery(IQueryUnifier query)
         {
-            if (query.HasVariable(_argument))
+            if (query.HasVariable(_variable))
             {
                 query.PutValue(_variable, _argument);
             }
@@ -46,7 +46,7 @@ namespace LogicalShift.Reason.Assignment
 
         public void CompileProgram(IProgramUnifier program)
         {
-            if (program.HasVariable(_argument))
+            if (program.HasVariable(_variable))
             {
                 program.GetValue(_variable, _argument);
             }
