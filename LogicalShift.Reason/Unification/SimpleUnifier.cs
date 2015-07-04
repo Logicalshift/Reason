@@ -50,6 +50,30 @@ namespace LogicalShift.Reason.Unification
             _structurePtr = null;
         }
 
+        /// <summary>
+        /// Loads the supplied arguments into the variables numbered 0 and up. This should
+        /// be called before <see cref="BindVariable"></see> (as it would otherwise detach
+        /// the variable binding)
+        /// </summary>
+        public void LoadArguments(IEnumerable<IReferenceLiteral> arguments)
+        {
+            int index = 0;
+
+            foreach (var argumentValue in arguments)
+            {
+                if (_variables.Count <= index)
+                {
+                    _variables.Add(argumentValue);
+                }
+                else
+                {
+                    _variables[index] = argumentValue;
+                }
+
+                ++index;
+            }
+        }
+
         public bool HasVariable(ILiteral name)
         {
             return _usedVariables.Contains(name);
