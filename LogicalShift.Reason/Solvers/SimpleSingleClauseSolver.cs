@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LogicalShift.Reason.Solvers
 {
@@ -29,7 +30,7 @@ namespace LogicalShift.Reason.Solvers
             _subclauseSolver = subclauseSolver;
         }
 
-        public System.Threading.Tasks.Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
+        public Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
         {
             throw new NotImplementedException();
         }

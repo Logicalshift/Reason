@@ -51,6 +51,7 @@
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Api\IQueryUnifier.cs" />
     <Compile Include="Api\IUnifier.cs" />
+    <Compile Include="Assignment\ArgumentAssignment.cs" />
     <Compile Include="Assignment\AssignmentEliminator.cs" />
     <Compile Include="Assignment\AssignmentOrderer.cs" />
     <Compile Include="Assignment\TermAssignment.cs" />
