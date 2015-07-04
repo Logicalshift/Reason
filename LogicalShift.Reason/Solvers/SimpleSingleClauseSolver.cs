@@ -1,4 +1,7 @@
 ﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Assignment;
+using LogicalShift.Reason.Literals;
+using LogicalShift.Reason.Unification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +31,24 @@ namespace LogicalShift.Reason.Solvers
 
             _clause = clause;
             _subclauseSolver = subclauseSolver;
+        }
+
+        /// <summary>
+        /// Retrieves an object representing the assignments for a particular literal when used as a predicate
+        /// </summary>
+        private PredicateAssignmentList GetAssignmentsFromPredicate(ILiteral predicate)
+        {
+            var result = new PredicateAssignmentList();
+
+            if (predicate.UnificationKey != null)
+            {
+                foreach (var argument in predicate.Dependencies)
+                {
+                    result.AddArgument(argument);
+                }
+            }
+
+            return result;
         }
 
         public Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
