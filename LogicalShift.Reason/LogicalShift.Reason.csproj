@@ -77,6 +77,7 @@
     <Compile Include="Solvers\BackwardChainingSolver.cs" />
     <Compile Include="Solvers\ChainedResult.cs" />
     <Compile Include="Solvers\ForwardChainingSolver.cs" />
+    <Compile Include="Solvers\PredicateAssignmentList.cs" />
     <Compile Include="Solvers\SimpleSingleClauseSolver.cs" />
     <Compile Include="Unification\ArgumentReference.cs" />
     <Compile Include="Unification\BasicBinding.cs" />
