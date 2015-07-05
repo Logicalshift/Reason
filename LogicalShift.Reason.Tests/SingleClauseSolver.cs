@@ -18,7 +18,7 @@ namespace LogicalShift.Reason.Tests
             var clause = Clause.Always(fab);
             var solver = new SimpleSingleClauseSolver(clause, new NothingSolver());
 
-            Assert.IsTrue(solver.Query(fab)());
+            Assert.IsTrue(solver.Query(fab).Success);
         }
 
         [Test]
@@ -33,7 +33,7 @@ namespace LogicalShift.Reason.Tests
             var clause = Clause.Always(fab);
             var solver = new SimpleSingleClauseSolver(clause, new NothingSolver());
 
-            Assert.IsTrue(solver.Query(fXb)());
+            Assert.IsTrue(solver.Query(fXb).Success);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace LogicalShift.Reason.Tests
             var clause = Clause.Always(gfab);
             var solver = new SimpleSingleClauseSolver(clause, new NothingSolver());
 
-            Assert.IsFalse(solver.Query(gfXX)());
+            Assert.IsFalse(solver.Query(gfXX).Success);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace LogicalShift.Reason.Tests
             var clause = Clause.Always(fab);
             var solver = new SimpleSingleClauseSolver(clause, new NothingSolver());
 
-            Assert.IsFalse(solver.Query(fXX)());
+            Assert.IsFalse(solver.Query(fXX).Success);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace LogicalShift.Reason.Tests
             var clause = Clause.Always(fab);
             var solver = new SimpleSingleClauseSolver(clause, new NothingSolver());
 
-            Assert.IsFalse(solver.Query(fac)());
+            Assert.IsFalse(solver.Query(fac).Success);
         }
     }
 }

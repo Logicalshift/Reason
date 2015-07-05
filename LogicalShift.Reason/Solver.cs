@@ -3,6 +3,7 @@ using LogicalShift.Reason.Solvers;
 using LogicalShift.Reason.Unification;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LogicalShift.Reason
@@ -53,12 +54,12 @@ namespace LogicalShift.Reason
         /// <summary>
         /// Queries a solver for a goal
         /// </summary>
-        public static Func<bool> Query(this ISolver solver, ILiteral goal)
+        public static IQueryResult Query(this ISolver solver, ILiteral goal)
         {
             // Result is false for something without a key
             if (goal.UnificationKey == null)
             {
-                return () => false;
+                return new BasicQueryResult(false, new EmptyBinding(null));
             }
 
             // Compile the query
@@ -72,11 +73,36 @@ namespace LogicalShift.Reason
             }
 
             // Run through the unifier
-            unifier.QueryUnifier.Bind(assignments.Assignments);
+            var freeVariableNames = unifier.QueryUnifier.Bind(assignments.Assignments);
+            var freeVariables = freeVariableNames.Select(variable => unifier.GetVariable(variable).Dereference());
             unifier.QueryUnifier.Compile(assignments.Assignments);
 
             // Call via the solver
-            return solver.Call(goal.UnificationKey, unifier.GetArgumentVariables(assignments.CountArguments()));
+            var moveNext = solver.Call(goal.UnificationKey, unifier.GetArgumentVariables(assignments.CountArguments()));
+
+            Func<IQueryResult> nextResult = () =>
+                {
+                    // Update the variables to the next result
+                    var succeeded = moveNext();
+
+                    // Nothing to do if we didn't succeed
+                    if (!succeeded)
+                    {
+                        return new BasicQueryResult(false, new EmptyBinding(null));
+                    }
+
+                    // Bind the variables
+                    var variableValues = freeVariables
+                        .Select(varRef => varRef.Freeze())
+                        .Zip(freeVariableNames, (value, name) => new { Value = value, Name = name }).ToArray();
+                    var binding = new BasicBinding(null, variableValues.ToDictionary(val => val.Name, val => val.Value));
+
+                    // Return the result
+                    return new BasicQueryResult(true, binding);
+                };
+
+            // Chain to produce the final result
+            return new ChainedResult(nextResult(), () => Task.FromResult(nextResult()));
         }
     }
 }

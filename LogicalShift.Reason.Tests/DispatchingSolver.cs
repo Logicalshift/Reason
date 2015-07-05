@@ -43,12 +43,12 @@ namespace LogicalShift.Reason.Tests
 
             // Tom is a housecat
             var result = solver.Query(houseCat.With(tom));
-            Assert.IsTrue(result());
-            Assert.IsFalse(result());
+            Assert.IsTrue(result.Success);
+            Assert.IsFalse((await result.Next()).Success);
 
             // Jerry is not a housecat
             result = solver.Query(houseCat.With(jerry));
-            Assert.IsFalse(result());
+            Assert.IsFalse(result.Success);
         }
     }
 }
