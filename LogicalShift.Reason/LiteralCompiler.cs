@@ -68,7 +68,10 @@ namespace LogicalShift.Reason
             }
 
             // Compile the result
-            unifier.Compile(assignments);
+            if (!unifier.Compile(assignments))
+            {
+                return null;
+            }
 
             return freeVariables;
         }
@@ -97,7 +100,10 @@ namespace LogicalShift.Reason
             }
 
             // Compile the result
-            unifier.Compile(assignments);
+            if (!unifier.Compile(assignments))
+            {
+                return null;
+            }
 
             return freeVariables;
         }
@@ -108,7 +114,7 @@ namespace LogicalShift.Reason
         /// <returns>
         /// The list of variables in the literal
         /// </returns>
-        public static void Compile(this IQueryUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
+        public static bool Compile(this IQueryUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
         {
             if (unifier == null) throw new ArgumentNullException("unifier");
             if (assignments == null) throw new ArgumentNullException("assignments");
@@ -116,8 +122,10 @@ namespace LogicalShift.Reason
             // Compile subterms to terms
             foreach (var assign in assignments.OrderTermsAfterSubterms())
             {
-                assign.CompileQuery(unifier);
+                if (!assign.CompileQuery(unifier)) return false;
             }
+
+            return true;
         }
 
         /// <summary>
@@ -126,7 +134,7 @@ namespace LogicalShift.Reason
         /// <returns>
         /// The list of variables in the literal
         /// </returns>
-        public static void Compile(this IProgramUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
+        public static bool Compile(this IProgramUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
         {
             if (unifier == null) throw new ArgumentNullException("unifier");
             if (assignments == null) throw new ArgumentNullException("assignments");
@@ -134,8 +142,10 @@ namespace LogicalShift.Reason
             // Compile subterms to terms
             foreach (var assign in assignments.OrderSubtermsAfterTerms())
             {
-                assign.CompileProgram(unifier);
+                if (!assign.CompileProgram(unifier)) return false;
             }
+
+            return true;
         }
     }
 }

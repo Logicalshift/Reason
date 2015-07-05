@@ -135,15 +135,9 @@ namespace LogicalShift.Reason.Solvers
                     unifier.PushTrail();
 
                     // Solve this clause
-                    try
+                    unifier.QueryUnifier.Bind(clause.Assignments);
+                    if (!unifier.QueryUnifier.Compile(clause.Assignments))
                     {
-                        // Put the arguments for this clause
-                        unifier.QueryUnifier.Bind(clause.Assignments);
-                        unifier.QueryUnifier.Compile(clause.Assignments);
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        // Failed to unify
                         return false;
                     }
 
@@ -170,12 +164,8 @@ namespace LogicalShift.Reason.Solvers
             unifier.LoadArguments(arguments);
 
             // Unify using the predicate
-            try
-            {
-                unifier.ProgramUnifier.Bind(_clauseAssignments[0].Assignments);
-                unifier.ProgramUnifier.Compile(_clauseAssignments[0].Assignments);
-            }
-            catch (InvalidOperationException)
+            unifier.ProgramUnifier.Bind(_clauseAssignments[0].Assignments);
+            if (!unifier.ProgramUnifier.Compile(_clauseAssignments[0].Assignments))
             {
                 // Fail if we can't unify
                 return () => false;

@@ -20,20 +20,15 @@ namespace LogicalShift.Reason
             var freeVariables = new HashSet<ILiteral>();
 
             // Run the unifier
-            try
-            {
-                var queryFreeVars = simpleUnifier.QueryUnifier.Compile(query, bindings);
-                simpleUnifier.PrepareToRunProgram();
-                simpleUnifier.ProgramUnifier.Compile(program, bindings);
+            var queryFreeVars = simpleUnifier.QueryUnifier.Compile(query, bindings);
+            if (queryFreeVars == null) return null;
 
-                freeVariables.UnionWith(queryFreeVars);
-            }
-            catch (InvalidOperationException)
-            {
-                // No results
-                // TODO: really should report failure in a better way
-                return null;
-            }
+            simpleUnifier.PrepareToRunProgram();
+            
+            var programFreeVars = simpleUnifier.ProgramUnifier.Compile(program, bindings);
+            if (programFreeVars == null) return null;
+
+            freeVariables.UnionWith(queryFreeVars);
 
             // Retrieve the unified value for the program
             var result = simpleUnifier.UnifiedValue(query.UnificationKey ?? query);

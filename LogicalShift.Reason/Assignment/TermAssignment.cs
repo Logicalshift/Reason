@@ -32,48 +32,52 @@ namespace LogicalShift.Reason.Assignment
             get { return _assignTo; }
         }
 
-        public void CompileQuery(IQueryUnifier query)
+        public bool CompileQuery(IQueryUnifier query)
         {
             // The dependencies of the assignTo value indicate the parameters of this term
             var terms = _assignTo.Dependencies.ToArray();
 
             // Put the structure
-            query.PutStructure(_assignTo.UnificationKey, terms.Length, _target);
+            if (!query.PutStructure(_assignTo.UnificationKey, terms.Length, _target)) return false;
 
             // Put the variables
             foreach (var termVariable in terms)
             {
                 if (query.HasVariable(termVariable))
                 {
-                    query.SetValue(termVariable);
+                    if (!query.SetValue(termVariable)) return false;
                 }
                 else
                 {
-                    query.SetVariable(termVariable);
+                    if (!query.SetVariable(termVariable)) return false;
                 }
             }
+
+            return true;
         }
 
-        public void CompileProgram(IProgramUnifier program)
+        public bool CompileProgram(IProgramUnifier program)
         {
             // The dependencies of the assignTo value indicate the parameters of this term
             var terms = _assignTo.Dependencies.ToArray();
 
             // Put the structure
-            program.GetStructure(_assignTo.UnificationKey, terms.Length, _target);
+            if (!program.GetStructure(_assignTo.UnificationKey, terms.Length, _target)) return false;
 
             // Put the variables
             foreach (var termVariable in terms)
             {
                 if (program.HasVariable(termVariable))
                 {
-                    program.UnifyValue(termVariable);
+                    if (!program.UnifyValue(termVariable)) return false;
                 }
                 else
                 {
-                    program.UnifyVariable(termVariable);
+                    if (!program.UnifyVariable(termVariable)) return false;
                 }
             }
+
+            return true;
         }
 
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)

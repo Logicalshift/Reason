@@ -247,13 +247,13 @@ namespace LogicalShift.Reason.Unification
                 else
                 {
                     // Structure doesn't match; fail
-                    throw new InvalidOperationException();
+                    return false;
                 }
             }
             else
             {
                 // Fail
-                throw new InvalidOperationException();
+                return false;
             }
 
             return true;
@@ -285,7 +285,10 @@ namespace LogicalShift.Reason.Unification
         {
             if (!_writeMode)
             {
-                Unify(_addressForName[variable], _structurePtr);
+                if (!Unify(_addressForName[variable], _structurePtr))
+                {
+                    return false;
+                }
             }
             else
             {
@@ -326,7 +329,7 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Unifies a value on the heap
         /// </summary>
-        private void Unify(IReferenceLiteral address1, IReferenceLiteral address2)
+        private bool Unify(IReferenceLiteral address1, IReferenceLiteral address2)
         {
             var unifyStack = new Stack<IReferenceLiteral>();
 
@@ -372,11 +375,13 @@ namespace LogicalShift.Reason.Unification
                         else
                         {
                             // Structures do not match: fail
-                            throw new InvalidOperationException();
+                            return false;
                         }
                     }
                 }
             }
+
+            return true;
         }
 
         public IQueryUnifier QueryUnifier

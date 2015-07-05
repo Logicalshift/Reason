@@ -29,12 +29,12 @@ namespace LogicalShift.Reason.Api
         /// <summary>
         /// Compiles this assignment as a query
         /// </summary>
-        void CompileQuery(IQueryUnifier query);
+        bool CompileQuery(IQueryUnifier query);
 
         /// <summary>
         /// Compiles this assignment as a program
         /// </summary>
-        void CompileProgram(IProgramUnifier program);
+        bool CompileProgram(IProgramUnifier program);
 
         /// <summary>
         /// Remaps the variables within this assignment

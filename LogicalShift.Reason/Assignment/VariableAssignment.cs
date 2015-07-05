@@ -32,12 +32,14 @@ namespace LogicalShift.Reason.Assignment
             get { return _variable; }
         }
 
-        public void CompileQuery(IQueryUnifier query)
+        public bool CompileQuery(IQueryUnifier query)
         {
+            return true;
         }
 
-        public void CompileProgram(IProgramUnifier program)
+        public bool CompileProgram(IProgramUnifier program)
         {
+            return true;
         }
 
         public ILiteral RebuildWithParameters(IEnumerable<ILiteral> parameters)

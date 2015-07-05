@@ -32,27 +32,27 @@ namespace LogicalShift.Reason.Assignment
             get { return _variable; }
         }
 
-        public void CompileQuery(IQueryUnifier query)
+        public bool  CompileQuery(IQueryUnifier query)
         {
             if (query.HasVariable(_variable))
             {
-                query.PutValue(_variable, _argument);
+                return query.PutValue(_variable, _argument);
             }
             else
             {
-                query.PutVariable(_variable, _argument);
+                return query.PutVariable(_variable, _argument);
             }
         }
 
-        public void CompileProgram(IProgramUnifier program)
+        public bool CompileProgram(IProgramUnifier program)
         {
             if (program.HasVariable(_variable))
             {
-                program.GetValue(_variable, _argument);
+                return program.GetValue(_variable, _argument);
             }
             else
             {
-                program.GetVariable(_variable, _argument);
+                return program.GetVariable(_variable, _argument);
             }
         }
 
