@@ -50,6 +50,7 @@
     <Compile Include="Api\IProgramUnifier.cs" />
     <Compile Include="Api\IQueryResult.cs" />
     <Compile Include="Api\IQueryUnifier.cs" />
+    <Compile Include="Api\ITrail.cs" />
     <Compile Include="Api\IUnifier.cs" />
     <Compile Include="Assignment\ArgumentAssignment.cs" />
     <Compile Include="Assignment\AssignmentEliminator.cs" />
