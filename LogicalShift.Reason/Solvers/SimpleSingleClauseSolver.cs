@@ -88,6 +88,8 @@ namespace LogicalShift.Reason.Solvers
             {
                 if (solvedOnce)
                 {
+                    // Reset the unifier to its original state and give up
+                    unifier.ResetTrail();
                     return false;
                 }
                 else
