@@ -26,10 +26,10 @@ namespace LogicalShift.Reason.Tests
             knowledge = knowledge.Assert(Clause.Always(small));
 
             // Solve for 'houseCat' (which should be true under this simple system)
-            var solver = Solver.NewSolver(knowledge, style);
+            var solver = await Solver.NewSolver(knowledge);
 
             // Should be true
-            var result = await solver.Solve(houseCat);
+            var result = solver.Query(houseCat);
             Assert.IsTrue(result.Success);
         }
 
@@ -60,11 +60,11 @@ namespace LogicalShift.Reason.Tests
                 .Assert(felinesMeow)
                 .Assert(tomMeows);
 
-            var solver = Solver.NewSolver(knowledge, style);
-            var result = await solver.Solve(houseCat.With(tom));
+            var solver = await Solver.NewSolver(knowledge);
+            var result = solver.Query(houseCat.With(tom));
             Assert.IsTrue(result.Success);
 
-            var allCats = await solver.Solve(houseCat.With(X));
+            var allCats = solver.Query(houseCat.With(X));
             Assert.IsTrue(result.Success);
             Assert.AreEqual(tom, allCats.Bindings.GetValueForVariable(X));
         }

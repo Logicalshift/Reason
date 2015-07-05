@@ -9,11 +9,6 @@ namespace LogicalShift.Reason.Api
 	/// </summary>
     public interface ISolver
     {
-		/// <summary>
-		/// Attempts to solve for a particular set of goals
-		/// </summary>
-        Task<IQueryResult> Solve(IEnumerable<ILiteral> goals);
-
         /// <summary>
         /// 'Calls' a particular predicate in this solver with the specified arguments. After the
         /// returned function is complete, the arguments are updated to their unified value.
