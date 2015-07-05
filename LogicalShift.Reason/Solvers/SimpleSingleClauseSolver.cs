@@ -77,6 +77,88 @@ namespace LogicalShift.Reason.Solvers
             return result;
         }
 
+        /// <summary>
+        /// Returns a function that solves a list of subclauses
+        /// </summary>
+        private Func<bool> SolveAllSubclauses(IEnumerable<AssignmentData> assignments, SimpleUnifier unifier)
+        {
+            // The first solution is always true once
+            bool solvedOnce = false;
+            Func<bool> solve = () =>
+            {
+                if (solvedOnce)
+                {
+                    return false;
+                }
+                else
+                {
+                    solvedOnce = true;
+                    return true;
+                }
+            };
+
+            // Chain the solutions for each subclause to generate the final result
+            foreach (var clause in assignments)
+            {
+                solve = SolveSubclause(clause, unifier, solve);
+            }
+
+            // This generates the result
+            return solve;
+        }
+
+        /// <summary>
+        /// Solves a subclause
+        /// </summary>
+        private Func<bool> SolveSubclause(AssignmentData clause, SimpleUnifier unifier, Func<bool> solvePreviousClause)
+        {
+            // Create a new trail
+            unifier.PushTrail();
+
+            Func<bool> nextInThisClause = null;
+
+            return () =>
+            {
+                if (nextInThisClause == null || !nextInThisClause())
+                {
+                    // Reset the state and get the solution for the previous clause
+                    unifier.ResetTrail();
+
+                    if (!solvePreviousClause())
+                    {
+                        return false;
+                    }
+
+                    // Push a new trail for this clause
+                    unifier.PushTrail();
+
+                    // Solve this clause
+                    try
+                    {
+                        // Put the arguments for this clause
+                        unifier.QueryUnifier.Bind(clause.Assignments);
+                        unifier.QueryUnifier.Compile(clause.Assignments);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Failed to unify
+                        return false;
+                    }
+
+                    // Call the predicate
+                    nextInThisClause = _subclauseSolver.Call(clause.PredicateName, unifier.GetArgumentVariables(clause.NumArguments));
+
+                    // Result depends on the next item in this clause
+                    return nextInThisClause();
+                }
+                else
+                {
+                    // nextInThisClause() returned true, so this clause was solved
+                    return true;
+                }
+            };
+        }
+
         public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)
         {
             // Assume that predicate is correct
@@ -98,44 +180,7 @@ namespace LogicalShift.Reason.Solvers
             }
 
             // Call using the clauses
-            foreach (var clause in _clauseAssignments.Skip(1))
-            {
-                try
-                {
-                    // Put the arguments for this clause
-                    unifier.QueryUnifier.Bind(clause.Assignments);
-                    unifier.QueryUnifier.Compile(clause.Assignments);
-                }
-                catch (InvalidOperationException)
-                {
-                    // Failed to unify
-                    return () => false;
-                }
-
-                // Call the clause
-                var result = _subclauseSolver.Call(clause.PredicateName, unifier.GetArgumentVariables(clause.NumArguments))();
-
-                // Stop if the clause doesn't resolve correctly
-                if (!result)
-                {
-                    // Failed to resolve this clause
-                    return () => false;
-                }
-            }
-
-            // Success
-            // Return just a single value for now
-            // TODO: return other results
-            var count = 0;
-            return () =>
-                {
-                    ++count;
-                    if (count > 1)
-                    {
-                        unifier.ResetTrail();
-                    }
-                    return count == 1;
-                };
+            return SolveAllSubclauses(_clauseAssignments.Skip(1), unifier);
         }
     }
 }
