@@ -130,6 +130,10 @@ namespace LogicalShift.Reason.Solvers
             return () =>
                 {
                     ++count;
+                    if (count > 1)
+                    {
+                        unifier.ResetTrail();
+                    }
                     return count == 1;
                 };
         }
