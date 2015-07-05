@@ -120,17 +120,22 @@ namespace LogicalShift.Reason.Tests
             await solver.LoadFromKnowledgeBase(knowledge);
 
             // Get all the cats
-            var allResults = new List<ILiteral>();
-            var any = Literal.NewVariable();
-            for (var result = solver.Query(houseCat.With(any)); result != null && result.Success; result = await result.Next())
+            var start = DateTime.Now;
+            for (var x = 0; x < 10000; ++x)
             {
-                allResults.Add(result.Bindings.GetValueForVariable(any));
-            }
+                var allResults = new List<ILiteral>();
+                var any = Literal.NewVariable();
+                for (var result = solver.Query(houseCat.With(any)); result != null && result.Success; result = await result.Next())
+                {
+                    allResults.Add(result.Bindings.GetValueForVariable(any));
+                }
 
-            Assert.IsTrue(allResults.Contains(tom));
-            Assert.IsTrue(allResults.Contains(heathcliff));
-            Assert.IsTrue(allResults.Contains(sylvester));
-            Assert.AreEqual(3, allResults.Count); 
+                Assert.IsTrue(allResults.Contains(tom));
+                Assert.IsTrue(allResults.Contains(heathcliff));
+                Assert.IsTrue(allResults.Contains(sylvester));
+                Assert.AreEqual(3, allResults.Count);
+            }
+            Console.WriteLine("10000 solutions in {0}s", (DateTime.Now - start).TotalSeconds);
         }
     }
 }
