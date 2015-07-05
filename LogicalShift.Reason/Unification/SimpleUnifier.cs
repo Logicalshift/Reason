@@ -1,5 +1,6 @@
 ﻿using LogicalShift.Reason.Api;
 using LogicalShift.Reason.Literals;
+using LogicalShift.Reason.Solvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +46,16 @@ namespace LogicalShift.Reason.Unification
         /// Pointer to the last built argument
         /// </summary>
         private ArgumentReference _lastArgument = null;
+
+        /// <summary>
+        /// The trails for this object
+        /// </summary>
+        private readonly Stack<BasicTrail> _trails = new Stack<BasicTrail>();
+
+        public SimpleUnifier()
+        {
+            _trails.Push(new BasicTrail());
+        }
 
         /// <summary>
         /// Prepares to run a new program unifier using this object
@@ -288,6 +299,7 @@ namespace LogicalShift.Reason.Unification
         private void Bind(IReferenceLiteral target, IReferenceLiteral value)
         {
             target.SetTo(value);
+            _trails.Peek().Record(target);
         }
 
         /// <summary>
@@ -310,10 +322,14 @@ namespace LogicalShift.Reason.Unification
 
                 if (!ReferenceEquals(value1, value2))
                 {
-                    if (value1.IsReference() || value2.IsReference())
+                    if (value1.IsReference())
                     {
                         // Bind references
                         Bind(value1, value2);
+                    }
+                    else if (value2.IsReference())
+                    {
+                        Bind(value2, value1);
                     }
                     else
                     {
@@ -360,6 +376,23 @@ namespace LogicalShift.Reason.Unification
         public IReferenceLiteral GetVariable(ILiteral name)
         {
             return _addressForName[name];
+        }
+
+        /// <summary>
+        /// Starts recording a new trail (so ResetTrail will reset progress to the point this was called)
+        /// </summary>
+        public void PushTrail()
+        {
+            _trails.Push(new BasicTrail());
+        }
+
+        /// <summary>
+        /// Resets the current trail
+        /// </summary>
+        public void ResetTrail()
+        {
+            _trails.Peek().Reset();
+            _trails.Pop();
         }
     }
 }
