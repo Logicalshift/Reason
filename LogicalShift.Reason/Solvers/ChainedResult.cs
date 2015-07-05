@@ -40,9 +40,9 @@ namespace LogicalShift.Reason.Solvers
             get { return _basicResult.Bindings; }
         }
 
-        public Task<IQueryResult> Next()
+        public async Task<IQueryResult> Next()
         {
-            return _nextResult();
+            return new ChainedResult(await _nextResult(), _nextResult);
         }
     }
 }
