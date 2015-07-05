@@ -26,5 +26,10 @@
         /// Sets the value of Term and Reference to the same values as the supplied reference literal
         /// </summary>
         void SetTo(IReferenceLiteral value);
+
+        /// <summary>
+        /// Resets this literal to the unbound state (sets Term to null and Reference to point at itself)
+        /// </summary>
+        void Unbind();
     }
 }

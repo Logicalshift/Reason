@@ -49,5 +49,11 @@ namespace LogicalShift.Reason.Unification
             Term = value.Term;
             Reference = value.Reference;
         }
+
+        public void Unbind()
+        {
+            Term = null;
+            Reference = this;
+        }
     }
 }
