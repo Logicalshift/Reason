@@ -88,16 +88,13 @@ namespace LogicalShift.Reason.Solvers
 
             // Load the arguments into a simple unifier
             var unifier = new SimpleUnifier();
-            var trace = new TraceUnifier(unifier);
             unifier.LoadArguments(arguments);
-
-            Console.WriteLine("- Call {0}({1})", predicate, string.Join(", ", arguments.Select(arg => arg.Freeze().ToString())));
 
             // Unify using the predicate
             try
             {
-                trace.ProgramUnifier.Bind(_clauseAssignments[0].Assignments);
-                trace.ProgramUnifier.Compile(_clauseAssignments[0].Assignments);
+                unifier.ProgramUnifier.Bind(_clauseAssignments[0].Assignments);
+                unifier.ProgramUnifier.Compile(_clauseAssignments[0].Assignments);
             }
             catch (InvalidOperationException)
             {
@@ -111,8 +108,8 @@ namespace LogicalShift.Reason.Solvers
                 try
                 {
                     // Put the arguments for this clause
-                    trace.QueryUnifier.Bind(clause.Assignments);
-                    trace.QueryUnifier.Compile(clause.Assignments);
+                    unifier.QueryUnifier.Bind(clause.Assignments);
+                    unifier.QueryUnifier.Compile(clause.Assignments);
                 }
                 catch (InvalidOperationException)
                 {
@@ -121,9 +118,7 @@ namespace LogicalShift.Reason.Solvers
                 }
 
                 // Call the clause
-                Console.WriteLine("-> {0}", clause.PredicateName);
                 var result = _subclauseSolver.Call(clause.PredicateName, unifier.GetArgumentVariables(clause.NumArguments))();
-                Console.WriteLine("<- {0}", clause.PredicateName);
 
                 // Stop if the clause doesn't resolve correctly
                 if (!result)
@@ -136,7 +131,6 @@ namespace LogicalShift.Reason.Solvers
             // Success
             // Return just a single value for now
             // TODO: return other results
-            Console.WriteLine("Success");
             var count = 0;
             return () =>
                 {
