@@ -116,7 +116,7 @@ namespace LogicalShift.Reason.Unification
             _indexForVariable[variableName] = index;
         }
 
-        public void PutStructure(ILiteral termName, int termLength, ILiteral variable)
+        public bool PutStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             // Mark this variable as used
             _usedVariables.Add(_indexForVariable[variable]);
@@ -136,9 +136,11 @@ namespace LogicalShift.Reason.Unification
 
             // Store in the variable
             _addressForName[variable].SetTo(structure);
+
+            return true;
         }
 
-        public void SetVariable(ILiteral variable)
+        public bool SetVariable(ILiteral variable)
         {
             // Mark the variable as used
             _usedVariables.Add(_indexForVariable[variable]);
@@ -160,9 +162,11 @@ namespace LogicalShift.Reason.Unification
 
             // Store in the variable
             _addressForName[variable].SetTo(newReference);
+
+            return true;
         }
 
-        public void SetValue(ILiteral variable)
+        public bool SetValue(ILiteral variable)
         {
             // Read the variable
             var variableValue = _addressForName[variable];
@@ -173,9 +177,11 @@ namespace LogicalShift.Reason.Unification
                 _lastArgument.SetTo(variableValue);
                 _lastArgument = _lastArgument.NextArgument;
             }
+
+            return true;
         }
 
-        public void PutVariable(ILiteral variable1, ILiteral variable2)
+        public bool PutVariable(ILiteral variable1, ILiteral variable2)
         {
             _usedVariables.Add(_indexForVariable[variable1]);
             _usedVariables.Add(_indexForVariable[variable2]);
@@ -192,14 +198,18 @@ namespace LogicalShift.Reason.Unification
                 _lastArgument.SetTo(newValue);
                 _lastArgument = _lastArgument.NextArgument;
             }
+
+            return true;
         }
 
-        public void PutValue(ILiteral variable1, ILiteral variable2)
+        public bool PutValue(ILiteral variable1, ILiteral variable2)
         {
             _addressForName[variable2].SetTo(_addressForName[variable1]);
+
+            return true;
         }
 
-        public void GetStructure(ILiteral termName, int termLength, ILiteral variable)
+        public bool GetStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             // This variable becomes used
             _usedVariables.Add(_indexForVariable[variable]);
@@ -245,9 +255,11 @@ namespace LogicalShift.Reason.Unification
                 // Fail
                 throw new InvalidOperationException();
             }
+
+            return true;
         }
 
-        public void UnifyVariable(ILiteral variable)
+        public bool UnifyVariable(ILiteral variable)
         {
             // This variable becomes used
             _usedVariables.Add(_indexForVariable[variable]);
@@ -265,9 +277,11 @@ namespace LogicalShift.Reason.Unification
             }
 
             _structurePtr = _structurePtr.NextArgument;
+
+            return true;
         }
 
-        public void UnifyValue(ILiteral variable)
+        public bool UnifyValue(ILiteral variable)
         {
             if (!_writeMode)
             {
@@ -280,19 +294,24 @@ namespace LogicalShift.Reason.Unification
             }
 
             _structurePtr = _structurePtr.NextArgument;
+
+            return true;
         }
 
-        public void GetVariable(ILiteral variable1, ILiteral variable2)
+        public bool GetVariable(ILiteral variable1, ILiteral variable2)
         {
             _usedVariables.Add(_indexForVariable[variable1]);
             _usedVariables.Add(_indexForVariable[variable2]);
 
             _addressForName[variable1].SetTo(_addressForName[variable2]);
+
+            return true;
         }
 
-        public void GetValue(ILiteral variable1, ILiteral variable2)
+        public bool GetValue(ILiteral variable1, ILiteral variable2)
         {
             Unify(_addressForName[variable1], _addressForName[variable2]);
+            return true;
         }
 
         /// <summary>

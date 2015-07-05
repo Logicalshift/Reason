@@ -16,34 +16,34 @@ namespace LogicalShift.Reason.Unification
             _unifier = unifier;
         }
 
-        public void PutStructure(ILiteral termName, int termLength, ILiteral variable)
+        public bool PutStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             Console.WriteLine("Q: put_structure {0}/{1} -> {2}", termName, termLength, variable);
-            _unifier.QueryUnifier.PutStructure(termName, termLength, variable);
+            return _unifier.QueryUnifier.PutStructure(termName, termLength, variable);
         }
 
-        public void SetVariable(ILiteral variable)
+        public bool SetVariable(ILiteral variable)
         {
             Console.WriteLine("Q: set_variable {0}", variable);
-            _unifier.QueryUnifier.SetVariable(variable);
+            return _unifier.QueryUnifier.SetVariable(variable);
         }
 
-        public void SetValue(ILiteral variable)
+        public bool SetValue(ILiteral variable)
         {
             Console.WriteLine("Q: set_value {0}", variable);
-            _unifier.QueryUnifier.SetValue(variable);
+            return _unifier.QueryUnifier.SetValue(variable);
         }
 
-        public void PutVariable(ILiteral variable1, ILiteral variable2)
+        public bool PutVariable(ILiteral variable1, ILiteral variable2)
         {
             Console.WriteLine("Q: put_variable {0}, {1}", variable1, variable2);
-            _unifier.QueryUnifier.PutVariable(variable1, variable2);
+            return _unifier.QueryUnifier.PutVariable(variable1, variable2);
         }
 
-        public void PutValue(ILiteral variable1, ILiteral variable2)
+        public bool PutValue(ILiteral variable1, ILiteral variable2)
         {
             Console.WriteLine("Q: put_value {0}, {1}", variable1, variable2);
-            _unifier.QueryUnifier.PutValue(variable1, variable2);
+            return _unifier.QueryUnifier.PutValue(variable1, variable2);
         }
 
         public bool HasVariable(ILiteral name)
@@ -59,34 +59,34 @@ namespace LogicalShift.Reason.Unification
             _unifier.ProgramUnifier.BindVariable(index, variableName);
         }
 
-        public void GetStructure(ILiteral termName, int termLength, ILiteral variable)
+        public bool GetStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             Console.WriteLine("P: get_structure {0}/{1} -> {2}", termName, termLength, variable);
-            _unifier.ProgramUnifier.GetStructure(termName, termLength, variable);
+            return _unifier.ProgramUnifier.GetStructure(termName, termLength, variable);
         }
 
-        public void UnifyVariable(ILiteral variable)
+        public bool UnifyVariable(ILiteral variable)
         {
             Console.WriteLine("P: unify_variable {0}", variable);
-            _unifier.ProgramUnifier.UnifyVariable(variable);
+            return _unifier.ProgramUnifier.UnifyVariable(variable);
         }
 
-        public void UnifyValue(ILiteral variable)
+        public bool UnifyValue(ILiteral variable)
         {
             Console.WriteLine("P: unify_value {0}", variable);
-            _unifier.ProgramUnifier.UnifyValue(variable);
+            return _unifier.ProgramUnifier.UnifyValue(variable);
         }
 
-        public void GetVariable(ILiteral variable1, ILiteral variable2)
+        public bool GetVariable(ILiteral variable1, ILiteral variable2)
         {
             Console.WriteLine("P: get_variable {0}, {1}", variable1, variable2);
-            _unifier.ProgramUnifier.GetVariable(variable1, variable2);
+            return _unifier.ProgramUnifier.GetVariable(variable1, variable2);
         }
 
-        public void GetValue(ILiteral variable1, ILiteral variable2)
+        public bool GetValue(ILiteral variable1, ILiteral variable2)
         {
             Console.WriteLine("P: get_value {0}, {1}", variable1, variable2);
-            _unifier.ProgramUnifier.GetValue(variable1, variable2);
+            return _unifier.ProgramUnifier.GetValue(variable1, variable2);
         }
 
         public IQueryUnifier QueryUnifier
