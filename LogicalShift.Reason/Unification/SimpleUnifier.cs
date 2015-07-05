@@ -14,12 +14,17 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Set of variables that have been used before
         /// </summary>
-        private readonly HashSet<ILiteral> _usedVariables = new HashSet<ILiteral>();
+        private readonly HashSet<int> _usedVariables = new HashSet<int>();
 
         /// <summary>
         /// Returns the names assigned to particular variables
         /// </summary>
         private readonly Dictionary<ILiteral, IReferenceLiteral> _addressForName = new Dictionary<ILiteral, IReferenceLiteral>();
+
+        /// <summary>
+        /// Maps variable names to their index
+        /// </summary>
+        private readonly Dictionary<ILiteral, int> _indexForVariable = new Dictionary<ILiteral, int>();
 
         /// <summary>
         /// Variables in order
@@ -84,7 +89,7 @@ namespace LogicalShift.Reason.Unification
 
         public bool HasVariable(ILiteral name)
         {
-            return _usedVariables.Contains(name);
+            return _usedVariables.Contains(_indexForVariable[name]);
         }
 
         public void BindVariable(int index, ILiteral variableName)
@@ -95,12 +100,13 @@ namespace LogicalShift.Reason.Unification
             }
 
             _addressForName[variableName] = _variables[index];
+            _indexForVariable[variableName] = index;
         }
 
         public void PutStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             // Mark this variable as used
-            _usedVariables.Add(variable);
+            _usedVariables.Add(_indexForVariable[variable]);
 
             // Create the structure
             ArgumentReference firstArgument = null;
@@ -122,7 +128,7 @@ namespace LogicalShift.Reason.Unification
         public void SetVariable(ILiteral variable)
         {
             // Mark the variable as used
-            _usedVariables.Add(variable);
+            _usedVariables.Add(_indexForVariable[variable]);
 
             // Create a new reference
             IReferenceLiteral newReference;
@@ -158,8 +164,8 @@ namespace LogicalShift.Reason.Unification
 
         public void PutVariable(ILiteral variable1, ILiteral variable2)
         {
-            _usedVariables.Add(variable1);
-            _usedVariables.Add(variable2);
+            _usedVariables.Add(_indexForVariable[variable1]);
+            _usedVariables.Add(_indexForVariable[variable2]);
 
             var newValue = new SimpleReference();
 
@@ -183,7 +189,7 @@ namespace LogicalShift.Reason.Unification
         public void GetStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             // This variable becomes used
-            _usedVariables.Add(variable);
+            _usedVariables.Add(_indexForVariable[variable]);
 
             // Get the dereferenced address of the variable
             var heapValue = _addressForName[variable].Dereference();
@@ -231,7 +237,7 @@ namespace LogicalShift.Reason.Unification
         public void UnifyVariable(ILiteral variable)
         {
             // This variable becomes used
-            _usedVariables.Add(variable);
+            _usedVariables.Add(_indexForVariable[variable]);
 
             if (!_writeMode)
             {
@@ -265,8 +271,8 @@ namespace LogicalShift.Reason.Unification
 
         public void GetVariable(ILiteral variable1, ILiteral variable2)
         {
-            _usedVariables.Add(variable1);
-            _usedVariables.Add(variable2);
+            _usedVariables.Add(_indexForVariable[variable1]);
+            _usedVariables.Add(_indexForVariable[variable2]);
 
             _addressForName[variable1].SetTo(_addressForName[variable2]);
         }
