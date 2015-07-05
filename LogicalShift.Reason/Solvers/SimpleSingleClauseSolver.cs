@@ -77,11 +77,6 @@ namespace LogicalShift.Reason.Solvers
             return result;
         }
 
-        public Task<IQueryResult> Solve(IEnumerable<ILiteral> goals)
-        {
-            throw new NotImplementedException();
-        }
-
         public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)
         {
             // Assume that predicate is correct
