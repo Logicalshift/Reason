@@ -7,6 +7,8 @@ using System.Linq;
 
 namespace LogicalShift.Reason.Unification
 {
+    // TODO: stop throwing exceptions to indicate failure during unification (very slow in the debugger)
+
     /// <summary>
     /// Basic implementation of a unifier
     /// </summary>
