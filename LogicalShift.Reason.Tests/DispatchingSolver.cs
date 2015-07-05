@@ -1,4 +1,5 @@
-﻿using LogicalShift.Reason.Solvers;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Solvers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,36 @@ namespace LogicalShift.Reason.Tests
             // Jerry is not a housecat
             result = solver.Query(houseCat.With(jerry));
             Assert.IsFalse(result.Success);
+        }
+
+        [Test]
+        public async Task ManyHouseCats()
+        {
+            var tom = Literal.NewAtom();
+            var heathcliff = Literal.NewAtom();
+            var sylvester = Literal.NewAtom();
+            var houseCat = Literal.NewFunctor(1);
+            var any = Literal.NewVariable();
+
+            var knowledge = KnowledgeBase.New()
+                .Assert(Clause.Always(houseCat.With(tom)))
+                .Assert(Clause.Always(houseCat.With(heathcliff)))
+                .Assert(Clause.Always(houseCat.With(sylvester)));
+
+            // Get all the cats
+            var solver = new SimpleDispatchingSolver();
+            await solver.LoadFromKnowledgeBase(knowledge);
+
+            var allResults = new List<ILiteral>();
+            for (var result = solver.Query(houseCat.With(any)); result != null && result.Success; result = await result.Next())
+            {
+                allResults.Add(result.Bindings.GetValueForVariable(any));
+            }
+
+            Assert.IsTrue(allResults.Contains(tom));
+            Assert.IsTrue(allResults.Contains(heathcliff));
+            Assert.IsTrue(allResults.Contains(sylvester));
+            Assert.AreEqual(3, allResults.Count);
         }
     }
 }
