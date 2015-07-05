@@ -81,5 +81,56 @@ namespace LogicalShift.Reason.Tests
             Assert.IsTrue(allResults.Contains(sylvester));
             Assert.AreEqual(3, allResults.Count);
         }
+        [Test]
+        public async Task MultiChainQuery()
+        {
+            var knowledge = KnowledgeBase.New();
+
+            var houseCat = Literal.NewFunctor(1);
+            var feline = Literal.NewFunctor(1);
+            var small = Literal.NewFunctor(1);
+            var meows = Literal.NewFunctor(1);
+            var tom = Literal.NewAtom();
+            var heathcliff = Literal.NewAtom();
+            var sylvester = Literal.NewAtom();
+            var X = Literal.NewVariable();
+            var Y = Literal.NewVariable();
+
+            // houseCat(X) :- small(X), feline(X)
+            var houseCatsAreSmallFelines = Clause.If(feline.With(X), small.With(X)).Then(houseCat.With(X));
+            var felinesMeow = Clause.If(meows.With(Y)).Then(feline.With(Y));
+            var tomIsSmall = Clause.Always(small.With(tom));
+            var heathcliffIsSmall = Clause.Always(small.With(heathcliff));
+            var sylvesterIsSmall = Clause.Always(small.With(sylvester));
+            var tomMeows = Clause.Always(meows.With(tom));
+            var heathcliffIsFeline = Clause.Always(feline.With(heathcliff));
+            var sylvesterMeows = Clause.Always(meows.With(sylvester));
+
+            knowledge = knowledge
+                .Assert(houseCatsAreSmallFelines)
+                .Assert(tomIsSmall)
+                .Assert(felinesMeow)
+                .Assert(tomMeows)
+                .Assert(heathcliffIsSmall)
+                .Assert(heathcliffIsFeline)
+                .Assert(sylvesterIsSmall)
+                .Assert(sylvesterMeows);
+
+            var solver = new SimpleDispatchingSolver();
+            await solver.LoadFromKnowledgeBase(knowledge);
+
+            // Get all the cats
+            var allResults = new List<ILiteral>();
+            var any = Literal.NewVariable();
+            for (var result = solver.Query(houseCat.With(any)); result != null && result.Success; result = await result.Next())
+            {
+                allResults.Add(result.Bindings.GetValueForVariable(any));
+            }
+
+            Assert.IsTrue(allResults.Contains(tom));
+            Assert.IsTrue(allResults.Contains(heathcliff));
+            Assert.IsTrue(allResults.Contains(sylvester));
+            Assert.AreEqual(3, allResults.Count); 
+        }
     }
 }
