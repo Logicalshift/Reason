@@ -77,8 +77,10 @@
     <Compile Include="Solver.cs" />
     <Compile Include="SolverStyle.cs" />
     <Compile Include="Solvers\BasicTrail.cs" />
+    <Compile Include="Solvers\ByteCodeSolver.cs" />
     <Compile Include="Solvers\ChainedResult.cs" />
     <Compile Include="Solvers\NothingSolver.cs" />
+    <Compile Include="Solvers\Operation.cs" />
     <Compile Include="Solvers\PredicateAssignmentList.cs" />
     <Compile Include="Solvers\SimpleDispatchingSolver.cs" />
     <Compile Include="Solvers\SimpleSingleClauseSolver.cs" />
