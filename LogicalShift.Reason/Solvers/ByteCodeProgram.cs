@@ -1,0 +1,139 @@
+﻿using LogicalShift.Reason.Api;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace LogicalShift.Reason.Solvers
+{
+    /// <summary>
+    /// Represents a bytecode program
+    /// </summary>
+    public class ByteCodeProgram
+    {
+        /// <summary>
+        /// The operations making up the program
+        /// </summary>
+        private readonly List<ByteCodePoint> _program = new List<ByteCodePoint>();
+
+        /// <summary>
+        /// Maps indexes to literals (eg, for GetStructure)
+        /// </summary>
+        private readonly List<ILiteral> _literals = new List<ILiteral>();
+
+        /// <summary>
+        /// Maps literals to their identifiers
+        /// </summary>
+        private readonly Dictionary<ILiteral, int> _literalIdentifier = new Dictionary<ILiteral, int>();
+
+        /// <summary>
+        /// Maps instruction pointers to the instructions that reference a particular label
+        /// </summary>
+        private readonly Dictionary<object, List<int>> _ipsReferencingLabel = new Dictionary<object, List<int>>();
+
+        /// <summary>
+        /// Maps labels to the instruction point that they are attached to
+        /// </summary>
+        private readonly Dictionary<object, int> _ipsWithLabel = new Dictionary<object, int>();
+
+        /// <summary>
+        /// Retrieves the code point at a particular instruction offset
+        /// </summary>
+        public ByteCodePoint this[int ip]
+        {
+            get { return _program[ip]; }
+        }
+
+        /// <summary>
+        /// Retrieves the literal for a particular integer value
+        /// </summary>
+        public ILiteral LiteralAtIndex(int index)
+        {
+            return _literals[index];
+        }
+
+        /// <summary>
+        /// Writes a new code point to this program
+        /// </summary>
+        public void Write(Operation op, int arg1 = 0, int arg2 = 0)
+        {
+            _program.Add(new ByteCodePoint(op, arg1, arg2));
+        }
+
+        /// <summary>
+        /// Writes a new code point to this program
+        /// </summary>
+        public void Write(Operation op, ILiteral arg1)
+        {
+            int value;
+            if (!_literalIdentifier.TryGetValue(arg1, out value))
+            {
+                value = _literalIdentifier[arg1] = _literals.Count;
+                _literals.Add(arg1);
+            }
+
+            Write(op, value);
+        }
+
+        /// <summary>
+        /// Writes an operation where the first argument is the IP of the specified label
+        /// </summary>
+        public void WriteWithLabel(Operation op, object label)
+        {
+            int labelIp;
+            if (_ipsWithLabel.TryGetValue(label, out labelIp))
+            {
+                // Label already encountered
+                Write(op, labelIp);
+            }
+            else
+            {
+                // Label not encountered
+                List<int> labelInstructions;
+                if (!_ipsReferencingLabel.TryGetValue(label, out labelInstructions))
+                {
+                    labelInstructions = _ipsReferencingLabel[label] = new List<int>();
+                }
+
+                labelInstructions.Add(_program.Count);
+                Write(op, -1);
+            }
+        }
+
+        /// <summary>
+        /// Sets a label referencing the next instruction to be written
+        /// </summary>
+        public void Label(object label)
+        {
+            // Write the label
+            var labelIp = _program.Count;
+            _ipsWithLabel[label] = labelIp;
+            
+            // Update any instructions that reference the label
+            List<int> existingReferences;
+            if (_ipsReferencingLabel.TryGetValue(label, out existingReferences))
+            {
+                foreach (var refIp in existingReferences)
+                {
+                    var old = _program[refIp];
+                    _program[refIp] = new ByteCodePoint(old.Op, labelIp, old.Arg2);
+                }
+
+                existingReferences.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Clears any data structures used while writing this program, leaving only those needed to
+        /// run it.
+        /// </summary>
+        public void Finish()
+        {
+            // Don't need to map labels any more
+            _ipsWithLabel.Clear();
+            _ipsReferencingLabel.Clear();
+
+            // Don't need to map literals to values any more
+            _literalIdentifier.Clear();
+        }
+    }
+}

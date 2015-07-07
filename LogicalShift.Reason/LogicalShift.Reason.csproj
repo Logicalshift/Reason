@@ -78,6 +78,7 @@
     <Compile Include="SolverStyle.cs" />
     <Compile Include="Solvers\BasicTrail.cs" />
     <Compile Include="Solvers\ByteCodePoint.cs" />
+    <Compile Include="Solvers\ByteCodeProgram.cs" />
     <Compile Include="Solvers\ByteCodeSolver.cs" />
     <Compile Include="Solvers\ChainedResult.cs" />
     <Compile Include="Solvers\NothingSolver.cs" />
