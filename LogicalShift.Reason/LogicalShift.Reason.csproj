@@ -67,6 +67,7 @@
     <Compile Include="LiteralCompiler.cs" />
     <Compile Include="Literals\BasicAtom.cs" />
     <Compile Include="Literals\BoundFunctor.cs" />
+    <Compile Include="Literals\ObjectLiteral.cs" />
     <Compile Include="Literals\ReferenceVariable.cs" />
     <Compile Include="Literals\TrueLiteral.cs" />
     <Compile Include="Literals\UnboundFunctor.cs" />
