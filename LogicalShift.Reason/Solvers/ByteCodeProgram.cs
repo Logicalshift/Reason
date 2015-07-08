@@ -54,15 +54,16 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// Writes a new code point to this program
         /// </summary>
-        public void Write(Operation op, int arg1 = 0, int arg2 = 0)
+        public int Write(Operation op, int arg1 = 0, int arg2 = 0)
         {
             _program.Add(new ByteCodePoint(op, arg1, arg2));
+            return _program.Count - 1;
         }
 
         /// <summary>
         /// Writes a new code point to this program
         /// </summary>
-        public void Write(Operation op, ILiteral arg1)
+        public int Write(Operation op, ILiteral arg1)
         {
             int value;
             if (!_literalIdentifier.TryGetValue(arg1, out value))
@@ -72,18 +73,20 @@ namespace LogicalShift.Reason.Solvers
             }
 
             Write(op, value);
+            return _program.Count - 1;
         }
 
         /// <summary>
         /// Writes an operation where the first argument is the IP of the specified label
         /// </summary>
-        public void WriteWithLabel(Operation op, object label)
+        public int WriteWithLabel(Operation op, object label)
         {
             int labelIp;
+            int currentIp = _program.Count;
             if (_ipsWithLabel.TryGetValue(label, out labelIp))
             {
                 // Label already encountered
-                Write(op, labelIp);
+                Write(op, labelIp-currentIp);
             }
             else
             {
@@ -97,12 +100,14 @@ namespace LogicalShift.Reason.Solvers
                 labelInstructions.Add(_program.Count);
                 Write(op, -1);
             }
+
+            return _program.Count - 1;
         }
 
         /// <summary>
         /// Sets a label referencing the next instruction to be written
         /// </summary>
-        public void Label(object label)
+        public int Label(object label)
         {
             // Write the label
             var labelIp = _program.Count;
@@ -115,11 +120,13 @@ namespace LogicalShift.Reason.Solvers
                 foreach (var refIp in existingReferences)
                 {
                     var old = _program[refIp];
-                    _program[refIp] = new ByteCodePoint(old.Op, labelIp, old.Arg2);
+                    _program[refIp] = new ByteCodePoint(old.Op, labelIp-refIp, old.Arg2);
                 }
 
                 existingReferences.Clear();
             }
+
+            return labelIp;
         }
 
         /// <summary>
