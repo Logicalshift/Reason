@@ -63,7 +63,7 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// Writes a new code point to this program
         /// </summary>
-        public int Write(Operation op, ILiteral arg1)
+        public int Write(Operation op, ILiteral arg1, int arg2 = 0)
         {
             int value;
             if (!_literalIdentifier.TryGetValue(arg1, out value))
@@ -72,7 +72,7 @@ namespace LogicalShift.Reason.Solvers
                 _literals.Add(arg1);
             }
 
-            Write(op, value);
+            Write(op, value, arg2);
             return _program.Count - 1;
         }
 
