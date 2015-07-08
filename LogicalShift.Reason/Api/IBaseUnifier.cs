@@ -19,10 +19,5 @@
         /// Variable names can't be used before they are bound.
         /// </summary>
         void BindVariable(int index, ILiteral variable);
-
-        /// <summary>
-        /// Retrieves the variable associated with the specified name
-        /// </summary>
-        IReferenceLiteral GetVariable(ILiteral variable);
     }
 }

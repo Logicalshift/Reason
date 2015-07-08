@@ -399,6 +399,9 @@ namespace LogicalShift.Reason.Unification
             return _addressForName[name].Freeze();
         }
 
+        /// <summary>
+        /// Retrieves the storage location for the specified variable
+        /// </summary>
         public IReferenceLiteral GetVariable(ILiteral name)
         {
             return _addressForName[name];
