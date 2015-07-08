@@ -63,16 +63,16 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// Writes a new code point to this program
         /// </summary>
-        public int Write(Operation op, ILiteral arg1, int arg2 = 0)
+        public int Write(Operation op, ILiteral literal, int arg1 = 0, int arg2 = 0)
         {
-            int value;
-            if (!_literalIdentifier.TryGetValue(arg1, out value))
+            int literalValue;
+            if (!_literalIdentifier.TryGetValue(literal, out literalValue))
             {
-                value = _literalIdentifier[arg1] = _literals.Count;
-                _literals.Add(arg1);
+                literalValue = _literalIdentifier[literal] = _literals.Count;
+                _literals.Add(literal);
             }
 
-            Write(op, value, arg2);
+            _program.Add(new ByteCodePoint(op, arg1, arg2, literalValue));
             return _program.Count - 1;
         }
 

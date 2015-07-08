@@ -5,11 +5,12 @@
     /// </summary>
     public struct ByteCodePoint
     {
-        public ByteCodePoint(Operation op, int arg1 = 0, int arg2 = 0)
+        public ByteCodePoint(Operation op, int arg1 = 0, int arg2 = 0, int literal = 0)
         {
             Op = op;
             Arg1 = arg1;
             Arg2 = arg2;
+            Literal = literal;
         }
 
         /// <summary>
@@ -26,5 +27,10 @@
         /// The second argument (generally a variable)
         /// </summary>
         public readonly int Arg2;
+
+        /// <summary>
+        /// The identifier for the literal referenced by this code point
+        /// </summary>
+        public readonly int Literal;
     }
 }

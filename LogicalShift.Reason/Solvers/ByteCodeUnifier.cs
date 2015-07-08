@@ -58,8 +58,7 @@ namespace LogicalShift.Reason.Solvers
         {
             _usedVariables.Add(variable);
 
-            // TODO: need to add the variable here too
-            _program.Write(Operation.PutStructure, termName, termLength);
+            _program.Write(Operation.PutStructure, termName, _bindingForVariable[variable], termLength);
             return true;
         }
 
@@ -99,7 +98,10 @@ namespace LogicalShift.Reason.Solvers
 
         public bool GetStructure(ILiteral termName, int termLength, ILiteral variable)
         {
-            throw new NotImplementedException();
+            _usedVariables.Add(variable);
+
+            _program.Write(Operation.GetStructure, termName, _bindingForVariable[variable], termLength);
+            return true;
         }
 
         public bool UnifyVariable(ILiteral variable)
