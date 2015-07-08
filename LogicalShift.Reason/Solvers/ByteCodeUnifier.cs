@@ -49,11 +49,6 @@ namespace LogicalShift.Reason.Solvers
             _bindingForVariable[variable] = index;
         }
 
-        public IReferenceLiteral GetVariable(ILiteral variable)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool PutStructure(ILiteral termName, int termLength, ILiteral variable)
         {
             _usedVariables.Add(variable);
