@@ -402,7 +402,7 @@ namespace LogicalShift.Reason.Unification
         /// <summary>
         /// Retrieves the storage location for the specified variable
         /// </summary>
-        public IReferenceLiteral GetVariable(ILiteral name)
+        public IReferenceLiteral GetVariableLocation(ILiteral name)
         {
             return _addressForName[name];
         }

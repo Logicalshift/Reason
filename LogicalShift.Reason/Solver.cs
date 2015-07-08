@@ -46,7 +46,7 @@ namespace LogicalShift.Reason
 
             // Run through the unifier
             var freeVariableNames = unifier.QueryUnifier.Bind(assignments.Assignments);
-            var freeVariables = freeVariableNames.Select(variable => unifier.GetVariable(variable).Dereference());
+            var freeVariables = freeVariableNames.Select(variable => unifier.GetVariableLocation(variable).Dereference());
             unifier.QueryUnifier.Compile(assignments.Assignments);
 
             // Call via the solver
