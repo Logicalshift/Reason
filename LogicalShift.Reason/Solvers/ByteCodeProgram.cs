@@ -44,6 +44,14 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
+        /// The current length of the program
+        /// </summary>
+        public int Count
+        {
+            get { return _program.Count; }
+        }
+
+        /// <summary>
         /// Retrieves the literal for a particular integer value
         /// </summary>
         public ILiteral LiteralAtIndex(int index)
