@@ -48,7 +48,7 @@ namespace LogicalShift.Reason.Solvers
             _clauseAssignments = new[] { clause.Implies }.Concat(clause.If)
                 .Select(predicate => 
                 {
-                    var assignments = GetAssignmentsFromPredicate(predicate);
+                    var assignments = PredicateAssignmentList.FromPredicate(predicate);
                     return new AssignmentData
                     {
                         PredicateName = predicate.UnificationKey,
@@ -57,24 +57,6 @@ namespace LogicalShift.Reason.Solvers
                     };
                 })
                 .ToList();
-        }
-
-        /// <summary>
-        /// Retrieves an object representing the assignments for a particular literal when used as a predicate
-        /// </summary>
-        private PredicateAssignmentList GetAssignmentsFromPredicate(ILiteral predicate)
-        {
-            var result = new PredicateAssignmentList();
-
-            if (predicate.UnificationKey != null)
-            {
-                foreach (var argument in predicate.Dependencies)
-                {
-                    result.AddArgument(argument);
-                }
-            }
-
-            return result;
         }
 
         /// <summary>

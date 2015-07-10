@@ -79,5 +79,23 @@ namespace LogicalShift.Reason.Solvers
                 return result;
             }
         }
+
+        /// <summary>
+        /// Retrieves an object representing the assignments for a particular literal when used as a predicate
+        /// </summary>
+        public static PredicateAssignmentList FromPredicate(ILiteral predicate)
+        {
+            var result = new PredicateAssignmentList();
+
+            if (predicate.UnificationKey != null)
+            {
+                foreach (var argument in predicate.Dependencies)
+                {
+                    result.AddArgument(argument);
+                }
+            }
+
+            return result;
+        }
     }
 }
