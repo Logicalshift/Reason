@@ -7,7 +7,7 @@ namespace LogicalShift.Reason.Solvers
     /// <summary>
     /// Unifier that writes operations to a bytecode program
     /// </summary>
-    public class ByteCodeUnifier : IQueryUnifier, IProgramUnifier
+    public class ByteCodeUnifier : IQueryUnifier, IProgramUnifier, IUnifier
     {
         /// <summary>
         /// The program that is written by this unifier
@@ -131,6 +131,16 @@ namespace LogicalShift.Reason.Solvers
 
             _program.Write(Operation.GetValue, _bindingForVariable[variable1], _bindingForVariable[variable2]);
             return true;
+        }
+
+        public IQueryUnifier QueryUnifier
+        {
+            get { return this; }
+        }
+
+        public IProgramUnifier ProgramUnifier
+        {
+            get { return this; }
         }
     }
 }

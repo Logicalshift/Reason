@@ -28,8 +28,6 @@ namespace LogicalShift.Reason.Solvers
         {
             if (knowledge == null) throw new ArgumentNullException("knowledge");
 
-            var unifier = new ByteCodeUnifier(_program);
-
             // Fetch the clauses and group them by their predicate
             var predicateList = (await knowledge.GetClauses())
                 .GroupBy(clause => clause.Implies.UnificationKey);
@@ -43,6 +41,8 @@ namespace LogicalShift.Reason.Solvers
                 var clauseList = predicate.ToArray();
                 for (var clauseNum = 0; clauseNum < clauseList.Length; ++clauseNum)
                 {
+                    var clause = clauseList[clauseNum];
+
                     // Label this position
                     var thisClause = Tuple.Create(predicate.Key, clauseNum);
                     _program.Label(thisClause);
@@ -69,15 +69,45 @@ namespace LogicalShift.Reason.Solvers
                         }
                     }
 
-                    // TODO: Get the assignments for this clause
-
-                    // TODO: Get the permanent variables for this clause and call allocate/deallocate if necessary
-
-                    // TODO: compile the assignments
+                    // Compile the clause itself
+                    CompileClause(clause);
 
                     // Final instruction is 'proceed'
                     _program.Write(Operation.Proceed);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Compiles a clause and appends it to the program
+        /// </summary>
+        private void CompileClause(IClause clause)
+        {
+            var unifier = new ByteCodeUnifier(_program);
+
+            // Get the assignments for this clause
+            var allPredicates   = new[] { clause.Implies }.Concat(clause.If).ToArray();
+            var assignmentList  = allPredicates
+                .Select(predicate => new 
+                {
+                    Assignments = PredicateAssignmentList.FromPredicate(predicate),
+                    UnificationKey = predicate.UnificationKey
+                })
+                .ToArray();
+
+            // TODO: allocate space for the arguments and any permanent variables
+
+            // Unify with the predicate first
+            unifier.ProgramUnifier.Bind(assignmentList[0].Assignments.Assignments);
+            unifier.ProgramUnifier.Compile(assignmentList[0].Assignments.Assignments);
+
+            // Call the clauses
+            foreach (var assignment in assignmentList.Skip(1))
+            {
+                unifier.QueryUnifier.Bind(assignment.Assignments.Assignments);
+                unifier.QueryUnifier.Compile(assignment.Assignments.Assignments);
+
+                _program.Write(Operation.Call, assignment.UnificationKey);
             }
         }
 

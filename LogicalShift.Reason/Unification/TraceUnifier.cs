@@ -98,10 +98,5 @@ namespace LogicalShift.Reason.Unification
         {
             get { return this; }
         }
-
-        public ILiteral UnifiedValue(ILiteral variable)
-        {
-            return _unifier.UnifiedValue(variable);
-        }
     }
 }

@@ -17,10 +17,5 @@ namespace LogicalShift.Reason.Api
         /// Returns the unifier used to build the program
         /// </summary>
         IProgramUnifier ProgramUnifier { get; }
-
-        /// <summary>
-        /// Returns the unified value for the variable bound to a particular name
-        /// </summary>
-        ILiteral UnifiedValue(ILiteral name);
     }
 }

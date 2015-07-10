@@ -139,7 +139,8 @@ namespace LogicalShift.Reason.Tests
         [Test]
         public void ManualUnification()
         {
-            var unifier = new TraceUnifier(new SimpleUnifier());
+            var simpleUnifier = new SimpleUnifier();
+            var unifier = new TraceUnifier(simpleUnifier);
             var X = new[] { new Variable(), new Variable(), new Variable(), new Variable(), new Variable(), new Variable(), new Variable(), new Variable() };
             var h2 = new UnboundFunctor(2);
             var f1 = new UnboundFunctor(1);
@@ -177,7 +178,7 @@ namespace LogicalShift.Reason.Tests
             unifier.UnifyVariable(X[7]);
             unifier.GetStructure(a0, 0, X[7]);
 
-            var result = unifier.UnifiedValue(X[1]);
+            var result = simpleUnifier.UnifiedValue(X[1]);
             Assert.IsNotNull(result);
         }
 
