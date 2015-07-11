@@ -89,7 +89,7 @@ namespace LogicalShift.Reason.Assignment
         /// <summary>
         /// The set of assignments in this object (with duplicates eliminated)
         /// </summary>
-        public IEnumerable<IAssignmentLiteral> Assigments
+        public IEnumerable<IAssignmentLiteral> Assignments
         {
             get { return _assignments; }
         }

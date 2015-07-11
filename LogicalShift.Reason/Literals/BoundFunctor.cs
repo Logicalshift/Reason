@@ -84,7 +84,7 @@ namespace LogicalShift.Reason.Literals
             yield return new TermAssignment(target, new BoundFunctor(_unbound, parameterTargets));
 
             // Generate the list of parameter assignments
-            foreach (var param in eliminator.Assigments)
+            foreach (var param in eliminator.Assignments)
             {
                 yield return param;
             }

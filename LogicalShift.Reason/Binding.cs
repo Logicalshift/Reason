@@ -57,7 +57,7 @@ namespace LogicalShift.Reason
             // Remove any extra items to generate the final result
             var eliminator = new AssignmentEliminator(result.Concat(extras));
             eliminator.Eliminate();
-            return eliminator.Assigments;
+            return eliminator.Assignments;
         }
     }
 }

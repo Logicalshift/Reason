@@ -110,7 +110,7 @@ namespace LogicalShift.Reason.Solvers
                 eliminator.Eliminate();
 
                 // Order the permanent variables first
-                var permanentFirst = eliminator.Assigments
+                var permanentFirst = eliminator.Assignments
                     .OrderBy(assignment => _permanentVariables.Contains(assignment.Value)?0:1);
 
                 // Result is the result of remapping the arguments and adding in the remaining assignments
