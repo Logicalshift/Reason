@@ -50,7 +50,7 @@ namespace LogicalShift.Reason.Solvers
         /// the clauses, in order), finds the names of the 'permanent' variables: that is, the list of variables
         /// that are used in more than one clause.
         /// </summary>
-        public static IEnumerable<ILiteral> PermanentVariables(this IEnumerable<PredicateAssignmentList> assignmentLists)
+        public static HashSet<ILiteral> PermanentVariables(this IEnumerable<PredicateAssignmentList> assignmentLists)
         {
             // The predicate and the first clause don't have a call between them, so variables used in both places 
             // aren't considered to be permanent

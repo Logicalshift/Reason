@@ -27,7 +27,13 @@ namespace LogicalShift.Reason.Solvers
                 })
                 .ToArray();
 
-            // TODO: allocate space for the arguments and any permanent variables
+            // Allocate space for the arguments and any permanent variables
+            var permanentVariables = PermanentVariableAssignments.PermanentVariables(assignmentList.Select(assign => assign.Assignments));
+
+            if (permanentVariables.Count > 0)
+            {
+                program.Write(Operation.Allocate, permanentVariables.Count);
+            }
 
             // Unify with the predicate first
             unifier.ProgramUnifier.Bind(assignmentList[0].Assignments.Assignments);
@@ -40,6 +46,12 @@ namespace LogicalShift.Reason.Solvers
                 unifier.QueryUnifier.Compile(assignment.Assignments.Assignments);
 
                 program.Write(Operation.Call, assignment.UnificationKey);
+            }
+
+            // Deallocate any permanent variables that we might have found
+            if (permanentVariables.Count > 0)
+            {
+                program.Write(Operation.Deallocate);
             }
         }
     }
