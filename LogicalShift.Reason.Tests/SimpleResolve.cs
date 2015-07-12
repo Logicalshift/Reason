@@ -9,9 +9,7 @@ namespace LogicalShift.Reason.Tests
     public class SimpleResolve
     {
         [Test]
-        [TestCase(SolverStyle.BackwardsChaining)]
-        [TestCase(SolverStyle.ForwardsChaining)]
-        public async Task ResolveASimpleGoal(SolverStyle style)
+        public async Task ResolveASimpleGoal()
         {
             // Create some knowledge
             var knowledge = KnowledgeBase.New();
@@ -34,9 +32,7 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
-        [TestCase(SolverStyle.BackwardsChaining)]
-        /* [TestCase(SolverStyle.ForwardsChaining)] */ // TODO
-        public async Task ResolveAMoreComplicatedGoal(SolverStyle style)
+        public async Task ResolveAMoreComplicatedGoal()
         {
             var knowledge = KnowledgeBase.New();
 
