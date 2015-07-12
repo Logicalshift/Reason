@@ -84,6 +84,7 @@
     <Compile Include="Solvers\ChainedResult.cs" />
     <Compile Include="Solvers\NothingSolver.cs" />
     <Compile Include="Solvers\Operation.cs" />
+    <Compile Include="Solvers\PermanentVariableAssignments.cs" />
     <Compile Include="Solvers\PredicateAssignmentList.cs" />
     <Compile Include="Solvers\SimpleDispatchingSolver.cs" />
     <Compile Include="Solvers\SimpleSingleClauseSolver.cs" />

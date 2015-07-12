@@ -28,12 +28,6 @@ namespace LogicalShift.Reason.Solvers
         private readonly List<IAssignmentLiteral> _otherAssignments = new List<IAssignmentLiteral>();
 
         /// <summary>
-        /// Identifiers of literals representing permanent variables (variables referenced in multiple subclauses).
-        /// These assignments are assigned to lower identifiers, after the assignments representing the arguments.
-        /// </summary>
-        private readonly HashSet<ILiteral> _permanentVariables = new HashSet<ILiteral>();
-
-        /// <summary>
         /// Adds a new argument to this object
         /// </summary>
         public void AddArgument(ILiteral argument)
@@ -59,27 +53,11 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
-        /// Adds a permanent variable to this object
-        /// </summary>
-        public void AddPermanentVariable(ILiteral variable)
-        {
-            _permanentVariables.Add(variable);
-        }
-
-        /// <summary>
         /// The number of arguments in this list (these are always the first set of assignments)
         /// </summary>
         public int CountArguments()
         {
             return _arguments.Count();
-        }
-
-        /// <summary>
-        /// Counts how many permanent variables have been added to this object
-        /// </summary>
-        public int CountPermanentVariables()
-        {
-            return _permanentVariables.Count;
         }
 
         /// <summary>
@@ -109,14 +87,10 @@ namespace LogicalShift.Reason.Solvers
                 var eliminator = new AssignmentEliminator(_otherAssignments);
                 eliminator.Eliminate();
 
-                // Order the permanent variables first
-                var permanentFirst = eliminator.Assignments
-                    .OrderBy(assignment => _permanentVariables.Contains(assignment.Value)?0:1);
-
                 // Result is the result of remapping the arguments and adding in the remaining assignments
                 var result = _arguments
                     .Select(arg => arg.Remap(eliminator.MapVariable))
-                    .Concat(permanentFirst);
+                    .Concat(eliminator.Assignments);
 
                 return result;
             }
