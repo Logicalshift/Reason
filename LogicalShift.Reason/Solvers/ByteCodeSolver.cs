@@ -70,44 +70,11 @@ namespace LogicalShift.Reason.Solvers
                     }
 
                     // Compile the clause itself
-                    CompileClause(clause);
+                    clause.Compile(_program);
 
                     // Final instruction is 'proceed'
                     _program.Write(Operation.Proceed);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Compiles a clause and appends it to the program
-        /// </summary>
-        private void CompileClause(IClause clause)
-        {
-            var unifier = new ByteCodeUnifier(_program);
-
-            // Get the assignments for this clause
-            var allPredicates   = new[] { clause.Implies }.Concat(clause.If).ToArray();
-            var assignmentList  = allPredicates
-                .Select(predicate => new 
-                {
-                    Assignments = PredicateAssignmentList.FromPredicate(predicate),
-                    UnificationKey = predicate.UnificationKey
-                })
-                .ToArray();
-
-            // TODO: allocate space for the arguments and any permanent variables
-
-            // Unify with the predicate first
-            unifier.ProgramUnifier.Bind(assignmentList[0].Assignments.Assignments);
-            unifier.ProgramUnifier.Compile(assignmentList[0].Assignments.Assignments);
-
-            // Call the clauses
-            foreach (var assignment in assignmentList.Skip(1))
-            {
-                unifier.QueryUnifier.Bind(assignment.Assignments.Assignments);
-                unifier.QueryUnifier.Compile(assignment.Assignments.Assignments);
-
-                _program.Write(Operation.Call, assignment.UnificationKey);
             }
         }
 

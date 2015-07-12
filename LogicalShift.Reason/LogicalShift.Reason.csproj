@@ -57,6 +57,7 @@
     <Compile Include="Assignment\AssignmentOrderer.cs" />
     <Compile Include="Assignment\TermAssignment.cs" />
     <Compile Include="Binding.cs" />
+    <Compile Include="Solvers\ClauseCompiler.cs" />
     <Compile Include="Solvers\ByteCodeUnifier.cs" />
     <Compile Include="Clause.cs" />
     <Compile Include="Clauses\NegativeClause.cs" />
