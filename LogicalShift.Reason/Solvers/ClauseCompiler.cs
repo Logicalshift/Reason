@@ -36,13 +36,13 @@ namespace LogicalShift.Reason.Solvers
             }
 
             // Unify with the predicate first
-            unifier.ProgramUnifier.Bind(assignmentList[0].Assignments.Assignments);
+            unifier.ProgramUnifier.Bind(assignmentList[0].Assignments.Assignments, permanentVariables);
             unifier.ProgramUnifier.Compile(assignmentList[0].Assignments.Assignments);
 
             // Call the clauses
             foreach (var assignment in assignmentList.Skip(1))
             {
-                unifier.QueryUnifier.Bind(assignment.Assignments.Assignments);
+                unifier.QueryUnifier.Bind(assignment.Assignments.Assignments, permanentVariables);
                 unifier.QueryUnifier.Compile(assignment.Assignments.Assignments);
 
                 program.Write(Operation.Call, assignment.UnificationKey);
