@@ -17,28 +17,49 @@ namespace LogicalShift.Reason
         /// <returns>
         /// The list of free variables in the assignments
         /// </returns>
-        public static IEnumerable<ILiteral> Bind(this IBaseUnifier unifier, IEnumerable<IAssignmentLiteral> assignments)
+        public static IEnumerable<ILiteral> Bind(this IBaseUnifier unifier, IEnumerable<IAssignmentLiteral> assignments, IEnumerable<ILiteral> permanentVariables = null)
         {
+            if (unifier == null) throw new ArgumentNullException("unifier");
+            if (assignments == null) throw new ArgumentNullException("assignments");
+            if (permanentVariables == null) permanentVariables = new ILiteral[0];
+
+            var indexForPermanent = new Dictionary<ILiteral, int>();
             var freeVariables = new List<ILiteral>();
             var index = 0;
 
+            // Assign permanent variables to indexes starting from 0
+            foreach (var permVariable in permanentVariables)
+            {
+                indexForPermanent[permVariable] = index;
+                ++index;
+            }
+
+            // Bind the assignments
             foreach (var assign in assignments)
             {
+                int variableIndex;
+
+                // If the assignment is of the form X1 = Y where Y is a permanent variable, use the permanent variable index
+                if (!indexForPermanent.TryGetValue(assign.Value, out variableIndex))
+                {
+                    // For other assignments, use an increasing index
+                    variableIndex = index;
+                    ++index;
+                }
+
                 if (assign.Value.UnificationKey == null)
                 {
                     // Values without a unification key are free variables (they can have any value)
                     freeVariables.Add(assign.Value);
-                    unifier.BindVariable(index, assign.Value);
-                    unifier.BindVariable(index, assign.Variable);
+                    unifier.BindVariable(variableIndex, assign.Value);
+                    unifier.BindVariable(variableIndex, assign.Variable);
                 }
                 else
                 {
                     // Values with a unification key are not free
-                    unifier.BindVariable(index, assign.Value.UnificationKey);
-                    unifier.BindVariable(index, assign.Variable);
+                    unifier.BindVariable(variableIndex, assign.Value.UnificationKey);
+                    unifier.BindVariable(variableIndex, assign.Variable);
                 }
-
-                ++index;
             }
 
             return freeVariables;
