@@ -15,26 +15,6 @@ namespace LogicalShift.Reason.Solvers
     public static class PermanentVariableAssignments
     {
         /// <summary>
-        /// Orders assignments so that permanent variables are first, followed by arguments, followed by any other assignments
-        /// </summary>
-        public static IEnumerable<IAssignmentLiteral> OrderPermanentVariablesFirst(this IEnumerable<IAssignmentLiteral> assignments, int numArguments, IEnumerable<ILiteral> permanentVariables)
-        {
-            // Convert the list of permanent variables into a hash set
-            var isPermanent = permanentVariables as HashSet<ILiteral> ?? new HashSet<ILiteral>(permanentVariables);
-
-            // ICollections can be iterated over multiple times
-            var assignmentCollection = assignments as ICollection<IAssignmentLiteral> ?? assignments.ToArray();
-
-            // Perform the ordering
-            var arguments = assignmentCollection.Take(numArguments);
-            var permanent = assignmentCollection.Skip(numArguments).Where(assign => isPermanent.Contains(assign.Value));
-            var remainder = assignmentCollection.Skip(numArguments).Where(assign => !isPermanent.Contains(assign.Value));
-
-            // Result is arguments followed by the list with the permanent variables first
-            return permanent.Concat(arguments).Concat(remainder);
-        }
-
-        /// <summary>
         /// Returns the names of the variables that get assigned in a list of assignments
         /// </summary>
         public static IEnumerable<ILiteral> VariablesAssigned(this IEnumerable<IAssignmentLiteral> assignments)
