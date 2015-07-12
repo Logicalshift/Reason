@@ -9,14 +9,13 @@ namespace LogicalShift.Reason.Solvers
     /// Methods for ordering assignments so that permanent variables are ordered first
     /// </summary>
     /// <remarks>
-    /// The ordering is arguments, permanent variables, then the rest. Arguments can thus
-    /// be bound to variables starting from 0 and permanent variables can be bound to the
-    /// set after the arguments.
+    /// The ordering is permanent variables, assignments, then the rest. Permanent variables can thus be
+    /// allocated starting at 0 (displacing arguments, which can be moved up the list)
     /// </remarks>
     public static class PermanentVariableAssignments
     {
         /// <summary>
-        /// Orders assignments so that the list of 'arguments' is first, followed by any assignments for 'permanent' variables, followed by any remaining assignments
+        /// Orders assignments so that permanent variables are first, followed by arguments, followed by any other assignments
         /// </summary>
         public static IEnumerable<IAssignmentLiteral> OrderPermanentVariablesFirst(this IEnumerable<IAssignmentLiteral> assignments, int numArguments, IEnumerable<ILiteral> permanentVariables)
         {
@@ -28,11 +27,11 @@ namespace LogicalShift.Reason.Solvers
 
             // Perform the ordering
             var arguments = assignmentCollection.Take(numArguments);
-            var remainder = assignmentCollection.Skip(numArguments);
-            var permanentFirst = remainder.OrderBy(assignment => isPermanent.Contains(assignment.Value) ? 0 : 1);
+            var permanent = assignmentCollection.Skip(numArguments).Where(assign => isPermanent.Contains(assign.Value));
+            var remainder = assignmentCollection.Skip(numArguments).Where(assign => !isPermanent.Contains(assign.Value));
 
             // Result is arguments followed by the list with the permanent variables first
-            return arguments.Concat(permanentFirst);
+            return permanent.Concat(arguments).Concat(remainder);
         }
 
         /// <summary>
