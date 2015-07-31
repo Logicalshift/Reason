@@ -28,6 +28,7 @@ namespace LogicalShift.Reason
             var index = 0;
 
             // Assign permanent variables to indexes starting from 0
+            // TODO: what if a permanent variable appears in an argument location?
             foreach (var permVariable in permanentVariables)
             {
                 indexForPermanent[permVariable] = index;
