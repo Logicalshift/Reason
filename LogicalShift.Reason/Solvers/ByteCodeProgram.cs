@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace LogicalShift.Reason.Solvers
 {
@@ -149,6 +150,19 @@ namespace LogicalShift.Reason.Solvers
 
             // Don't need to map literals to values any more
             _literalIdentifier.Clear();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder result = new StringBuilder();
+
+            foreach (var codePoint in _program)
+            {
+                if (result.Length > 0) result.Append('\n');
+                result.AppendFormat("{0}/{1} {2}, {3}", codePoint.Op, codePoint.Literal, codePoint.Arg1, codePoint.Arg2);
+            }
+
+            return base.ToString();
         }
     }
 }
