@@ -34,7 +34,7 @@ namespace LogicalShift.Reason.Solvers
             // The predicate and the first clause don't have a call between them, so variables used in both places 
             // aren't considered to be permanent
             var usedVariables = new HashSet<ILiteral>();
-            var permanentVariabels = new HashSet<ILiteral>();
+            var permanentVariables = new HashSet<ILiteral>();
             int pos = 0;
 
             foreach (var assignmentList in assignmentLists)
@@ -44,7 +44,7 @@ namespace LogicalShift.Reason.Solvers
                 // After the predicate (pos = 0) and first clause (pos = 1), re-used variables need to be marked as permanent
                 if (pos > 1)
                 {
-                    permanentVariabels.UnionWith(assignmentVariables.Where(variable => usedVariables.Contains(variable)));
+                    permanentVariables.UnionWith(assignmentVariables.Where(variable => usedVariables.Contains(variable)));
                 }
 
                 // Mark this set of variables as used
@@ -53,7 +53,7 @@ namespace LogicalShift.Reason.Solvers
                 ++pos;
             }
 
-            return permanentVariabels;
+            return permanentVariables;
         }
     }
 }

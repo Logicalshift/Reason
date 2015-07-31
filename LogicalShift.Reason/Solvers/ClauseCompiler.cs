@@ -17,7 +17,7 @@ namespace LogicalShift.Reason.Solvers
         {
             var unifier = new ByteCodeUnifier(program);
 
-            // Get the assignments for this clause
+            // Take each part of the clause and retrieve the assignments for it, with the 'implies' set at the start
             var allPredicates = new[] { clause.Implies }.Concat(clause.If).ToArray();
             var assignmentList = allPredicates
                 .Select(predicate => new
