@@ -29,10 +29,11 @@ namespace LogicalShift.Reason.Solvers
 
             // Allocate space for the arguments and any permanent variables
             var permanentVariables = PermanentVariableAssignments.PermanentVariables(assignmentList.Select(assign => assign.Assignments));
+            var numArguments = assignmentList[0].Assignments.CountArguments();
 
             if (permanentVariables.Count > 0)
             {
-                program.Write(Operation.Allocate, permanentVariables.Count);
+                program.Write(Operation.Allocate, permanentVariables.Count, numArguments);
             }
 
             // Unify with the predicate first
