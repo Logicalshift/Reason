@@ -162,7 +162,7 @@ namespace LogicalShift.Reason.Solvers
                 result.AppendFormat("{0}/{1} {2}, {3}", codePoint.Op, codePoint.Literal, codePoint.Arg1, codePoint.Arg2);
             }
 
-            return base.ToString();
+            return result.ToString();
         }
     }
 }
