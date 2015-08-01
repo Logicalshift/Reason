@@ -96,7 +96,8 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.GetValue:
-
+                    GetValue(_program[address].Arg1, _program[address].Arg2);
+                    break;
 
                 case Operation.PutStructure:
                 case Operation.PutVariable:
@@ -125,6 +126,14 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// Unifies two variables
+        /// </summary>
+        private void GetValue(int arg1, int arg2)
+        {
+            _registers[arg1].Unify(_registers[arg2], _trail);
         }
 
         /// <summary>
