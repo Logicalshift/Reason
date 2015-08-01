@@ -112,8 +112,12 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.SetVariable:
+                    SetVariable(_program[address].Arg1);
+                    break;
+
                 case Operation.SetValue:
-                    throw new NotImplementedException("Opcode not implemented yet");
+                    SetValue(_program[address].Arg1);
+                    break;
 
                 case Operation.UnifyVariable:
                     UnifyVariable(_program[address].Arg1);
@@ -135,6 +139,45 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// Stores the value of a variable in the current structure
+        /// </summary>
+        private void SetValue(int variable)
+        {
+            var variableValue = _registers[variable];
+
+            // Store to the current structure
+            if (_lastArgument != null)
+            {
+                _lastArgument.SetTo(variableValue);
+                _lastArgument = _lastArgument.NextArgument;
+            }
+        }
+
+        /// <summary>
+        /// Cretes a new reference and stores it in the current structure and a particular variable
+        /// </summary>
+        private void SetVariable(int variable)
+        {
+            // Create a new reference
+            IReferenceLiteral newReference;
+
+            // Add to the current structure
+            if (_lastArgument != null)
+            {
+                // The last argument is the reference
+                newReference = _lastArgument;
+                _lastArgument = _lastArgument.NextArgument;
+            }
+            else
+            {
+                newReference = new SimpleReference();
+            }
+
+            // Store in the variable
+            _registers[variable].SetTo(newReference);
         }
 
         /// <summary>
