@@ -104,7 +104,13 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.PutVariable:
+                    PutVariable(_program[address].Arg1, _program[address].Arg2);
+                    break;
+
                 case Operation.PutValue:
+                    PutValue(_program[address].Arg1, _program[address].Arg2);
+                    break;
+
                 case Operation.SetVariable:
                 case Operation.SetValue:
                     throw new NotImplementedException("Opcode not implemented yet");
@@ -128,6 +134,25 @@ namespace LogicalShift.Reason.Solvers
 
                 default:
                     throw new NotImplementedException("Unknown opcode");
+            }
+        }
+
+        /// <summary>
+        /// Stores a new reference in two variables and the current structure
+        /// </summary>
+        private void PutVariable(int variable, int argument)
+        {
+            var newValue = new SimpleReference();
+
+            // Store in the variables
+            _registers[variable].SetTo(newValue);
+            _registers[argument].SetTo(newValue);
+
+            // Store to the current structure
+            if (_lastArgument != null)
+            {
+                _lastArgument.SetTo(newValue);
+                _lastArgument = _lastArgument.NextArgument;
             }
         }
 
@@ -159,17 +184,25 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// Unifies two variables
         /// </summary>
-        private void GetValue(int arg1, int arg2)
+        private void GetValue(int variable, int argument)
         {
-            _registers[arg1].Unify(_registers[arg2], _trail);
+            _registers[variable].Unify(_registers[argument], _trail);
         }
 
         /// <summary>
-        /// Sets var1 to the value of var2
+        /// Sets variable to the value of argument
         /// </summary>
-        private void GetVariable(int var1, int var2)
+        private void GetVariable(int variable, int argument)
         {
-            _registers[var1].SetTo(_registers[var2]);
+            _registers[variable].SetTo(_registers[argument]);
+        }
+
+        /// <summary>
+        /// Sets variable to the value of argument
+        /// </summary>
+        private void PutValue(int variable, int argument)
+        {
+            _registers[argument].SetTo(_registers[variable]);
         }
 
         /// <summary>
