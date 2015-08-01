@@ -212,12 +212,13 @@ namespace LogicalShift.Reason.Solvers
                 {
                     // Ask for the value of this label
                     var label = predicateToLabel(_literals[_program[address].Literal]);
+                    var argumentCount = _program[address].Arg2;
                     int labelAddress;
                     
                     // Try to map it to an existing address
                     if (label != null && _ipsWithLabel.TryGetValue(label, out labelAddress))
                     {
-                        _program[address] = new ByteCodePoint(Operation.CallAddress, labelAddress);
+                        _program[address] = new ByteCodePoint(Operation.CallAddress, labelAddress, argumentCount);
                     }
                 }
             }

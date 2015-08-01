@@ -46,7 +46,7 @@ namespace LogicalShift.Reason.Solvers
                 unifier.QueryUnifier.Bind(assignment.Assignments.Assignments, permanentVariables);
                 unifier.QueryUnifier.Compile(assignment.Assignments.Assignments);
 
-                program.Write(Operation.Call, assignment.UnificationKey);
+                program.Write(Operation.Call, assignment.UnificationKey, assignment.UnificationKey.Dependencies.Count());
             }
 
             // Deallocate any permanent variables that we might have found
