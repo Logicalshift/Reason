@@ -137,6 +137,9 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.Allocate:
+                    Allocate(codePoint.Arg1, codePoint.Arg2);
+                    break;
+
                 case Operation.Deallocate:
                 case Operation.Proceed:
                 case Operation.CallAddress:
@@ -151,6 +154,59 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// Allocates space for a number of permanent and argument variables.
+        /// </summary>
+        /// <remarks>
+        /// Permanent variables are stored in the environment and are numbered from 0.
+        /// Arguments occur after the temporary variables and have their values preserved
+        /// from the previous state by this call.
+        /// </remarks>
+        private void Allocate(int numPermanent, int numArguments)
+        {
+            // Allocate a new environment
+            var newEnvironment = new ByteCodeEnvironment(numPermanent, _environment);
+
+            // Make sure that we don't overwrite arguments in the previous environment by replacing them with new temporary variables
+            if (numPermanent + numArguments < _environment.Variables.Length)
+            {
+                for (int oldPermanent = numPermanent + numArguments; oldPermanent < _environment.Variables.Length; ++oldPermanent)
+                {
+                    _registers[oldPermanent] = new SimpleReference();
+                }
+            }
+
+            // Move arguments to their new position
+            int oldArgStart = _environment.Variables.Length;
+
+            if (oldArgStart > numPermanent)
+            {
+                // Moving arguments 'down', leaving a hole
+                for (int argument = 0; argument < numArguments; ++argument)
+                {
+                    _registers[argument + numPermanent] = _registers[argument + oldArgStart];
+                    _registers[argument + oldArgStart] = new SimpleReference();
+                }
+            }
+            else if (oldArgStart < numPermanent)
+            {
+                // Moving arguments 'up', old locations will be overwritten by new permanent variables
+                for (int argument = numArguments-1; argument >=0; --argument)
+                {
+                    _registers[argument + numPermanent] = _registers[argument + oldArgStart];
+                }
+            }
+
+            // Copy in the new permanent variables
+            for (int permanent = 0; permanent < numPermanent; ++permanent)
+            {
+                _registers[permanent] = newEnvironment.Variables[permanent];
+            }
+
+            _environment = newEnvironment;
+            throw new NotImplementedException();
         }
 
         /// <summary>
