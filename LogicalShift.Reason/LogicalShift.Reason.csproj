@@ -93,6 +93,7 @@
     <Compile Include="Unification\ArgumentReference.cs" />
     <Compile Include="Unification\BasicBinding.cs" />
     <Compile Include="Unification\EmptyBinding.cs" />
+    <Compile Include="Unification\NoTrail.cs" />
     <Compile Include="Unification\ReferenceLiterals.cs" />
     <Compile Include="Unification\SimpleReference.cs" />
     <Compile Include="Unification\SimpleUnifier.cs" />
