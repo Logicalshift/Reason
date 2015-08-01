@@ -124,6 +124,9 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.UnifyValue:
+                    UnifyValue(_program[address].Arg1);
+                    break;
+
                 case Operation.Allocate:
                 case Operation.Deallocate:
                 case Operation.Proceed:
@@ -139,6 +142,30 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// In write mode, writes the value of a variable to the current structure. In read mode,
+        /// unifies the value in the current structure with the value of a variable.
+        /// </summary>
+        private bool UnifyValue(int variable)
+        {
+            if (!_writeMode)
+            {
+                if (!_registers[variable].Unify(_structurePtr, _trail))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                _lastArgument.SetTo(_registers[variable]);
+                _lastArgument = _lastArgument.NextArgument;
+            }
+
+            _structurePtr = _structurePtr.NextArgument;
+
+            return true;
         }
 
         /// <summary>
