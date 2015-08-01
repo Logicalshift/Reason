@@ -82,6 +82,11 @@
         Call,
 
         /// <summary>
+        /// Calls an address in the current program
+        /// </summary>
+        CallAddress,
+
+        /// <summary>
         /// Sets the current instruction to the continuation pointer
         /// </summary>
         Proceed,

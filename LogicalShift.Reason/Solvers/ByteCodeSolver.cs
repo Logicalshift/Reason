@@ -37,6 +37,7 @@ namespace LogicalShift.Reason.Solvers
             {
                 // So we can call this predicate, store the location of its first instruction
                 _predicateLocation[predicate.Key] = _program.Count;
+                _program.Label(predicate.Key);
 
                 var clauseList = predicate.ToArray();
                 for (var clauseNum = 0; clauseNum < clauseList.Length; ++clauseNum)
@@ -76,6 +77,9 @@ namespace LogicalShift.Reason.Solvers
                     _program.Write(Operation.Proceed);
                 }
             }
+
+            // Bind any calls to within the program that come from the same knowledgebase
+            _program.BindCalls(predicate => predicate);
         }
 
         public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)

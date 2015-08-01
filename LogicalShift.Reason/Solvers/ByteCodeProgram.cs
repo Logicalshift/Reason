@@ -198,6 +198,31 @@ namespace LogicalShift.Reason.Solvers
             _literalIdentifier.Clear();
         }
 
+        /// <summary>
+        /// Takes any call operations found in this program and replaces them with CallAddress operations
+        /// </summary>
+        /// <param name="predicateToLabel">Given the predicate for a Call instruction, returns null or the object representing the label for the address to call</param>
+        public void BindCalls(Func<ILiteral, object> predicateToLabel)
+        {
+            if (predicateToLabel == null) throw new ArgumentNullException(nameof(predicateToLabel));
+
+            for (int address=0; address < _program.Count; ++address)
+            {
+                if (_program[address].Op == Operation.Call)
+                {
+                    // Ask for the value of this label
+                    var label = predicateToLabel(_literals[_program[address].Literal]);
+                    int labelAddress;
+                    
+                    // Try to map it to an existing address
+                    if (label != null && _ipsWithLabel.TryGetValue(label, out labelAddress))
+                    {
+                        _program[address] = new ByteCodePoint(Operation.CallAddress, labelAddress);
+                    }
+                }
+            }
+        }
+
         public override string ToString()
         {
             StringBuilder result = new StringBuilder();

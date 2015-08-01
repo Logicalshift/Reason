@@ -11,7 +11,7 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// The program that this will run
         /// </summary>
-        private readonly ByteCodeProgram _program;
+        private readonly ByteCodePoint[] _program;
 
         /// <summary>
         /// The address of the instruction that is being executed
@@ -28,17 +28,37 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         private SimpleReference[] _registers;
 
-        public ByteCodeExecutor(ByteCodeProgram program)
+        public ByteCodeExecutor(ByteCodePoint[] program, int maxVariableIndex)
         {
             if (program == null) throw new ArgumentNullException(nameof(program));
 
+            _program        = program;
             _programCounter = 0;
-            _environment = new ByteCodeEnvironment(0, null);
-            _registers = new SimpleReference[program.GetMaxVariableIndex()];
+            _environment    = new ByteCodeEnvironment(0, null);
+            _registers      = new SimpleReference[maxVariableIndex];
 
             for (var registerIndex = 0; registerIndex<_registers.Length; ++registerIndex)
             {
                 _registers[registerIndex] = new SimpleReference();
+            }
+        }
+
+        /// <summary>
+        /// Executes a single instruction
+        /// </summary>
+        public void Step()
+        {
+            // Fetch the next opcode
+            var address = _programCounter;
+
+            // Advance the program counter
+            ++_programCounter;
+
+            // Action depends on the opcode
+            switch (_program[address].Op)
+            {
+                default:
+                    throw new NotImplementedException("Unknown opcode");
             }
         }
     }
