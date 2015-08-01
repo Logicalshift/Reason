@@ -1,7 +1,4 @@
 ﻿using LogicalShift.Reason.Api;
-using LogicalShift.Reason.Literals;
-using LogicalShift.Reason.Solvers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
