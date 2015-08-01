@@ -7,7 +7,9 @@ using System.Linq;
 
 namespace LogicalShift.Reason.Unification
 {
-    // TODO: stop throwing exceptions to indicate failure during unification (very slow in the debugger)
+    // TODO: a lot of the implementation of this is duplicated by ByteCodeExecutor; would make sense to use that
+    // implementation instead of this one (we can use its storage capabilities without storing an actual program
+    // in it)
 
     /// <summary>
     /// Basic implementation of a unifier
