@@ -1,7 +1,5 @@
 ﻿using LogicalShift.Reason.Api;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LogicalShift.Reason.Solvers
 {
