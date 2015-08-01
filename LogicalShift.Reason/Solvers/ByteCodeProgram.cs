@@ -37,6 +37,50 @@ namespace LogicalShift.Reason.Solvers
         private readonly Dictionary<object, int> _ipsWithLabel = new Dictionary<object, int>();
 
         /// <summary>
+        /// The maximum bound variable index
+        /// </summary>
+        private int _maxVariableIndex = -1;
+
+        /// <summary>
+        /// Returns the index of the highest variable value that this program can use
+        /// </summary>
+        public int GetMaxVariableIndex()
+        {
+            if (_maxVariableIndex < 0)
+            {
+                // Read the program to find the max variable index
+                foreach (var codepoint in _program)
+                {
+                    switch (codepoint.Op)
+                    {
+                        case Operation.PutStructure:
+                        case Operation.SetVariable:
+                        case Operation.SetValue:
+                        case Operation.GetStructure:
+                        case Operation.UnifyVariable:
+                        case Operation.UnifyValue:
+                            if (codepoint.Arg1 > _maxVariableIndex) _maxVariableIndex = codepoint.Arg1;
+                            break;
+
+                        case Operation.PutVariable:
+                        case Operation.PutValue:
+                        case Operation.GetVariable:
+                        case Operation.GetValue:
+                            if (codepoint.Arg1 > _maxVariableIndex) _maxVariableIndex = codepoint.Arg1;
+                            if (codepoint.Arg2 > _maxVariableIndex) _maxVariableIndex = codepoint.Arg2;
+                            break;
+
+                        default:
+                            // Doesn't use variables
+                            break;
+                    }
+                }
+            }
+
+            return _maxVariableIndex;
+        }
+
+        /// <summary>
         /// Retrieves the code point at a particular instruction offset
         /// </summary>
         public ByteCodePoint this[int ip]
@@ -65,6 +109,7 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         public int Write(Operation op, int arg1 = 0, int arg2 = 0)
         {
+            _maxVariableIndex = -1;
             _program.Add(new ByteCodePoint(op, arg1, arg2));
             return _program.Count - 1;
         }
@@ -82,6 +127,7 @@ namespace LogicalShift.Reason.Solvers
             }
 
             _program.Add(new ByteCodePoint(op, arg1, arg2, literalValue));
+            _maxVariableIndex = -1;
             return _program.Count - 1;
         }
 

@@ -58,6 +58,7 @@
     <Compile Include="Assignment\TermAssignment.cs" />
     <Compile Include="Binding.cs" />
     <Compile Include="Solvers\ByteCodeEnvironment.cs" />
+    <Compile Include="Solvers\ByteCodeExecutor.cs" />
     <Compile Include="Solvers\ClauseCompiler.cs" />
     <Compile Include="Solvers\ByteCodeUnifier.cs" />
     <Compile Include="Clause.cs" />
