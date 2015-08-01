@@ -31,7 +31,7 @@ namespace LogicalShift.Reason.Solvers
             var permanentVariables = PermanentVariableAssignments.PermanentVariables(assignmentList.Select(assign => assign.Assignments));
             var numArguments = assignmentList[0].Assignments.CountArguments();
 
-            if (permanentVariables.Count > 0)
+            if (permanentVariables.Count > 0 || allPredicates.Length > 1)
             {
                 program.Write(Operation.Allocate, permanentVariables.Count, numArguments);
             }
@@ -50,7 +50,7 @@ namespace LogicalShift.Reason.Solvers
             }
 
             // Deallocate any permanent variables that we might have found
-            if (permanentVariables.Count > 0)
+            if (permanentVariables.Count > 0 || allPredicates.Length > 1)
             {
                 program.Write(Operation.Deallocate);
             }
