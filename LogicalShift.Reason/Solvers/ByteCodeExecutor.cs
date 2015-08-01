@@ -100,6 +100,9 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.PutStructure:
+                    PutStructure(_program[address].Literal, _program[address].Arg1, _program[address].Arg2);
+                    break;
+
                 case Operation.PutVariable:
                 case Operation.PutValue:
                 case Operation.SetVariable:
@@ -126,6 +129,31 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// Generates a new empty structure of a particular length on the heap and stores a reference
+        /// to it in a variable
+        /// </summary>
+        private void PutStructure(int termLiteral, int variable, int termLength)
+        {
+            var termName = _literals[termLiteral];
+
+            // Create the structure
+            ArgumentReference firstArgument = null;
+
+            for (int argNum = 0; argNum < termLength; ++argNum)
+            {
+                var newArgument = new ArgumentReference(null, firstArgument);
+                firstArgument = newArgument;
+            }
+
+            var structure = new SimpleReference(termName, firstArgument);
+
+            _lastArgument = firstArgument;
+
+            // Store in the variable
+            _registers[variable].SetTo(structure);
         }
 
         /// <summary>
