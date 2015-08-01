@@ -1,4 +1,5 @@
-﻿using LogicalShift.Reason.Unification;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Unification;
 using System;
 
 namespace LogicalShift.Reason.Solvers
@@ -12,6 +13,11 @@ namespace LogicalShift.Reason.Solvers
         /// The program that this will run
         /// </summary>
         private readonly ByteCodePoint[] _program;
+
+        /// <summary>
+        /// Maps literal identifiers to literal objects
+        /// </summary>
+        private readonly ILiteral[] _literals;
 
         /// <summary>
         /// The address of the instruction that is being executed
@@ -28,11 +34,12 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         private SimpleReference[] _registers;
 
-        public ByteCodeExecutor(ByteCodePoint[] program, int maxVariableIndex)
+        public ByteCodeExecutor(ByteCodePoint[] program, ILiteral[] literals, int maxVariableIndex)
         {
             if (program == null) throw new ArgumentNullException(nameof(program));
 
             _program        = program;
+            _literals       = literals;
             _programCounter = 0;
             _environment    = new ByteCodeEnvironment(0, null);
             _registers      = new SimpleReference[maxVariableIndex];
