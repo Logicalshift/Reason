@@ -79,7 +79,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solvers\BasicQueryResult.cs" />
     <Compile Include="Solver.cs" />
-    <Compile Include="Solvers\BasicTrail.cs" />
+    <Compile Include="Unification\BasicTrail.cs" />
     <Compile Include="Solvers\ByteCodePoint.cs" />
     <Compile Include="Solvers\ByteCodeProgram.cs" />
     <Compile Include="Solvers\ByteCodeSolver.cs" />

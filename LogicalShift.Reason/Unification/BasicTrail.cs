@@ -1,7 +1,7 @@
 ﻿using LogicalShift.Reason.Api;
 using System.Collections.Generic;
 
-namespace LogicalShift.Reason.Solvers
+namespace LogicalShift.Reason.Unification
 {
     /// <summary>
     /// Simplest possible implementation of a trail
