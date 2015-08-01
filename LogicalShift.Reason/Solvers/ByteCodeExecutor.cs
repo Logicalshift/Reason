@@ -57,6 +57,31 @@ namespace LogicalShift.Reason.Solvers
             // Action depends on the opcode
             switch (_program[address].Op)
             {
+                case Operation.Nothing:
+                    break;
+
+                case Operation.GetStructure:
+                case Operation.GetVariable:
+                case Operation.GetValue:
+                case Operation.PutStructure:
+                case Operation.PutVariable:
+                case Operation.PutValue:
+                case Operation.SetVariable:
+                case Operation.SetValue:
+                case Operation.UnifyVariable:
+                case Operation.UnifyValue:
+                case Operation.Allocate:
+                case Operation.Deallocate:
+                case Operation.Proceed:
+                case Operation.CallAddress:
+                case Operation.TryMeElse:
+                case Operation.RetryMeElse:
+                case Operation.TrustMe:
+                    throw new NotImplementedException("Opcode not implemented yet");
+
+                case Operation.Call:
+                    throw new NotImplementedException("External calls not yet supported");
+
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
