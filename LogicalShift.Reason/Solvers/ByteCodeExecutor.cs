@@ -37,17 +37,22 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// True if we're in 'write mode'
         /// </summary>
-        bool _writeMode;
+        private bool _writeMode;
 
         /// <summary>
         /// Pointer to the last built argument
         /// </summary>
-        IReferenceLiteral _lastArgument;
+        private IReferenceLiteral _lastArgument;
 
         /// <summary>
         /// Pointer to the next value within the current structure
         /// </summary>
-        IReferenceLiteral _structurePtr;
+        private IReferenceLiteral _structurePtr;
+
+        /// <summary>
+        /// The trail for the current backtracking operation
+        /// </summary>
+        private NoTrail _trail = new NoTrail();
 
         public ByteCodeExecutor(ByteCodePoint[] program, ILiteral[] literals, int maxVariableIndex)
         {
@@ -91,6 +96,8 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.GetValue:
+
+
                 case Operation.PutStructure:
                 case Operation.PutVariable:
                 case Operation.PutValue:
@@ -206,6 +213,7 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         private void Bind(IReferenceLiteral target, IReferenceLiteral value)
         {
+            _trail.Record(target);
             target.SetTo(value);
         }
     }
