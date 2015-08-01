@@ -87,6 +87,9 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.GetVariable:
+                    GetVariable(_program[address].Arg1, _program[address].Arg2);
+                    break;
+
                 case Operation.GetValue:
                 case Operation.PutStructure:
                 case Operation.PutVariable:
@@ -118,7 +121,16 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
-        /// Implements the GetStrucutre opcode
+        /// Sets var1 to the value of var2
+        /// </summary>
+        private void GetVariable(int var1, int var2)
+        {
+            _registers[var1].SetTo(_registers[var2]);
+        }
+
+        /// <summary>
+        /// Either begins unifying against an existing structure (if the variable is bound) or
+        /// begins writing a new structure to an unbound variable.
         /// </summary>
         private bool GetStructure(int literal, int variable, int termLength)
         {
