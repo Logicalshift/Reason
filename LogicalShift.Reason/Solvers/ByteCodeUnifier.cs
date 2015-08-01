@@ -17,7 +17,7 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// List of variables that have been used by an instruction
         /// </summary>
-        private readonly HashSet<ILiteral> _usedVariables = new HashSet<ILiteral>();
+        private readonly HashSet<int> _usedVariables = new HashSet<int>();
 
         /// <summary>
         /// The ID that a particular variable has been bound to
@@ -41,7 +41,8 @@ namespace LogicalShift.Reason.Solvers
 
         public bool HasVariable(ILiteral variable)
         {
-            return _usedVariables.Contains(variable);
+            var variableIndex = _bindingForVariable[variable];
+            return _usedVariables.Contains(variableIndex);
         }
 
         public void BindVariable(int index, ILiteral variable)
@@ -51,85 +52,103 @@ namespace LogicalShift.Reason.Solvers
 
         public bool PutStructure(ILiteral termName, int termLength, ILiteral variable)
         {
-            _usedVariables.Add(variable);
+            var variableIndex = _bindingForVariable[variable];
+            _usedVariables.Add(variableIndex);
 
-            _program.Write(Operation.PutStructure, termName, _bindingForVariable[variable], termLength);
+            _program.Write(Operation.PutStructure, termName, variableIndex, termLength);
             return true;
         }
 
         public bool SetVariable(ILiteral variable)
         {
-            _usedVariables.Add(variable);
+            var variableIndex = _bindingForVariable[variable];
+            _usedVariables.Add(variableIndex);
 
-            _program.Write(Operation.SetVariable, _bindingForVariable[variable]);
+            _program.Write(Operation.SetVariable, variableIndex);
             return true;
         }
 
         public bool SetValue(ILiteral variable)
         {
-            _usedVariables.Add(variable);
+            var variableIndex = _bindingForVariable[variable];
+            _usedVariables.Add(variableIndex);
 
-            _program.Write(Operation.SetValue, _bindingForVariable[variable]);
+            _program.Write(Operation.SetValue, variableIndex);
             return true;
         }
 
         public bool PutVariable(ILiteral variable1, ILiteral variable2)
         {
-            _usedVariables.Add(variable1);
-            _usedVariables.Add(variable2);
+            var variableIndex1 = _bindingForVariable[variable1];
+            var variableIndex2 = _bindingForVariable[variable2];
 
-            _program.Write(Operation.PutVariable, _bindingForVariable[variable1], _bindingForVariable[variable2]);
+            _usedVariables.Add(variableIndex1);
+            _usedVariables.Add(variableIndex2);
+
+            _program.Write(Operation.PutVariable, variableIndex1, variableIndex2);
             return true;
         }
 
         public bool PutValue(ILiteral variable1, ILiteral variable2)
         {
-            _usedVariables.Add(variable1);
-            _usedVariables.Add(variable2);
+            var variableIndex1 = _bindingForVariable[variable1];
+            var variableIndex2 = _bindingForVariable[variable2];
 
-            _program.Write(Operation.PutValue, _bindingForVariable[variable1], _bindingForVariable[variable2]);
+            _usedVariables.Add(variableIndex1);
+            _usedVariables.Add(variableIndex2);
+
+            _program.Write(Operation.PutValue, variableIndex1, variableIndex2);
             return true;
         }
 
         public bool GetStructure(ILiteral termName, int termLength, ILiteral variable)
         {
-            _usedVariables.Add(variable);
+            var variableIndex = _bindingForVariable[variable];
+            _usedVariables.Add(variableIndex);
 
-            _program.Write(Operation.GetStructure, termName, _bindingForVariable[variable], termLength);
+            _program.Write(Operation.GetStructure, termName, variableIndex, termLength);
             return true;
         }
 
         public bool UnifyVariable(ILiteral variable)
         {
-            _usedVariables.Add(variable);
+            var variableIndex = _bindingForVariable[variable];
+            _usedVariables.Add(variableIndex);
 
-            _program.Write(Operation.UnifyVariable, _bindingForVariable[variable]);
+            _program.Write(Operation.UnifyVariable, variableIndex);
             return true;
         }
 
         public bool UnifyValue(ILiteral variable)
         {
-            _usedVariables.Add(variable);
+            var variableIndex = _bindingForVariable[variable];
+            _usedVariables.Add(variableIndex);
 
-            _program.Write(Operation.UnifyValue, _bindingForVariable[variable]);
+            _program.Write(Operation.UnifyValue, variableIndex);
             return true;
         }
 
         public bool GetVariable(ILiteral variable1, ILiteral variable2)
         {
-            _usedVariables.Add(variable1);
-            _usedVariables.Add(variable2);
+            var variableIndex1 = _bindingForVariable[variable1];
+            var variableIndex2 = _bindingForVariable[variable2];
 
-            _program.Write(Operation.GetVariable, _bindingForVariable[variable1], _bindingForVariable[variable2]);
+            _usedVariables.Add(variableIndex1);
+            _usedVariables.Add(variableIndex2);
+
+            _program.Write(Operation.GetVariable, variableIndex1, variableIndex2);
             return true;
         }
 
         public bool GetValue(ILiteral variable1, ILiteral variable2)
         {
-            _usedVariables.Add(variable1);
-            _usedVariables.Add(variable2);
+            var variableIndex1 = _bindingForVariable[variable1];
+            var variableIndex2 = _bindingForVariable[variable2];
 
-            _program.Write(Operation.GetValue, _bindingForVariable[variable1], _bindingForVariable[variable2]);
+            _usedVariables.Add(variableIndex1);
+            _usedVariables.Add(variableIndex2);
+
+            _program.Write(Operation.GetValue, variableIndex1, variableIndex2);
             return true;
         }
 

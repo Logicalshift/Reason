@@ -8,6 +8,23 @@ namespace LogicalShift.Reason.Tests
     public class ByteCode
     {
         [Test]
+        public void UnifierUsesIndexAndNotLiteralVariable()
+        {
+            var unifier = new ByteCodeUnifier(new ByteCodeProgram());
+
+            var var1 = Literal.NewVariable();
+            var var2 = Literal.NewVariable();
+
+            unifier.BindVariable(1, var1);
+            unifier.BindVariable(1, var2);
+
+            // As var1 and var2 are bound to the same index, using var1 should mark var2 as used as well
+            unifier.SetVariable(var1);
+            Assert.IsTrue(unifier.HasVariable(var1));
+            Assert.IsTrue(unifier.HasVariable(var2));
+        }
+
+        [Test]
         public void SimpleCompile()
         {
             var p = Literal.NewAtom();
