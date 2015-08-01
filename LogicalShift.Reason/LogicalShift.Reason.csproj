@@ -99,6 +99,7 @@
     <Compile Include="Unification\TraceUnifier.cs" />
     <Compile Include="BasicUnification.cs" />
     <Compile Include="Assignment\VariableAssignment.cs" />
+    <Compile Include="Unification\UnifyReferences.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ISolver.cs" />
