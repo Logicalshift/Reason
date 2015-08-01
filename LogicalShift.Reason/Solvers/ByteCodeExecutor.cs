@@ -81,50 +81,59 @@ namespace LogicalShift.Reason.Solvers
             // Advance the program counter
             ++_programCounter;
 
+            // Dispatch the instruction
+            Dispatch(_program[address]);
+        }
+
+        /// <summary>
+        /// Dispatches a particular code point
+        /// </summary>
+        public void Dispatch(ByteCodePoint codePoint)
+        {
             // Action depends on the opcode
-            switch (_program[address].Op)
+            switch (codePoint.Op)
             {
                 case Operation.Nothing:
                     break;
 
                 case Operation.GetStructure:
-                    GetStructure(_program[address].Literal, _program[address].Arg1, _program[address].Arg2);
+                    GetStructure(codePoint.Literal, codePoint.Arg1, codePoint.Arg2);
                     break;
 
                 case Operation.GetVariable:
-                    GetVariable(_program[address].Arg1, _program[address].Arg2);
+                    GetVariable(codePoint.Arg1, codePoint.Arg2);
                     break;
 
                 case Operation.GetValue:
-                    GetValue(_program[address].Arg1, _program[address].Arg2);
+                    GetValue(codePoint.Arg1, codePoint.Arg2);
                     break;
 
                 case Operation.PutStructure:
-                    PutStructure(_program[address].Literal, _program[address].Arg1, _program[address].Arg2);
+                    PutStructure(codePoint.Literal, codePoint.Arg1, codePoint.Arg2);
                     break;
 
                 case Operation.PutVariable:
-                    PutVariable(_program[address].Arg1, _program[address].Arg2);
+                    PutVariable(codePoint.Arg1, codePoint.Arg2);
                     break;
 
                 case Operation.PutValue:
-                    PutValue(_program[address].Arg1, _program[address].Arg2);
+                    PutValue(codePoint.Arg1, codePoint.Arg2);
                     break;
 
                 case Operation.SetVariable:
-                    SetVariable(_program[address].Arg1);
+                    SetVariable(codePoint.Arg1);
                     break;
 
                 case Operation.SetValue:
-                    SetValue(_program[address].Arg1);
+                    SetValue(codePoint.Arg1);
                     break;
 
                 case Operation.UnifyVariable:
-                    UnifyVariable(_program[address].Arg1);
+                    UnifyVariable(codePoint.Arg1);
                     break;
 
                 case Operation.UnifyValue:
-                    UnifyValue(_program[address].Arg1);
+                    UnifyValue(codePoint.Arg1);
                     break;
 
                 case Operation.Allocate:
