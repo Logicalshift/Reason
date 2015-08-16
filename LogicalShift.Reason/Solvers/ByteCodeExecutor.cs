@@ -86,6 +86,14 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
+        /// Returns the contents of register
+        /// </summary>
+        public SimpleReference Register(int register)
+        {
+            return _registers[register];
+        }
+
+        /// <summary>
         /// Dispatches a particular code point
         /// </summary>
         public void Dispatch(ByteCodePoint codePoint)
@@ -427,7 +435,7 @@ namespace LogicalShift.Reason.Solvers
         {
             if (!_writeMode)
             {
-                // Just read the value of the variable
+                // Just read the value of the variable into the variable
                 _registers[variable].SetTo(_structurePtr);
             }
             else

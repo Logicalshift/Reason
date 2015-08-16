@@ -1,4 +1,6 @@
-﻿using LogicalShift.Reason.Solvers;
+﻿using LogicalShift.Reason.Api;
+using LogicalShift.Reason.Solvers;
+using LogicalShift.Reason.Unification;
 using NUnit.Framework;
 using System;
 
@@ -47,6 +49,41 @@ namespace LogicalShift.Reason.Tests
             clause.Compile(program);
 
             Console.WriteLine(program.ToString());
+        }
+
+        [Test]
+        public void AllocateReplacesVariables()
+        {
+            var executor = new ByteCodeExecutor(new ByteCodePoint[0], new ILiteral[0], 2);
+
+            var someValue = Literal.NewAtom();
+            executor.Register(0).SetTo(new SimpleReference(someValue, new SimpleReference()));
+            Assert.AreEqual(someValue, executor.Register(0).Term, "Term is initially set");
+
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 1, 0));
+            Assert.AreNotEqual(someValue, executor.Register(0).Term, "Term is replaced by allocate");
+        }
+
+        [Test]
+        public void PermanentVariablesAreRestored()
+        {
+            var executor = new ByteCodeExecutor(new ByteCodePoint[0], new ILiteral[0], 2);
+
+            // Allocate a permanent variable
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 1, 0));
+
+            // Set it to something
+            var someValue = Literal.NewAtom();
+            executor.Register(0).SetTo(new SimpleReference(someValue, new SimpleReference()));
+            Assert.AreEqual(someValue, executor.Register(0).Term, "Term is initially set");
+
+            // Allocate another frame
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 1, 0));
+            Assert.AreNotEqual(someValue, executor.Register(0).Term, "Term is replaced by allocate");
+
+            // Restore the original value using deallocate
+            executor.Dispatch(new ByteCodePoint(Operation.Deallocate));
+            Assert.AreEqual(someValue, executor.Register(0).Term);
         }
     }
 }
