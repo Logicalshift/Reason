@@ -168,6 +168,7 @@ namespace LogicalShift.Reason.Solvers
         {
             // Allocate a new environment
             var newEnvironment = new ByteCodeEnvironment(numPermanent, _environment);
+            newEnvironment.ContinuationEnvironment = _environment;
 
             // Make sure that we don't overwrite arguments in the previous environment by replacing them with new temporary variables
             if (numPermanent + numArguments < _environment.Variables.Length)
