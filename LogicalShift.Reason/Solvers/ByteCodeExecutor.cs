@@ -160,7 +160,7 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
-        /// Deallocates the last allocated block
+        /// Deallocates the last allocated block, restoring the permanent variables from the preceding environment
         /// </summary>
         private void Deallocate()
         {
