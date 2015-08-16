@@ -141,6 +141,9 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.Deallocate:
+                    Deallocate();
+                    break;
+
                 case Operation.Proceed:
                 case Operation.CallAddress:
                 case Operation.TryMeElse:
@@ -154,6 +157,30 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// Deallocates the last allocated block
+        /// </summary>
+        private void Deallocate()
+        {
+            var oldEnvironment = _environment.ContinuationEnvironment;
+            if (oldEnvironment == null) return;
+
+            // Restore any permanent variables from the new environment
+            for (var varIndex = 0; varIndex < oldEnvironment.Variables.Length; ++varIndex)
+            {
+                _registers[varIndex] = oldEnvironment.Variables[varIndex];
+            }
+
+            // Reallocate any temporary variables that have newly appeared
+            for (var varIndex = oldEnvironment.Variables.Length; varIndex < _environment.Variables.Length; ++varIndex)
+            {
+                _registers[varIndex] = new SimpleReference();
+            }
+
+            // Finally, restore the environment
+            _environment = oldEnvironment;
         }
 
         /// <summary>
