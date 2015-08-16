@@ -206,7 +206,6 @@ namespace LogicalShift.Reason.Solvers
             }
 
             _environment = newEnvironment;
-            throw new NotImplementedException();
         }
 
         /// <summary>
