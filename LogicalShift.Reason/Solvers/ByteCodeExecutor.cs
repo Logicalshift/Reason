@@ -153,7 +153,13 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.Proceed:
+                    Proceed();
+                    break;
+
                 case Operation.CallAddress:
+                    CallAddress(codePoint.Arg1, codePoint.Arg2);
+                    break;
+
                 case Operation.TryMeElse:
                 case Operation.RetryMeElse:
                 case Operation.TrustMe:
@@ -165,6 +171,23 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// Calls a routine at a particular address
+        /// </summary>
+        private void CallAddress(int address, int numArguments)
+        {
+            _environment.ContinuationPointer = _programCounter;
+            _programCounter = address;
+        }
+
+        /// <summary>
+        /// Continues execution using the continuation pointer
+        /// </summary>
+        private void Proceed()
+        {
+            _programCounter = _environment.ContinuationPointer;
         }
 
         /// <summary>
