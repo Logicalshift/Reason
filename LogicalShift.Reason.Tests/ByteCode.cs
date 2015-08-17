@@ -65,6 +65,51 @@ namespace LogicalShift.Reason.Tests
         }
 
         [Test]
+        public void AllocatePreservesArgumentsByMovingUp()
+        {
+            var executor = new ByteCodeExecutor(new ByteCodePoint[0], new ILiteral[0], 2);
+
+            var someValue = Literal.NewAtom();
+            executor.Register(0).SetTo(new SimpleReference(someValue, new SimpleReference()));
+            Assert.AreEqual(someValue, executor.Register(0).Term, "Term is initially set");
+
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 1, 1));
+            Assert.AreEqual(someValue, executor.Register(1).Term, "Argument is preserved by allocate");
+        }
+
+        [Test]
+        public void AllocateReplacesPermanentVariables()
+        {
+            var executor = new ByteCodeExecutor(new ByteCodePoint[0], new ILiteral[0], 3);
+
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 2, 0));
+
+            var someValue = Literal.NewAtom();
+            executor.Register(1).SetTo(new SimpleReference(someValue, new SimpleReference()));
+            Assert.AreEqual(someValue, executor.Register(1).Term, "Term is initially set");
+
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 1, 0));
+            Assert.AreNotEqual(someValue, executor.Register(0).Term);
+            Assert.AreNotEqual(someValue, executor.Register(1).Term);
+            Assert.AreNotEqual(someValue, executor.Register(2).Term);
+        }
+
+        [Test]
+        public void AllocatePreservesArgumentsByMovingDown()
+        {
+            var executor = new ByteCodeExecutor(new ByteCodePoint[0], new ILiteral[0], 3);
+
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 2, 0));
+
+            var someValue = Literal.NewAtom();
+            executor.Register(2).SetTo(new SimpleReference(someValue, new SimpleReference()));
+            Assert.AreEqual(someValue, executor.Register(2).Term, "Term is initially set");
+
+            executor.Dispatch(new ByteCodePoint(Operation.Allocate, 1, 1));
+            Assert.AreEqual(someValue, executor.Register(1).Term, "Argument is preserved by allocate");
+        }
+
+        [Test]
         public void PermanentVariablesAreRestored()
         {
             var executor = new ByteCodeExecutor(new ByteCodePoint[0], new ILiteral[0], 2);
