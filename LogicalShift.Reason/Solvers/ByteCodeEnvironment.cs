@@ -7,9 +7,10 @@ namespace LogicalShift.Reason.Solvers
     /// </summary>
     public class ByteCodeEnvironment
     {
-        public ByteCodeEnvironment(int numVariables, ByteCodeEnvironment continuationEnvironment)
+        public ByteCodeEnvironment(int numVariables, int numArguments, ByteCodeEnvironment continuationEnvironment)
         {
             Variables = new SimpleReference[numVariables];
+            NumberOfArguments = numArguments;
             for (var x=0; x<numVariables; ++x)
             {
                 Variables[x] = new SimpleReference();
@@ -31,6 +32,11 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// The variables in this environment
         /// </summary>
-        public SimpleReference[] Variables;
+        public readonly SimpleReference[] Variables;
+
+        /// <summary>
+        /// The number of arguments in this environment
+        /// </summary>
+        public int NumberOfArguments { get; private set; }
     }
 }

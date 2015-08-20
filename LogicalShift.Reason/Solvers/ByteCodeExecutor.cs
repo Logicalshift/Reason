@@ -61,7 +61,7 @@ namespace LogicalShift.Reason.Solvers
             _program        = program;
             _literals       = literals;
             _programCounter = 0;
-            _environment    = new ByteCodeEnvironment(0, null);
+            _environment    = new ByteCodeEnvironment(0, 0, null);
             _registers      = new SimpleReference[maxVariableIndex];
 
             for (var registerIndex = 0; registerIndex<_registers.Length; ++registerIndex)
@@ -225,7 +225,7 @@ namespace LogicalShift.Reason.Solvers
         private void Allocate(int numPermanent, int numArguments)
         {
             // Allocate a new environment
-            var newEnvironment = new ByteCodeEnvironment(numPermanent, _environment);
+            var newEnvironment = new ByteCodeEnvironment(numPermanent, numArguments, _environment);
             newEnvironment.ContinuationEnvironment = _environment;
 
             // Make sure that we don't overwrite arguments in the previous environment by replacing them with new temporary variables
