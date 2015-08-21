@@ -31,7 +31,12 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         private readonly int _nextClause;
 
-        public ChoicePoint(ChoicePoint previousChoice, IEnumerable<IReferenceLiteral> arguments, ITrail trail, int nextClause)
+        /// <summary>
+        /// The environment in use when this choice point was created
+        /// </summary>
+        private readonly ByteCodeEnvironment _environment;
+
+        public ChoicePoint(ChoicePoint previousChoice, ByteCodeEnvironment environment, IEnumerable<IReferenceLiteral> arguments, ITrail trail, int nextClause)
         {
             if (arguments == null) throw new ArgumentNullException(nameof(arguments));
             if (trail == null) throw new ArgumentNullException(nameof(trail));
@@ -40,6 +45,7 @@ namespace LogicalShift.Reason.Solvers
             _arguments              = arguments.Select(arg => new SimpleReference(arg)).ToArray();
             _trail                  = trail;
             _nextClause             = nextClause;
+            _environment            = environment;
         }
 
         /// <summary>
@@ -72,6 +78,14 @@ namespace LogicalShift.Reason.Solvers
         public int NextClause
         {
             get { return _nextClause; }
+        }
+
+        /// <summary>
+        /// The environment in use when this choice point was created
+        /// </summary>
+        public ByteCodeEnvironment Environment
+        {
+            get { return _environment; }
         }
     }
 }

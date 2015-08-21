@@ -1,6 +1,7 @@
 ﻿using LogicalShift.Reason.Api;
 using LogicalShift.Reason.Unification;
 using System;
+using System.Linq;
 
 namespace LogicalShift.Reason.Solvers
 {
@@ -28,6 +29,11 @@ namespace LogicalShift.Reason.Solvers
         /// The environment for the program
         /// </summary>
         private ByteCodeEnvironment _environment;
+
+        /// <summary>
+        /// The current choice point for the program
+        /// </summary>
+        private ChoicePoint _choicePoint;
 
         /// <summary>
         /// The variable registers
@@ -161,9 +167,16 @@ namespace LogicalShift.Reason.Solvers
                     break;
 
                 case Operation.TryMeElse:
+                    TryMeElse(codePoint.Arg1);
+                    break;
+
                 case Operation.RetryMeElse:
+                    RetryMeElse(codePoint.Arg1);
+                    break;
+
                 case Operation.TrustMe:
-                    throw new NotImplementedException("Opcode not implemented yet");
+                    TrustMe();
+                    break;
 
                 case Operation.Call:
                     throw new NotImplementedException("External calls not yet supported");
@@ -171,6 +184,34 @@ namespace LogicalShift.Reason.Solvers
                 default:
                     throw new NotImplementedException("Unknown opcode");
             }
+        }
+
+        /// <summary>
+        /// Backtracks to the current choice point and discards it
+        /// </summary>
+        public void TrustMe()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Backtracks to the current choice point and updates its next clause field
+        /// </summary>
+        public void RetryMeElse(int nextClause)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Allocates a new choice point with the current execution state
+        /// </summary>
+        public void TryMeElse(int nextClause)
+        {
+            var argumentValues = _registers.Skip(_environment.Variables.Length).Take(_environment.NumberOfArguments);
+
+            var newChoice = new ChoicePoint(_choicePoint, _environment, argumentValues, new BasicTrail(), nextClause);
+
+            _choicePoint = newChoice;
         }
 
         /// <summary>
