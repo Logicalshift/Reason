@@ -58,7 +58,7 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// The trail for the current backtracking operation
         /// </summary>
-        private NoTrail _trail = new NoTrail();
+        private ITrail _trail = new NoTrail();
 
         public ByteCodeExecutor(ByteCodePoint[] program, ILiteral[] literals, int maxVariableIndex)
         {
@@ -218,6 +218,7 @@ namespace LogicalShift.Reason.Solvers
 
             // Reset the trail
             _choicePoint.Trail.Reset();
+            _trail = _choicePoint.Trail;
         }
 
         /// <summary>
@@ -228,6 +229,15 @@ namespace LogicalShift.Reason.Solvers
             BacktrackToChoicePoint();
             _programCounter = _choicePoint.NextClause;
             _choicePoint = _choicePoint.PreviousChoicePoint;
+
+            if (_choicePoint == null)
+            {
+                _trail = new NoTrail();
+            }
+            else
+            {
+                _trail = _choicePoint.Trail;
+            }
         }
 
         /// <summary>
@@ -250,6 +260,7 @@ namespace LogicalShift.Reason.Solvers
             var newChoice = new ChoicePoint(_choicePoint, _environment, argumentValues, new BasicTrail(), nextClause);
 
             _choicePoint = newChoice;
+            _trail = _choicePoint.Trail;
         }
 
         /// <summary>
