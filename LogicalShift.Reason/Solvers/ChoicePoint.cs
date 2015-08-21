@@ -39,6 +39,7 @@ namespace LogicalShift.Reason.Solvers
             _previousChoicePoint    = previousChoice;
             _arguments              = arguments.Select(arg => new SimpleReference(arg)).ToArray();
             _trail                  = trail;
+            _nextClause             = nextClause;
         }
 
         /// <summary>
