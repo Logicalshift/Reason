@@ -29,7 +29,7 @@ namespace LogicalShift.Reason.Solvers
         /// <summary>
         /// The location of the next clause
         /// </summary>
-        private readonly int _nextClause;
+        private int _nextClause;
 
         /// <summary>
         /// The environment in use when this choice point was created
@@ -78,6 +78,7 @@ namespace LogicalShift.Reason.Solvers
         public int NextClause
         {
             get { return _nextClause; }
+            set { _nextClause = value; }
         }
 
         /// <summary>
