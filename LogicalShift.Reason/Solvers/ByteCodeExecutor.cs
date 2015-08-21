@@ -187,11 +187,47 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
+        /// Backtracks to the current choice point
+        /// </summary>
+        public void BacktrackToChoicePoint()
+        {
+            // Restore the environment permanent variables
+            if (!ReferenceEquals(_choicePoint.Environment, _environment))
+            {
+                for (var varIndex = 0; varIndex < _choicePoint.Environment.Variables.Length; ++varIndex)
+                {
+                    _registers[varIndex] = _choicePoint.Environment.Variables[varIndex];
+                }
+
+                for (var varIndex = _choicePoint.Environment.Variables.Length; varIndex < _environment.Variables.Length; ++varIndex)
+                {
+                    _registers[varIndex] = new SimpleReference();
+                }
+            }
+
+            // Restore the argument registers
+            var argumentIndex = _choicePoint.Environment.Variables.Length;
+            foreach (var argument in _choicePoint.Arguments)
+            {
+                _registers[argumentIndex].SetTo(argument);
+                ++argumentIndex;
+            }
+
+            // Environment is reset to the choice point environment
+            _environment = _choicePoint.Environment;
+
+            // Reset the trail
+            _choicePoint.Trail.Reset();
+        }
+
+        /// <summary>
         /// Backtracks to the current choice point and discards it
         /// </summary>
         public void TrustMe()
         {
-            throw new NotImplementedException();
+            BacktrackToChoicePoint();
+            _programCounter = _choicePoint.NextClause;
+            _choicePoint = _choicePoint.PreviousChoicePoint;
         }
 
         /// <summary>
@@ -199,7 +235,9 @@ namespace LogicalShift.Reason.Solvers
         /// </summary>
         public void RetryMeElse(int nextClause)
         {
-            throw new NotImplementedException();
+            BacktrackToChoicePoint();
+            _programCounter = _choicePoint.NextClause;
+            _choicePoint.NextClause = nextClause;
         }
 
         /// <summary>
