@@ -17,6 +17,21 @@ namespace LogicalShift.Reason.Solvers
         private readonly ByteCodeProgram _program = new ByteCodeProgram();
 
         /// <summary>
+        /// The compiled code points from the program
+        /// </summary>
+        private ByteCodePoint[] _compiled;
+
+        /// <summary>
+        /// The literals in the peogram
+        /// </summary>
+        private ILiteral[] _literals;
+
+        /// <summary>
+        /// The maximum variable index from the program
+        /// </summary>
+        private int _maxVariableIndex;
+
+        /// <summary>
         /// The location of the predicates in this program
         /// </summary>
         private readonly Dictionary<ILiteral, int> _predicateLocation = new Dictionary<ILiteral,int>();
@@ -27,6 +42,9 @@ namespace LogicalShift.Reason.Solvers
         public async Task Compile(IKnowledgeBase knowledge)
         {
             if (knowledge == null) throw new ArgumentNullException("knowledge");
+
+            _compiled = null;
+            _literals = null;
 
             // Fetch the clauses and group them by their predicate
             var predicateList = (await knowledge.GetClauses())
@@ -80,11 +98,47 @@ namespace LogicalShift.Reason.Solvers
 
             // Bind any calls to within the program that come from the same knowledgebase
             _program.BindCalls(predicate => predicate);
+
+            _maxVariableIndex = _program.GetMaxVariableIndex();
+        }
+
+        private ByteCodePoint[] GetProgram()
+        {
+            if (_compiled == null)
+            {
+                _program.Finish();
+                _compiled = _program.GetByteCode();
+            }
+
+            return _compiled;
+        }
+
+        private ILiteral[] GetLiterals()
+        {
+            if (_literals == null)
+            {
+                _literals = _program.GetLiterals();
+            }
+
+            return _literals;
         }
 
         public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)
         {
-            throw new NotImplementedException();
+            // Create the execution environment
+            var executor = new ByteCodeExecutor(GetProgram(), GetLiterals(), _maxVariableIndex);
+
+            // Load the arguments
+            for (int argIndex = 0; argIndex < arguments.Length; ++argIndex)
+            {
+                executor.Register(argIndex).SetTo(arguments[argIndex]);
+            }
+            
+            // Run the program
+            executor.Run(_predicateLocation[predicate]);
+
+            // TODO: implement backtracking
+            return () => true;
         }
     }
 }

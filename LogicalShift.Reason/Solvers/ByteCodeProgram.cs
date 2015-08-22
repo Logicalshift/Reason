@@ -104,6 +104,22 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
+        /// Retrieves the byte code for this program as an array
+        /// </summary>
+        public ByteCodePoint[] GetByteCode()
+        {
+            return _program.ToArray();
+        }
+
+        /// <summary>
+        /// Returns the literals declared in this program
+        /// </summary>
+        public ILiteral[] GetLiterals()
+        {
+            return _literals.ToArray();
+        }
+
+        /// <summary>
         /// Writes a new code point to this program
         /// </summary>
         public int Write(Operation op, int arg1 = 0, int arg2 = 0)
