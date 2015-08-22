@@ -3,6 +3,7 @@ using LogicalShift.Reason.Solvers;
 using LogicalShift.Reason.Unification;
 using NUnit.Framework;
 using System;
+using System.Threading.Tasks;
 
 namespace LogicalShift.Reason.Tests
 {
@@ -129,6 +130,29 @@ namespace LogicalShift.Reason.Tests
             // Restore the original value using deallocate
             executor.Dispatch(new ByteCodePoint(Operation.Deallocate));
             Assert.AreEqual(someValue, executor.Register(0).Term);
+        }
+
+        [Test]
+        public async Task SolveSimplePredicate()
+        {
+            // Knowledge is a(x)
+            var a = Literal.NewFunctor(1);
+            var x = Literal.NewAtom();
+            var aOfX = a.With(x);
+
+            var knowledge = KnowledgeBase.New().Assert(Clause.Always(aOfX));
+
+            // Generate a bytecode solver for this
+            var solver = new ByteCodeSolver();
+            await solver.Compile(knowledge);
+
+            // Call it with the query a(Y)
+            var refToY = new SimpleReference();
+
+            var solve = solver.Call(a, refToY);
+
+            var solved = solve();
+            Assert.IsTrue(solved);
         }
     }
 }
