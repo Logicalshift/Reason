@@ -77,6 +77,20 @@ namespace LogicalShift.Reason.Solvers
         }
 
         /// <summary>
+        /// Executes code from the specified instruction until it hits a Proceed operator
+        /// </summary>
+        public void Run(int initialInstruction)
+        {
+            _programCounter = initialInstruction;
+            _environment.ContinuationPointer = -1;
+
+            while (_programCounter >= 0)
+            {
+                Step();
+            }
+        }
+
+        /// <summary>
         /// Executes a single instruction
         /// </summary>
         public void Step()
