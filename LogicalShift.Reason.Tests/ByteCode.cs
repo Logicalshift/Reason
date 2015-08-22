@@ -153,6 +153,7 @@ namespace LogicalShift.Reason.Tests
 
             var solved = solve();
             Assert.IsTrue(solved);
+            Assert.AreEqual(x, refToY.Term);
         }
     }
 }

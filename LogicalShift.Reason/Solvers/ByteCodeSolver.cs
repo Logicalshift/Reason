@@ -126,7 +126,7 @@ namespace LogicalShift.Reason.Solvers
         public Func<bool> Call(ILiteral predicate, params IReferenceLiteral[] arguments)
         {
             // Create the execution environment
-            var executor = new ByteCodeExecutor(GetProgram(), GetLiterals(), _maxVariableIndex);
+            var executor = new ByteCodeExecutor(GetProgram(), GetLiterals(), _maxVariableIndex+1);
 
             // Load the arguments
             for (int argIndex = 0; argIndex < arguments.Length; ++argIndex)
